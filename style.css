@@ -1,0 +1,146 @@
+:root{
+  --bg:#0b0d10; --kort:#14171c; --kort2:#191d23;
+  --linje:rgba(255,255,255,.07);
+  --tekst:#eef1f5; --dempet:#8b94a3;
+  --gull:#d8b06a; --gull2:#f0d9a8;
+  --gronn:#5ec98a; --rod:#c9605e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:
+    radial-gradient(900px 500px at 50% -180px, rgba(216,176,106,.10), transparent 70%),
+    var(--bg);
+  color:var(--tekst);
+  font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding:0 16px calc(48px + env(safe-area-inset-bottom));
+  max-width:640px;margin:0 auto;
+}
+
+/* ---- Topp ---- */
+.topp{display:flex;gap:16px;align-items:center;padding:28px 4px 22px}
+.ring{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;
+  background:conic-gradient(var(--gull) 0deg, rgba(255,255,255,.08) 0deg);
+  transition:background .5s ease}
+.ring-inn{width:58px;height:58px;border-radius:50%;background:var(--bg);
+  display:grid;place-items:center;font-size:24px;font-weight:700;
+  font-variant-numeric:tabular-nums}
+.topp-tekst{flex:1;min-width:0}
+.grad{font-size:19px;font-weight:650;letter-spacing:.2px;
+  background:linear-gradient(90deg,var(--gull2),var(--gull));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.xp-bar{height:7px;background:rgba(255,255,255,.07);border-radius:99px;margin:9px 0 7px;overflow:hidden}
+.xp-fyll{height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--gull),var(--gull2));
+  box-shadow:0 0 14px rgba(216,176,106,.5);transition:width .45s cubic-bezier(.4,0,.2,1)}
+.topp-meta{font-size:12.5px;color:var(--dempet);font-variant-numeric:tabular-nums}
+.topp-meta b{color:var(--tekst);font-weight:600}
+.sep{opacity:.35;margin:0 6px}
+
+/* ---- Kort ---- */
+.kort{
+  background:linear-gradient(180deg,var(--kort2),var(--kort));
+  border:1px solid var(--linje);border-radius:20px;
+  padding:20px;margin-bottom:14px;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 12px 30px -18px #000;
+}
+.kort.ferdig{border-color:rgba(94,201,138,.35);
+  box-shadow:0 0 0 1px rgba(94,201,138,.15), 0 12px 30px -18px #000}
+.kort.kompakt{padding:18px 20px}
+.kort h2{font-size:13px;text-transform:uppercase;letter-spacing:1.3px;
+  color:var(--dempet);font-weight:650;margin-bottom:14px}
+
+.kort-topp{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.dag-navn{font-size:13px;text-transform:uppercase;letter-spacing:1.3px;color:var(--gull);font-weight:650}
+.dag-dato{font-size:13px;color:var(--dempet);margin-top:2px}
+.nav{display:flex;gap:6px;align-items:center}
+.nav button{background:rgba(255,255,255,.05);border:1px solid var(--linje);
+  color:var(--tekst);border-radius:10px;min-width:32px;height:32px;padding:0 10px;
+  font-size:15px;cursor:pointer}
+.nav button:active{background:rgba(255,255,255,.12)}
+#nav-i-dag{font-size:12px}
+
+h1{font-size:27px;font-weight:700;letter-spacing:-.4px;line-height:1.15}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 18px}
+.pill{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;
+  padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.06);
+  color:var(--dempet);border:1px solid var(--linje)}
+.pill.build{color:var(--gull);border-color:rgba(216,176,106,.3)}
+.pill.peak,.pill.sharp{color:#e88f6a;border-color:rgba(232,143,106,.3)}
+.pill.deload{color:#6aa9e8;border-color:rgba(106,169,232,.3)}
+.pill.test{color:var(--gronn);border-color:rgba(94,201,138,.35)}
+
+/* ---- Øvelser ---- */
+.ovelser{list-style:none}
+.ovelse{display:flex;align-items:center;gap:13px;padding:13px 0;
+  border-top:1px solid var(--linje)}
+.ovelse:first-child{border-top:none}
+.hake{width:28px;height:28px;flex:0 0 28px;border-radius:9px;cursor:pointer;
+  background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.16);
+  color:#0b0d10;font-size:15px;font-weight:800;line-height:1;
+  transition:all .18s ease}
+.hake:active{transform:scale(.9)}
+.gjort .hake{background:linear-gradient(180deg,var(--gull2),var(--gull));
+  border-color:var(--gull);box-shadow:0 0 12px rgba(216,176,106,.35)}
+.ov-tekst{flex:1;min-width:0}
+.ov-navn{font-weight:600;font-size:15.5px}
+.ov-mal{font-size:13.5px;color:var(--dempet);margin-top:1px}
+.ov-xp{font-size:12px;color:var(--dempet);font-variant-numeric:tabular-nums;font-weight:600}
+.gjort .ov-navn,.gjort .ov-mal{color:var(--dempet)}
+.gjort .ov-navn{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.25)}
+
+/* ---- Mål ---- */
+.mal{margin-bottom:15px}
+.mal-topp{display:flex;justify-content:space-between;font-size:14px;margin-bottom:7px}
+.mal-topp b{font-variant-numeric:tabular-nums}
+.mal-bar{height:8px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
+.mal-fyll{height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--gull),var(--gull2));transition:width .5s ease}
+.mal-fyll.gronn{background:linear-gradient(90deg,#3f9d68,var(--gronn))}
+.estimat{font-size:12.5px;color:var(--dempet);margin-top:4px}
+
+/* ---- Heatmap ---- */
+.heatmap{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}
+.rute{aspect-ratio:1;border-radius:5px;background:rgba(255,255,255,.05);cursor:pointer}
+.rute.n1{background:rgba(216,176,106,.28)}
+.rute.n2{background:rgba(216,176,106,.58)}
+.rute.n3{background:var(--gull);box-shadow:0 0 8px rgba(216,176,106,.35)}
+.rute.valgt{outline:1.5px solid var(--tekst);outline-offset:1px}
+.legende{display:flex;align-items:center;gap:5px;margin-top:12px;
+  font-size:11px;color:var(--dempet)}
+.legende .rute{width:11px;aspect-ratio:1;cursor:default}
+
+/* ---- Knapper ---- */
+.stor-knapp{width:100%;padding:13px;border-radius:13px;border:none;cursor:pointer;
+  background:linear-gradient(180deg,var(--gull2),var(--gull));color:#241c08;
+  font-size:15px;font-weight:700;font-family:inherit;margin-top:6px}
+.stor-knapp:active{transform:scale(.985);filter:brightness(.95)}
+.flat-knapp{width:100%;padding:13px;border-radius:13px;cursor:pointer;
+  background:rgba(255,255,255,.05);border:1px solid var(--linje);color:var(--tekst);
+  font-size:15px;font-weight:600;font-family:inherit;margin-top:6px}
+.knapper{display:flex;gap:9px}
+.hjelp{font-size:13px;color:var(--dempet);margin-bottom:6px}
+#eksport-felt{display:none;width:100%;height:80px;margin-top:10px;font-size:11px;
+  background:#0b0d10;color:var(--dempet);border:1px solid var(--linje);
+  border-radius:11px;padding:10px;font-family:ui-monospace,monospace;resize:none}
+#test-knapp{display:none}
+
+footer{text-align:center;font-size:12px;color:var(--dempet);padding:22px 0 8px;opacity:.6}
+
+/* ---- Feiring & toast ---- */
+.feiring{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;
+  background:rgba(5,6,8,.72);opacity:0;transition:opacity .3s;backdrop-filter:blur(6px)}
+.feiring.vis{opacity:1}
+.feir-kort{text-align:center;transform:scale(.85);transition:transform .45s cubic-bezier(.2,1.4,.4,1)}
+.feiring.vis .feir-kort{transform:scale(1)}
+.medalje{font-size:64px;filter:drop-shadow(0 0 22px rgba(216,176,106,.6))}
+#feir-tekst{font-size:30px;font-weight:700;margin-top:10px}
+#feir-tekst span{font-size:17px;font-weight:600;color:var(--gull)}
+.feir-kort small{display:block;margin-top:8px;font-size:11px;letter-spacing:2.4px;
+  text-transform:uppercase;color:var(--dempet)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);
+  background:var(--kort2);border:1px solid var(--linje);color:var(--tekst);
+  padding:11px 18px;border-radius:99px;font-size:14px;font-weight:600;
+  opacity:0;transition:all .28s;pointer-events:none;
+  box-shadow:0 10px 30px -10px #000}
+.toast.vis{opacity:1;transform:translate(-50%,0)}
