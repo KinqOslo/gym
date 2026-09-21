@@ -325,8 +325,8 @@ footer{text-align:center;font-size:12.5px;color:var(--dempet);padding:22px 8px 4
 
   <footer>
     182 cm · 80 kg · 21 år<br>
-    Medisinballstøt og stille lengde står allerede i 9 av 9.<br>
-    Det er trekk og løp som løfter kombinasjonskarakteren.
+    Utholdenhet, overkropp og armer. Trekk og press tre ganger i uka,<br>
+    løping fire — og det eksplosive holdes ved like på lørdager.
   </footer>
   <div id="utjevner" aria-hidden="true"></div>
 </main>
@@ -446,36 +446,39 @@ function program(d) {
   const rolig = fk => ov("Rolig langtur", `${Math.max(25, Math.round(50*fk))} min på ${mmss(pace+70)} /km · prat-tempo`, 20);
 
   switch (ukedag) {
-    case 0: tittel = "Trekk & kjerne"; ovelser = [
+    case 0: tittel = "Trekk & biceps"; ovelser = [
       ov("Oppvarming", "8 min rolig jogg + skulderbånd", 10),
       pullStyrke(),
-      ov("Roing i ringer eller stang", `${Math.round(4*k)} × 10 reps`, 20),
-      ov("Bicepscurl", "3 × 10 · siste rep skal være tung", 15),
-      ov("Planke", `${Math.round(3*k)} × 60 sek`, 15),
-      ov("Hengende benløft", "3 × 10", 15)]; break;
+      ov("Stangroing", `${Math.round(4*k)} × 8 reps · tungt`, 20),
+      ov("Bicepscurl med stang", `${Math.round(4*k)} × 8 reps · øk vekta når 8 går lett`, 20),
+      ov("Hammercurl", "3 × 12 reps", 15),
+      ov("Hengende benløft", "3 × 10 reps", 15)]; break;
     case 1: tittel = "Fartsøkt"; ovelser = deload
       ? [ov("Oppvarming","10 min rolig",10), rolig(.7), ov("Mobilitet","10 min hofte og ankel",10)]
       : [ov("Oppvarming","12 min rolig + 4 stigningsløp",10), intervall(),
          ov("Nedjogg","8 min",10), ov("Sideplanke","3 × 45 sek per side",15)]; break;
-    case 2: tittel = "Press & bein"; ovelser = [
+    case 2: tittel = "Press & triceps"; ovelser = [
       ov("Oppvarming", "5 min hopptau + mobilitet", 10),
       ov("Knebøy", `${Math.round(4*k)} × 6 reps · tungt`, 25),
-      ov("Markløft, rumensk", "3 × 6 reps", 25),
-      ov("Benkpress eller dips", `${Math.round(4*k)} × 8 reps`, 20),
-      ov("Boksehopp", "4 × 5 · maks eksplosivt", 20),
-      ov("Medisinballstøt", "3 × 5 kast · hold 9 av 9", 15)]; break;
+      ov("Dips", `${Math.round(4*k)} × 8 reps · heng på vekt når 12 går`, 25),
+      ov("Skulderpress", "3 × 8 reps", 20),
+      ov("Franskpress", `${Math.round(3*k)} × 10 reps · albuene i ro`, 20),
+      ov("Tricepspress i kabel", "3 × 12 reps · rolig tilbake", 15)]; break;
     case 3: tittel = "Rolig & mobilitet"; ovelser = [
       rolig(k), ov("Mobilitet","15 min hofte, hamstring, bryst",10),
-      ov("Dødheng","3 × maks tid i stanga",15)]; break;
-    case 4: tittel = "Pull-up stige"; ovelser = [
+      ov("Dødheng","3 × maks tid i stanga",15),
+      ov("Armer, lett","2 × 15 curl + 2 × 15 tricepspress · blodgjennomstrømning",10)]; break;
+    case 4: tittel = "Armer & overkropp"; ovelser = [
       ov("Oppvarming","8 min rolig + skulderbånd",10), pullStige(),
-      ov("Face pulls med strikk","3 × 15",15),
-      ov("Farmers walk","4 × 40 m tungt",15),
+      ov("Dips","3 × 10 reps",20),
+      ov("Supersett: curl + tricepspress",
+         `${Math.max(2, Math.round(3*k))} runder × 12 + 12 · ingen pause mellom øvelsene`, 20),
+      ov("Face pulls med strikk","3 × 15 reps",15),
       ov("Kjerne","3 × 15 russisk vri + 3 × 20 sek hollow",15)]; break;
     case 5: tittel = "Terskel"; ovelser = deload
       ? [ov("Oppvarming","10 min rolig",10), terskel(.5), ov("Nedjogg","8 min",10)]
       : [ov("Oppvarming","12 min rolig",10), terskel(k), ov("Nedjogg","8 min",10),
-         ov("Stille lengde","5 hopp · vedlikehold 9 av 9",15)]; break;
+         ov("Eksplosivt","3 × 5 medisinballstøt + 5 stille lengde · vedlikehold 9 av 9",15)]; break;
     default: tittel = "Restitusjon"; ovelser = [
       ov("Gåtur","40–60 min rolig",15), ov("Tøy og rull","15 min",10),
       ov("Søvn","Legg deg før 23:00",10)];

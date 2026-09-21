@@ -15,19 +15,26 @@ men lagrer bare i nettleseren den åpnes i.
 - Følger framgangen mot målene: pull-ups **5 → 12** og 3000 m **13:50 → 12:00**.
 - Hver 4. uke er deload, og søndagen i deload-uka er **testdag**. Registrer resultatet, så justerer programmet seg selv.
 
-## Programmet
-Bygget på testen fra 11.06.2026: styrke 7,67/9 (medisinball og stille lengde er 9/9 — de vedlikeholdes),
-utholdenhet 5/9 og pull-ups 5/9. Det er derfor **trekk og løping** som får mest plass.
+## Målene
+1. God fysisk utholdenhet
+2. Sterk overkropp
+3. Solide biceps og triceps
+
+Forsvarets test er målestokken for de to første: pull-ups **5 → 12** og 3000 m **13:50 → 12:00**.
+Medisinball og stille lengde står i 9/9 og vedlikeholdes bare. Armene måles ikke — de styres
+på volum og progresjon i vekt, med 12–18 sett biceps og 15–22 sett triceps i uka.
 
 | Dag | Økt |
 |---|---|
-| Man | Trekk & kjerne |
+| Man | Trekk & biceps |
 | Tir | Fartsøkt (800 m-intervall) |
-| Ons | Press & bein + eksplosivt |
-| Tor | Rolig langtur + mobilitet |
-| Fre | Pull-up stige |
-| Lør | Terskel |
+| Ons | Press & triceps |
+| Tor | Rolig langtur + lett armarbeid |
+| Fre | Armer & overkropp |
+| Lør | Terskel + eksplosivt vedlikehold |
 | Søn | Restitusjon |
+
+Tre løpeøkter i uka er gulvet — de byttes aldri bort mot mer armarbeid.
 
 Faser: Grunnmur (uke 1–4) → Oppbygging (5–12) → Press (13–20) → Skarp (21+). Hver 4. uke deload.
 
