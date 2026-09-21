@@ -114,8 +114,9 @@ button{font-family:inherit;color:inherit;border:none;background:none;padding:0;c
 
 /* ---------- Øvelser ---------- */
 .ovelser{list-style:none;margin:22px -10px 0;padding:0}
-.ovelse{display:flex;align-items:center;gap:15px;padding:13px 10px;border-radius:var(--r-midt);
-  cursor:pointer;transition:background .15s;text-align:left;width:100%}
+.ovelse{display:flex;align-items:center;gap:15px;padding:0 10px;border-radius:var(--r-midt);
+  cursor:pointer;transition:background .15s;text-align:left;width:100%;
+  height:74px}
 .ovelse:hover{background:var(--kort-alt)}
 .ovelse:active{transform:scale(.995)}
 .ovelser li + li .ovelse{box-shadow:0 -1px 0 var(--kant)}
@@ -129,7 +130,8 @@ button{font-family:inherit;color:inherit;border:none;background:none;padding:0;c
 .ovelse:active .boks{transform:scale(.86)}
 .ov-tekst{flex:1;min-width:0}
 .ov-navn{font-weight:700;font-size:15.5px;line-height:1.25;letter-spacing:-.01em}
-.ov-mal{font-size:13.5px;color:var(--dempet);margin-top:3px;font-variant-numeric:tabular-nums;line-height:1.35}
+.ov-mal{font-size:13.5px;color:var(--dempet);margin-top:3px;font-variant-numeric:tabular-nums;
+  line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ov-xp{font-family:var(--display);font-size:12.5px;font-weight:700;color:var(--dempet);
   font-variant-numeric:tabular-nums;flex:0 0 auto}
 .ovelse.gjort .ov-navn{color:var(--dempet);text-decoration:line-through;
@@ -536,15 +538,41 @@ function bevarScroll(fn) {
    Uten dette krymper dokumentet når du står nederst, og nettleseren
    dytter deg oppover. Vi legger differansen som usynlig plass nederst,
    slik at sida er like høy uansett hvilken dag som er valgt. */
-function utjevnHoyde(pr) {
-  const man = mandagFor(vist);
-  let flest = 0;
-  for (let i = 0; i < 7; i++) {
-    flest = Math.max(flest, program(iso(new Date(+man + i * DAG))).ovelser.length);
+/* Dagene i uka gir ulik sidehøyde: øktene har tre til seks øvelser, og
+   lange økttitler brekker til to linjer på smale skjermer. Uten dette
+   krymper dokumentet når du bytter dag, og visningen flytter seg — også
+   når det er en ramme utenfor sida som scroller, der vi ikke rår over
+   scrollposisjonen i det hele tatt.
+
+   Derfor måles den faktiske høyden for alle sju dagene i uka, og
+   differansen legges som usynlig plass nederst. Målingen skjer i samme
+   bilde som opptegningen, så ingenting av den vises. */
+let maalHoyde = 0, maalNokkel = "";
+
+function sideHoyde() { return document.documentElement.scrollHeight; }
+
+function utjevnHoyde() {
+  const utjevner = $("#utjevner");
+  const nokkel = iso(mandagFor(vist)) + "@" + window.innerWidth;
+
+  if (nokkel !== maalNokkel) {
+    const husk = vist;
+    utjevner.style.height = "0px";
+    maalHoyde = 0;
+    const man = mandagFor(vist);
+    for (let i = 0; i < 7; i++) {
+      vist = iso(new Date(+man + i * DAG));
+      tegnInnhold();
+      maalHoyde = Math.max(maalHoyde, sideHoyde());
+    }
+    vist = husk;
+    tegnInnhold();
+    maalNokkel = nokkel;
+  } else {
+    utjevner.style.height = "0px";
   }
-  const rad = $("#ovelser").querySelector(".ovelse");
-  const radHoyde = rad ? rad.offsetHeight : 66;
-  $("#utjevner").style.height = Math.max(0, (flest - pr.ovelser.length) * radHoyde) + "px";
+
+  utjevner.style.height = Math.max(0, maalHoyde - sideHoyde()) + "px";
 }
 const BOKSTAV = ["M","T","O","T","F","L","S"];
 const OMKRETS = 2 * Math.PI * 33;
@@ -560,33 +588,48 @@ function nivaaFor(dagIso) {
   return n.fullfort ? 3 : (n.gjort.length > 2 ? 2 : (n.gjort.length ? 1 : 0));
 }
 
-function tegnUke() {
+/* Ukestripa og rutenettet bygges én gang og oppdateres deretter på
+   plass. Å bytte ut innholdet ved hver opptegning river bort knappen
+   som akkurat ble trykket, og gir unødig omregning av layouten. */
+let ukeCeller = [], ukeMandag = null;
+
+function byggUke(manIso) {
   const boks = $("#uke-dager");
   boks.replaceChildren();
-  const man = mandagFor(vist);
+  ukeCeller = [];
+  const man = dato(manIso);
   for (let i = 0; i < 7; i++) {
-    const d = new Date(+man + i * DAG), dIso = iso(d), niv = nivaaFor(dIso);
+    const d = new Date(+man + i * DAG), dIso = iso(d);
     const b = document.createElement("button");
     b.type = "button";
-    b.className = "uke-dag" + (dIso === vist ? " valgt" : "") + (dIso === iDag ? " idag" : "")
-      + (niv === 3 ? " hel" : niv > 0 ? " noe" : "");
     b.setAttribute("aria-label", d.toLocaleDateString("nb-NO", { weekday:"long", day:"numeric", month:"long" }));
-    if (dIso === vist) b.setAttribute("aria-current", "date");
-
     const bok = document.createElement("div");
     bok.className = "bok"; bok.textContent = BOKSTAV[i];
     const num = document.createElement("div");
     num.className = "num"; num.textContent = d.getDate();
     const prikk = document.createElement("div");
     prikk.className = "prikk";
-
     b.append(bok, num, prikk);
     b.addEventListener("click", () => bevarScroll(() => { vist = dIso; tegn(); }));
     boks.appendChild(b);
+    ukeCeller.push({ el: b, dIso });
+  }
+  ukeMandag = manIso;
+}
+
+function tegnUke() {
+  const manIso = iso(mandagFor(vist));
+  if (manIso !== ukeMandag) byggUke(manIso);
+  for (const c of ukeCeller) {
+    const niv = nivaaFor(c.dIso);
+    c.el.className = "uke-dag" + (c.dIso === vist ? " valgt" : "") + (c.dIso === iDag ? " idag" : "")
+      + (niv === 3 ? " hel" : niv > 0 ? " noe" : "");
+    if (c.dIso === vist) c.el.setAttribute("aria-current", "date");
+    else c.el.removeAttribute("aria-current");
   }
 }
 
-function tegn() {
+function tegnInnhold() {
   const pr = program(vist);
   const dag = normaliser(state.dager[vist]);
   const xp = totalXp(), info = nivaaInfo(xp);
@@ -674,24 +717,38 @@ function tegn() {
     `Anslag i dag: ${pr.form.pullups} pull-ups og 3000 m på ${mmss(pr.form.run3000)}. ` +
     `Sist målt ${dato(t.dato).toLocaleDateString("nb-NO",{day:"numeric",month:"long",year:"numeric"})}.`;
 
-  tegnUke();
-  tegnRutenett();
-  utjevnHoyde(pr);
 }
 
-function tegnRutenett() {
+function tegn() {
+  tegnInnhold();
+  tegnUke();
+  tegnRutenett();
+  utjevnHoyde();
+}
+
+let rutenettCeller = [];
+
+function byggRutenett() {
   const box = $("#rutenett");
   box.replaceChildren();
+  rutenettCeller = [];
   const slutt = dato(iDag);
   for (let i = 55; i >= 0; i--) {
     const dagIso = iso(new Date(slutt - i * DAG));
     const b = document.createElement("button");
     b.type = "button";
-    b.className = "rute n" + nivaaFor(dagIso) + (dagIso === vist ? " valgt" : "");
     b.title = dato(dagIso).toLocaleDateString("nb-NO", { day:"numeric", month:"long" });
     b.setAttribute("aria-label", b.title);
     b.addEventListener("click", () => bevarScroll(() => { vist = dagIso; tegn(); }));
     box.appendChild(b);
+    rutenettCeller.push({ el: b, dagIso });
+  }
+}
+
+function tegnRutenett() {
+  if (!rutenettCeller.length) byggRutenett();
+  for (const c of rutenettCeller) {
+    c.el.className = "rute n" + nivaaFor(c.dagIso) + (c.dagIso === vist ? " valgt" : "");
   }
 }
 
@@ -800,6 +857,8 @@ $("#test-form").addEventListener("submit", () => {
   bevarScroll(tegn);
   melding("Test lagret · programmet er justert");
 });
+
+window.addEventListener("resize", () => { maalNokkel = ""; tegn(); });
 
 koble();
 </script>
