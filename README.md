@@ -36,6 +36,12 @@ på volum og progresjon i vekt, med 12–18 sett biceps og 15–22 sett triceps 
 
 Tre løpeøkter i uka er gulvet — de byttes aldri bort mot mer armarbeid.
 
+## Illustrasjoner
+Hver øvelse har en animert figur og to til fire formtips, som åpnes med avspillingsknappen
+i raden. Figurene er inline SVG med `<animate>` — to positurer som nettleseren tweener mellom.
+Ingenting lastes utenfra, så de virker offline. Ved `prefers-reduced-motion` vises
+sluttposituren stillestående.
+
 Faser: Grunnmur (uke 1–4) → Oppbygging (5–12) → Press (13–20) → Skarp (21+). Hver 4. uke deload.
 
 ## Daglig rutine

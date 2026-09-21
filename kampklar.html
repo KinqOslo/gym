@@ -114,11 +114,17 @@ button{font-family:inherit;color:inherit;border:none;background:none;padding:0;c
 
 /* ---------- Øvelser ---------- */
 .ovelser{list-style:none;margin:22px -10px 0;padding:0}
-.ovelse{display:flex;align-items:center;gap:15px;padding:0 10px;border-radius:var(--r-midt);
-  cursor:pointer;transition:background .15s;text-align:left;width:100%;
-  height:74px}
-.ovelse:hover{background:var(--kort-alt)}
-.ovelse:active{transform:scale(.995)}
+.ovelse{display:flex;align-items:center;gap:10px;padding:0 4px;border-radius:var(--r-midt);
+  width:100%;height:74px}
+.merk{display:flex;align-items:center;gap:15px;flex:1;min-width:0;height:100%;
+  padding:0 6px;border-radius:var(--r-midt);text-align:left;transition:background .15s}
+.merk:hover{background:var(--kort-alt)}
+.merk:active{transform:scale(.995)}
+.vis{width:34px;height:34px;flex:0 0 34px;border-radius:50%;display:grid;place-items:center;
+  background:var(--kort-alt);color:var(--dempet);transition:background .15s,color .15s}
+.vis:hover{background:var(--aksent-myk);color:var(--aksent-dyp)}
+.vis:active{transform:scale(.9)}
+.vis svg{width:15px;height:15px;fill:currentColor}
 .ovelser li + li .ovelse{box-shadow:0 -1px 0 var(--kant)}
 .boks{width:30px;height:30px;flex:0 0 30px;border-radius:50%;border:2px solid var(--kant-sterk);
   display:grid;place-items:center;transition:background .2s,border-color .2s,transform .15s}
@@ -127,7 +133,7 @@ button{font-family:inherit;color:inherit;border:none;background:none;padding:0;c
   stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .28s ease .05s}
 .ovelse.gjort .boks{background:var(--klar);border-color:var(--klar)}
 .ovelse.gjort .boks svg{stroke-dashoffset:0}
-.ovelse:active .boks{transform:scale(.86)}
+.merk:active .boks{transform:scale(.86)}
 .ov-tekst{flex:1;min-width:0}
 .ov-navn{font-weight:700;font-size:15.5px;line-height:1.25;letter-spacing:-.01em}
 .ov-mal{font-size:13.5px;color:var(--dempet);margin-top:3px;font-variant-numeric:tabular-nums;
@@ -205,6 +211,21 @@ dialog input:focus{border-color:var(--aksent);outline:none}
   font-size:14.5px;font-weight:700}
 .avbryt{background:var(--kort-alt);color:var(--blekk-myk)}
 .lagre{background:var(--blekk);color:var(--papir)}
+
+/* ---------- Øvelsesfigur ---------- */
+.fig-ramme{background:var(--kort-alt);border-radius:var(--r-midt);padding:6px;margin-bottom:18px}
+.figur{width:100%;max-width:230px;aspect-ratio:1;display:block;margin:0 auto}
+.figur .kropp{fill:none;stroke:var(--blekk);stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+.figur .hode{fill:var(--blekk)}
+.figur .prop{fill:none;stroke:var(--kant-sterk);stroke-width:3.5;stroke-linecap:round}
+.figur .kropp .utstyr{stroke:var(--kant-sterk);stroke-width:3;stroke-dasharray:5 4}
+#ov-dialog h2{margin-bottom:4px}
+#ov-dialog .ov-mal-d{font-family:var(--display);font-size:15px;font-weight:700;color:var(--aksent-dyp);
+  margin:0 0 16px;font-variant-numeric:tabular-nums}
+#ov-tips{margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+#ov-tips li{font-size:14.5px;line-height:1.45;color:var(--blekk-myk);padding-left:18px;position:relative}
+#ov-tips li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;
+  border-radius:50%;background:var(--aksent)}
 
 footer{text-align:center;font-size:12.5px;color:var(--dempet);padding:22px 8px 4px;line-height:1.75}
 
@@ -331,6 +352,14 @@ footer{text-align:center;font-size:12.5px;color:var(--dempet);padding:22px 8px 4
   <div id="utjevner" aria-hidden="true"></div>
 </main>
 </div>
+
+<dialog id="ov-dialog">
+  <div class="fig-ramme" id="fig-ramme"></div>
+  <h2 id="ov-navn"></h2>
+  <p class="ov-mal-d" id="ov-mal-d"></p>
+  <ul id="ov-tips"></ul>
+  <div class="dlg-knapper"><button type="button" class="lagre" id="ov-lukk">Lukk</button></div>
+</dialog>
 
 <dialog id="test-dialog">
   <h2>Testresultat</h2>
@@ -493,6 +522,221 @@ function program(d) {
       ov("3000 m på tid","Full innsats",40)];
   }
   return { uke: uke + 1, fase: f, tittel, test, form: fm, ovelser };
+}
+
+/* ============ Øvelsesfigurer ============
+   Hver figur er to positurer som animeres fram og tilbake. Alle
+   punktlister i et par må ha like mange punkter, ellers kan ikke
+   nettleseren regne ut bevegelsen mellom dem. */
+const GULV = '<line x1="10" y1="104" x2="110" y2="104"/>';
+
+const FIGURER = {
+  lop: { fart: 1.6, prop: GULV,
+    sirkler: [{ a:[64,22,8], b:[64,22,8] }],
+    linjer: [
+      { a:"63,30 57,60",        b:"63,30 57,60" },
+      { a:"61,38 50,44 52,56",  b:"61,38 72,42 78,32" },
+      { a:"61,38 72,42 78,32",  b:"61,38 50,44 52,56" },
+      { a:"57,60 48,78 44,94",  b:"57,60 64,80 62,104" },
+      { a:"57,60 66,82 72,104", b:"57,60 48,74 42,84" }]},
+
+  pullup: { fart: 2.8, prop: '<line x1="18" y1="15" x2="102" y2="15"/>',
+    sirkler: [{ a:[60,38,8], b:[60,24,8] }],
+    linjer: [
+      { a:"60,46 60,78",        b:"60,32 60,64" },
+      { a:"52,48 50,30 48,15",  b:"52,34 40,26 48,15" },
+      { a:"68,48 70,30 72,15",  b:"68,34 80,26 72,15" },
+      { a:"60,78 54,94 57,108", b:"60,64 52,78 57,92" },
+      { a:"60,78 66,94 63,108", b:"60,64 68,78 63,92" }]},
+
+  dodheng: { fart: 3.6, prop: '<line x1="18" y1="15" x2="102" y2="15"/>',
+    sirkler: [{ a:[60,38,8], b:[61,39,8] }],
+    linjer: [
+      { a:"60,46 60,78",        b:"61,47 62,79" },
+      { a:"52,48 50,30 48,15",  b:"53,49 50,30 48,15" },
+      { a:"68,48 70,30 72,15",  b:"69,49 70,30 72,15" },
+      { a:"60,78 54,94 57,108", b:"62,79 57,95 61,109" },
+      { a:"60,78 66,94 63,108", b:"62,79 68,95 66,109" }]},
+
+  roing: { fart: 2.4, prop: GULV,
+    sirkler: [{ a:[34,46,8], b:[34,46,8] }],
+    linjer: [
+      { a:"42,50 76,60",        b:"42,50 76,60" },
+      { a:"48,53 52,74 52,92",  b:"48,53 62,70 52,66" },
+      { a:"40,92 66,92",        b:"40,66 66,66" },
+      { a:"76,60 80,82 78,104", b:"76,60 80,82 78,104" },
+      { a:"76,60 70,82 68,104", b:"76,60 70,82 68,104" }]},
+
+  curl: { fart: 2.4, prop: GULV,
+    sirkler: [{ a:[60,24,8], b:[60,24,8] }],
+    linjer: [
+      { a:"60,32 60,66",        b:"60,32 60,66" },
+      { a:"53,38 50,58 52,78",  b:"53,38 50,58 58,52" },
+      { a:"67,38 70,58 68,78",  b:"67,38 70,58 62,52" },
+      { a:"42,78 78,78",        b:"46,52 74,52" },
+      { a:"60,66 55,86 55,104", b:"60,66 55,86 55,104" },
+      { a:"60,66 65,86 65,104", b:"60,66 65,86 65,104" }]},
+
+  benloft: { fart: 2.8, prop: '<line x1="18" y1="15" x2="102" y2="15"/>',
+    sirkler: [{ a:[60,36,8], b:[60,36,8] }],
+    linjer: [
+      { a:"60,44 60,76",        b:"60,44 60,76" },
+      { a:"52,46 50,30 48,15",  b:"52,46 50,30 48,15" },
+      { a:"68,46 70,30 72,15",  b:"68,46 70,30 72,15" },
+      { a:"60,76 57,94 57,110", b:"60,76 78,74 96,72" },
+      { a:"60,76 63,94 63,110", b:"60,76 78,80 96,78" }]},
+
+  sideplanke: { fart: 3.4, prop: GULV,
+    sirkler: [{ a:[92,48,8], b:[92,44,8] }],
+    linjer: [
+      { a:"86,54 46,86",        b:"86,50 46,80" },
+      { a:"46,86 26,102",       b:"46,80 26,102" },
+      { a:"86,54 84,86 64,102", b:"86,50 84,84 64,102" },
+      { a:"86,54 88,36 90,20",  b:"86,50 88,32 90,16" }]},
+
+  knebøy: { fart: 2.8, prop: GULV,
+    sirkler: [{ a:[60,22,8], b:[60,40,8] }],
+    linjer: [
+      { a:"60,30 60,62",        b:"60,48 64,76" },
+      { a:"44,32 76,32",        b:"46,50 78,50" },
+      { a:"54,34 48,36 46,32",  b:"58,52 50,54 48,50" },
+      { a:"66,34 72,36 74,32",  b:"70,52 76,54 78,50" },
+      { a:"60,62 54,84 52,104", b:"64,76 44,88 52,104" },
+      { a:"60,62 68,84 70,104", b:"64,76 80,88 70,104" }]},
+
+  dips: { fart: 2.6,
+    prop: '<line x1="30" y1="66" x2="46" y2="66"/><line x1="74" y1="66" x2="90" y2="66"/>',
+    sirkler: [{ a:[60,18,8], b:[60,36,8] }],
+    linjer: [
+      { a:"60,26 60,60",       b:"60,44 60,78" },
+      { a:"52,38 46,52 40,66", b:"52,54 44,63 40,66" },
+      { a:"68,38 74,52 80,66", b:"68,54 76,63 80,66" },
+      { a:"60,60 53,78 59,90", b:"60,78 53,96 59,108" },
+      { a:"60,60 67,78 73,90", b:"60,78 67,96 73,108" }]},
+
+  skulderpress: { fart: 2.6, prop: GULV,
+    sirkler: [{ a:[60,24,8], b:[60,24,8] }],
+    linjer: [
+      { a:"52,36 44,52 50,42",  b:"52,36 46,22 50,12" },
+      { a:"68,36 76,52 70,42",  b:"68,36 74,22 70,12" },
+      { a:"44,42 76,42",        b:"44,12 76,12" },
+      { a:"60,32 60,68",        b:"60,32 60,68" },
+      { a:"60,68 55,86 55,104", b:"60,68 55,86 55,104" },
+      { a:"60,68 65,86 65,104", b:"60,68 65,86 65,104" }]},
+
+  franskpress: { fart: 2.6,
+    prop: GULV + '<line x1="20" y1="86" x2="98" y2="86"/>',
+    sirkler: [{ a:[32,76,8], b:[32,76,8] }],
+    linjer: [
+      { a:"40,78 74,80",       b:"40,78 74,80" },
+      { a:"46,76 50,54 52,38", b:"46,76 50,54 34,48" },
+      { a:"44,38 60,38",       b:"26,48 42,48" },
+      { a:"74,80 84,92 84,102", b:"74,80 84,92 84,102" }]},
+
+  tricepspress: { fart: 2.2, prop: GULV + '<line x1="64" y1="8" x2="64" y2="18"/>',
+    sirkler: [{ a:[42,26,8], b:[42,26,8] }],
+    linjer: [
+      { a:"64,18 64,50",        b:"64,18 64,72", k:"utstyr" },
+      { a:"42,34 42,68",        b:"42,34 42,68" },
+      { a:"44,38 48,54 58,50",  b:"44,38 50,56 58,72" },
+      { a:"53,50 66,50",        b:"53,72 66,72" },
+      { a:"42,68 37,86 37,104", b:"42,68 37,86 37,104" },
+      { a:"42,68 47,86 47,104", b:"42,68 47,86 47,104" }]},
+
+  facepull: { fart: 2.4, prop: GULV + '<line x1="104" y1="28" x2="104" y2="46"/>',
+    sirkler: [{ a:[40,26,8], b:[40,26,8] }],
+    linjer: [
+      { a:"42,36 42,70",       b:"42,36 42,70" },
+      { a:"38,40 60,38 80,37", b:"38,40 66,22 51,30" },
+      { a:"80,37 104,37",      b:"51,30 104,37", k:"utstyr" },
+      { a:"42,70 37,87 37,104", b:"42,70 37,87 37,104" },
+      { a:"42,70 47,87 47,104", b:"42,70 47,87 47,104" }]},
+
+  kjerne: { fart: 3.0, prop: GULV,
+    sirkler: [{ a:[34,86,7], b:[34,79,7] }],
+    linjer: [
+      { a:"42,92 76,92",        b:"42,85 76,87" },
+      { a:"42,92 36,76 26,66",  b:"42,85 36,68 26,56" },
+      { a:"76,92 90,88 104,84", b:"76,87 90,78 104,68" }]},
+
+  mobilitet: { fart: 3.4, prop: GULV,
+    sirkler: [{ a:[50,32,8], b:[50,30,8] }],
+    linjer: [
+      { a:"50,40 58,68",        b:"50,38 58,66" },
+      { a:"46,44 36,28 32,14",  b:"46,42 34,26 30,12" },
+      { a:"58,68 38,82 34,104", b:"58,66 36,82 32,104" },
+      { a:"58,68 82,88 96,102", b:"58,66 84,88 98,102" }]},
+
+  eksplosivt: { fart: 2.2, prop: GULV,
+    sirkler: [{ a:[48,42,8], b:[64,24,8] }, { a:[28,70,6], b:[52,6,6] }],
+    linjer: [
+      { a:"48,50 54,76",        b:"62,32 60,58" },
+      { a:"46,54 38,66 31,70",  b:"60,36 54,20 52,10" },
+      { a:"50,56 42,68 33,73",  b:"64,36 57,20 54,10" },
+      { a:"54,76 46,90 44,104", b:"60,58 54,80 52,100" },
+      { a:"54,76 62,90 64,104", b:"60,58 68,80 70,100" }]}
+};
+
+/* Øvelsesnavn → figur og formtips. */
+const OVELSESINFO = {
+  "Oppvarming":        { fig:"lop", tips:["Rolig nok til at du kan snakke i hele setninger.","Skulderbånd: 2 × 15 utoverrotasjon før du tar i.","Målet er varme muskler, ikke trøtte muskler."] },
+  "Pull-ups, styrkesett": { fig:"pullup", tips:["Start fra rett heng, skuldrene nede fra stanga.","Dra albuene ned mot ribbeina, ikke bare opp.","Haka over stanga, så rolig ned på tre sekunder.","Stopp settet før du må sprelle deg opp."] },
+  "Pull-ups, negativer": { fig:"pullup", tips:["Hopp eller tråkk opp til haka er over stanga.","Senk deg på fem sekunder, så sakte du klarer.","Det er nedturen som bygger styrken her."] },
+  "Pull-ups, stige":   { fig:"pullup", tips:["Start på én rep, øk med én per sett.","Avbryt runden før du kommer til failure.","Mange gode reps slår få harde."] },
+  "Maks pull-ups":     { fig:"pullup", tips:["Ett sett, hele veien til du ikke klarer mer.","Haka må over stanga for at repen teller.","Ingen sprell med beina — det teller ikke."] },
+  "Stangroing":        { fig:"roing", tips:["Rett rygg, overkroppen rundt 45 grader fram.","Dra stanga mot navlen, ikke mot brystet.","Klem skulderbladene sammen på toppen."] },
+  "Bicepscurl med stang": { fig:"curl", tips:["Albuene låst inntil kroppen hele veien.","Ikke sving med ryggen for å få opp vekta.","Senk på to sekunder — halve jobben ligger der."] },
+  "Hammercurl":        { fig:"curl", tips:["Nøytralt grep, tomlene opp hele veien.","Treffer brachialis og gir tykkere arm fra siden.","Rolig tilbake, ingen fart i bunnen."] },
+  "Armer, lett":       { fig:"curl", tips:["Lett vekt, høye reps — dette skal ikke slite deg ut.","Formålet er blodgjennomstrømning mellom de tunge dagene.","Stopp et godt stykke fra failure."] },
+  "Supersett: curl + tricepspress": { fig:"curl", tips:["Curl først, rett over på tricepspress uten pause.","Hvil 90 sekunder mellom rundene.","Bi og tri i samme runde gir god pump på kort tid."] },
+  "Hengende benløft":  { fig:"benloft", tips:["Heng rett, start uten sving.","Løft til beina er vannrette, eller så høyt du klarer kontrollert.","Senk rolig — ikke la deg falle tilbake."] },
+  "Intervall 800 m":   { fig:"lop", tips:["Jevn fart gjennom hele dragene, ikke rykk fra start.","Siste drag skal være like raskt som det første.","Klarer du ikke tida, ta heller ett drag mindre."] },
+  "Terskeløp":         { fig:"lop", tips:["Komfortabelt hardt — du skal kunne si noen ord, ikke en setning.","Sammenhengende, ingen pauser.","Dette er økta som flytter 3000-metertida mest."] },
+  "Rolig langtur":     { fig:"lop", tips:["Prat-tempo hele veien. Går det for fort, mister økta hensikten.","Rolig løping bygger kapasiteten de harde øktene hviler på.","Nese- eller munnpust — bare det kjennes lett."] },
+  "Nedjogg":           { fig:"lop", tips:["Rolig, uansett hvordan økta gikk.","Får pulsen ned og gjør morgendagen lettere."] },
+  "Gåtur":             { fig:"lop", tips:["Rolig tempo, ingen pulsjag.","Aktiv hvile — bedre enn å ligge stille hele dagen."] },
+  "3000 m på tid":     { fig:"lop", tips:["Del opp: jevn fart de to første kilometerne, tøm deg på siste.","Start for hardt, og du taper mer enn du vant.","Noter tida i appen med én gang."] },
+  "Sideplanke":        { fig:"sideplanke", tips:["Kroppen i rett linje fra hode til hæl.","Løft hofta aktivt, ikke la den synke.","Albuen rett under skulderen."] },
+  "Knebøy":            { fig:"knebøy", tips:["Føttene i skulderbredde, tærne litt ut.","Ned til lårene er vannrette, eller lavere.","Knærne følger tærne — ikke la dem falle innover.","Rett rygg, brystet opp hele veien."] },
+  "Dips":              { fig:"dips", tips:["Ned til overarmen er vannrett.","Litt framoverlent treffer brystet, rett opp og ned treffer triceps.","Klarer du tolv, heng på vekt i stedet for å ta flere reps."] },
+  "Skulderpress":      { fig:"skulderpress", tips:["Press rett opp, ikke fram.","Stram magen så du ikke svaier i ryggen.","Låst albue på toppen, rolig ned."] },
+  "Franskpress":       { fig:"franskpress", tips:["Albuene i ro og pekende samme vei hele settet.","Bare underarmen beveger seg.","Kjenner du det i albueleddet, gå ned i vekt."] },
+  "Tricepspress i kabel": { fig:"tricepspress", tips:["Albuene inntil kroppen, kun underarmen jobber.","Strekk helt ut i bunnen og hold et øyeblikk.","Rolig tilbake — ikke la vekta dra armen opp."] },
+  "Face pulls med strikk": { fig:"facepull", tips:["Dra mot pannen med høye albuer.","Skulderbladene sammen, ikke løft skuldrene.","Motvekt mot alt pressingen gjør med skuldrene."] },
+  "Kjerne":            { fig:"kjerne", tips:["Korsryggen presset ned i underlaget hele tiden.","Slipper ryggen opp, har du gått for langt ut.","Rolige, kontrollerte bevegelser."] },
+  "Mobilitet":         { fig:"mobilitet", tips:["Hold hver posisjon i 30–45 sekunder.","Pust rolig, ikke press inn i smerte.","Hofta er det som først blir stiv av mye løping."] },
+  "Tøy og rull":       { fig:"mobilitet", tips:["Rull lårene, leggene og setet i et par minutter hver.","Hold tøyningene lenge nok til at pusten roer seg."] },
+  "Dødheng":           { fig:"dodheng", tips:["Heng rett med avslappede skuldre.","Bygger grep og gir skuldrene strekk.","Ta tida — det er et tall å slå neste gang."] },
+  "Eksplosivt":        { fig:"eksplosivt", tips:["Full innsats på hvert kast og hvert hopp.","Hvil godt mellom forsøkene — dette er ikke kondisjon.","Du står i 9 av 9 på begge; her holder du bare formen ved like."] }
+};
+
+/* Bygger figuren som SVG. Bevegelsen legges på med <animate>, som
+   nettleseren kjører selv — ingen skripting per bilde. */
+const ROLIG = typeof window !== "undefined" && window.matchMedia
+  && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function figurMarkup(nokkel) {
+  const f = FIGURER[nokkel];
+  if (!f) return "";
+  const dur = (f.fart || 2.6) + "s";
+  const anim = (navn, a, b) => ROLIG ? ""
+    : `<animate attributeName="${navn}" values="${a};${b};${a}" dur="${dur}" repeatCount="indefinite"/>`;
+  const pos = d => ROLIG ? d.b : d.a;
+
+  let ut = '<svg viewBox="0 0 120 120" class="figur" role="img" aria-hidden="true">';
+  if (f.prop) ut += `<g class="prop">${f.prop}</g>`;
+  ut += '<g class="kropp">';
+  for (const l of f.linjer) {
+    const kl = l.k ? ` class="${l.k}"` : "";
+    ut += `<polyline${kl} points="${pos(l)}">${anim("points", l.a, l.b)}</polyline>`;
+  }
+  ut += '</g><g class="hode">';
+  for (const s of f.sirkler) {
+    const p = ROLIG ? s.b : s.a;
+    ut += `<circle cx="${p[0]}" cy="${p[1]}" r="${p[2]}">`
+      + anim("cx", s.a[0], s.b[0]) + anim("cy", s.a[1], s.b[1]) + "</circle>";
+  }
+  return ut + "</g></svg>";
 }
 
 /* ============ Nivå ============ */
@@ -674,10 +918,14 @@ function tegnInnhold() {
   pr.ovelser.forEach((o, i) => {
     const gjort = dag.gjort.includes(i);
     const li = document.createElement("li");
-    const rad = document.createElement("button");
-    rad.type = "button";
+    const rad = document.createElement("div");
     rad.className = "ovelse" + (gjort ? " gjort" : "");
-    rad.setAttribute("aria-pressed", String(gjort));
+
+    const merk = document.createElement("button");
+    merk.type = "button";
+    merk.className = "merk";
+    merk.setAttribute("aria-pressed", String(gjort));
+    merk.addEventListener("click", () => veksle(i));
 
     const boks = document.createElement("div");
     boks.className = "boks";
@@ -694,8 +942,18 @@ function tegnInnhold() {
     const xpEl = document.createElement("div");
     xpEl.className = "ov-xp"; xpEl.textContent = "+" + o.xp;
 
-    rad.append(boks, tekst, xpEl);
-    rad.addEventListener("click", () => veksle(i));
+    merk.append(boks, tekst);
+    rad.append(merk, xpEl);
+
+    if (OVELSESINFO[o.navn]) {
+      const vis = document.createElement("button");
+      vis.type = "button";
+      vis.className = "vis";
+      vis.setAttribute("aria-label", "Vis hvordan " + o.navn + " gjøres");
+      vis.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="8,5 19,12 8,19"/></svg>';
+      vis.addEventListener("click", () => visOvelse(o));
+      rad.appendChild(vis);
+    }
     li.appendChild(rad);
     liste.appendChild(li);
   });
@@ -786,6 +1044,22 @@ function apneTest() {
   $("#test-dialog").showModal();
 }
 
+function visOvelse(o) {
+  const info = OVELSESINFO[o.navn];
+  if (!info) return;
+  $("#fig-ramme").innerHTML = figurMarkup(info.fig);
+  $("#ov-navn").textContent = o.navn;
+  $("#ov-mal-d").textContent = o.mal;
+  const ul = $("#ov-tips");
+  ul.replaceChildren();
+  for (const t of info.tips) {
+    const li = document.createElement("li");
+    li.textContent = t;
+    ul.appendChild(li);
+  }
+  $("#ov-dialog").showModal();
+}
+
 function feir(n) {
   const info = nivaaInfo(totalXp());
   $("#feir-niv").textContent = n;
@@ -845,6 +1119,8 @@ $("#cta").addEventListener("click", () => {
   if (pr.test) { apneTest(); return; }
   settDag(pr.ovelser.map((_, i) => i));
 });
+
+$("#ov-lukk").addEventListener("click", () => $("#ov-dialog").close());
 
 const dlg = $("#test-dialog");
 $("#test-avbryt").addEventListener("click", () => dlg.close());
