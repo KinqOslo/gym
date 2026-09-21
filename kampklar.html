@@ -1,218 +1,330 @@
 <title>Kampklar</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
 :root{
-  --ground:#10130F; --flate:#191E18; --flate2:#212819;
-  --linje:rgba(214,226,204,.10); --linje2:rgba(214,226,204,.18);
-  --messing:#C2A249; --messing-lys:#E3CC8A;
-  --tekst:#E6EBE2; --dempet:#8D9887;
-  --klar:#7FB069; --varsel:#C8724B;
-  --display:"Saira Condensed",'Arial Narrow',Helvetica,sans-serif;
-  --brod:"Barlow",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --papir:#F1F2F0; --kort:#FFFFFF; --kort-alt:#F7F8F6;
+  --blekk:#101311; --blekk-myk:#3E443C; --dempet:#767D73;
+  --kant:#E3E5E0; --kant-sterk:#D2D5CE;
+  --aksent:#E8442B; --aksent-myk:#FDE7E2; --aksent-dyp:#C23319;
+  --klar:#1F7A4D; --klar-myk:#E2F1E8;
+  --skygge:0 1px 2px rgba(16,19,17,.05), 0 8px 24px -12px rgba(16,19,17,.14);
+  --skygge-løft:0 2px 4px rgba(16,19,17,.06), 0 18px 40px -18px rgba(16,19,17,.22);
+  --display:"Archivo",'Helvetica Neue',Arial,sans-serif;
+  --brod:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --r-stor:26px; --r-midt:18px; --r-liten:12px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --papir:#0C0E0C; --kort:#161915; --kort-alt:#1D211B;
+    --blekk:#F0F2ED; --blekk-myk:#C3C9BE; --dempet:#8A9285;
+    --kant:#272B25; --kant-sterk:#343A31;
+    --aksent:#FF5B3F; --aksent-myk:#3A1911; --aksent-dyp:#FF7458;
+    --klar:#5FC48B; --klar-myk:#152A1F;
+    --skygge:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    --skygge-løft:0 2px 4px rgba(0,0,0,.45), 0 18px 40px -18px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --papir:#0C0E0C; --kort:#161915; --kort-alt:#1D211B;
+  --blekk:#F0F2ED; --blekk-myk:#C3C9BE; --dempet:#8A9285;
+  --kant:#272B25; --kant-sterk:#343A31;
+  --aksent:#FF5B3F; --aksent-myk:#3A1911; --aksent-dyp:#FF7458;
+  --klar:#5FC48B; --klar-myk:#152A1F;
+  --skygge:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  --skygge-løft:0 2px 4px rgba(0,0,0,.45), 0 18px 40px -18px rgba(0,0,0,.7);
   color-scheme:dark;
 }
+
 *{box-sizing:border-box}
 body{
-  background:
-    radial-gradient(1100px 520px at 50% -240px, rgba(194,162,73,.10), transparent 68%),
-    var(--ground);
-  color:var(--tekst); font-family:var(--brod); font-size:16px; line-height:1.5;
-  margin:0; padding-block:0 40px; padding-left:16px; padding-right:16px;
-  -webkit-font-smoothing:antialiased;
+  background:var(--papir); color:var(--blekk);
+  font-family:var(--brod); font-size:16px; line-height:1.5; margin:0;
+  padding-block:0 56px; padding-left:18px; padding-right:18px;
+  -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent;
 }
-.wrap{max-width:560px;margin:0 auto}
-h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance}
-button{font-family:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--messing);outline-offset:2px;border-radius:6px}
+.wrap{max-width:540px;margin:0 auto}
+h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;letter-spacing:-.02em}
+button{font-family:inherit;color:inherit;border:none;background:none;padding:0;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--aksent);outline-offset:3px;border-radius:8px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.etikett{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dempet)}
 
-/* ---------- Statuslinje ---------- */
-.status{
-  position:sticky; top:env(safe-area-inset-top, 0px); z-index:20;
-  display:flex; gap:14px; align-items:center;
-  padding:14px 0 13px;
-  background:linear-gradient(180deg, var(--ground) 68%, rgba(16,19,15,.86) 88%, transparent);
-}
-.ring{width:60px;height:60px;flex:0 0 60px;border-radius:50%;display:grid;place-items:center;
-  background:conic-gradient(var(--messing) 0deg, rgba(214,226,204,.09) 0deg);transition:background .5s ease}
-.ring-inn{width:48px;height:48px;border-radius:50%;background:var(--ground);display:grid;place-items:center;
-  font-family:var(--display);font-size:23px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
-.status-tekst{flex:1;min-width:0}
-.grad{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:.4px;color:var(--messing-lys)}
-.xp-spor{height:6px;background:rgba(214,226,204,.09);border-radius:99px;margin:7px 0 6px;overflow:hidden}
-.xp-fyll{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--messing),var(--messing-lys));transition:width .5s cubic-bezier(.4,0,.2,1)}
-.status-meta{font-size:12.5px;color:var(--dempet);font-variant-numeric:tabular-nums;display:flex;gap:9px;flex-wrap:wrap}
-.status-meta b{color:var(--tekst);font-weight:600}
-.sky{font-size:11px;letter-spacing:.9px;text-transform:uppercase;font-family:var(--display);color:var(--dempet)}
-.sky.på{color:var(--klar)}
-.sky.av{color:var(--varsel)}
+/* ---------- Toppbar ---------- */
+.topp{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:22px 2px 16px}
+.merke{font-family:var(--display);font-size:19px;font-weight:800;letter-spacing:-.03em}
+.merke span{color:var(--aksent)}
+.gradmerke{display:flex;align-items:center;gap:9px;background:var(--kort);
+  border:1px solid var(--kant);border-radius:99px;padding:6px 14px 6px 7px;box-shadow:var(--skygge)}
+.gradmerke .niv{width:26px;height:26px;border-radius:50%;background:var(--blekk);color:var(--papir);
+  display:grid;place-items:center;font-family:var(--display);font-size:13px;font-weight:800;
+  font-variant-numeric:tabular-nums;line-height:1}
+.gradmerke .navn{font-family:var(--display);font-size:13.5px;font-weight:700;letter-spacing:-.01em}
 
-/* ---------- Kort ---------- */
-.kort{background:var(--flate);border:1px solid var(--linje);border-radius:18px;padding:20px;margin-bottom:13px}
-.kort.dagens{background:linear-gradient(180deg,var(--flate2),var(--flate));border-color:var(--linje2)}
-.kort.dagens.ferdig{border-color:rgba(127,176,105,.42)}
-.kort h2{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dempet);font-weight:600;margin-bottom:14px}
+/* ---------- Ukestripe ---------- */
+.uke{display:flex;align-items:center;gap:6px;margin-bottom:20px}
+.uke-pil{width:32px;height:52px;flex:0 0 32px;display:grid;place-items:center;
+  color:var(--dempet);font-size:19px;border-radius:10px;transition:background .15s}
+.uke-pil:hover{background:var(--kort);color:var(--blekk)}
+.uke-dager{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;flex:1;min-width:0}
+.uke-dag{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0 9px;
+  border-radius:14px;transition:background .16s,transform .1s}
+.uke-dag:active{transform:scale(.94)}
+.uke-dag .bok{font-family:var(--display);font-size:10.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--dempet)}
+.uke-dag .num{font-family:var(--display);font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.uke-dag .prikk{width:5px;height:5px;border-radius:50%;background:var(--kant-sterk)}
+.uke-dag.noe .prikk{background:var(--aksent)}
+.uke-dag.hel .prikk{background:var(--klar)}
+.uke-dag.idag .num{color:var(--aksent)}
+.uke-dag.valgt{background:var(--blekk)}
+.uke-dag.valgt .bok,.uke-dag.valgt .num{color:var(--papir)}
+.uke-dag.valgt .prikk{background:var(--papir);opacity:.5}
+.uke-dag.valgt.noe .prikk{background:var(--aksent);opacity:1}
+.uke-dag.valgt.hel .prikk{background:var(--klar);opacity:1}
 
-.dag-topp{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
-.dag-etikett{font-family:var(--display);font-size:12.5px;text-transform:uppercase;letter-spacing:1.5px;color:var(--messing)}
-.dag-dato{font-size:13px;color:var(--dempet);font-variant-numeric:tabular-nums}
-.nav{display:flex;gap:6px;flex:0 0 auto}
-.nav button{background:rgba(214,226,204,.05);border:1px solid var(--linje);border-radius:9px;
-  min-width:34px;height:34px;padding:0 11px;font-size:15px;cursor:pointer;line-height:1}
-.nav button:hover{background:rgba(214,226,204,.10)}
+/* ---------- Dagskort ---------- */
+.dagskort{background:var(--kort);border-radius:var(--r-stor);padding:26px 24px 8px;
+  box-shadow:var(--skygge-løft);margin-bottom:14px;transition:box-shadow .3s}
+.dagskort.ferdig{box-shadow:var(--skygge-løft),0 0 0 2px var(--klar) inset}
+.dk-topp{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+.dk-venstre{flex:1;min-width:0}
+.dk-dato{margin-bottom:9px}
+.okt-tittel{font-size:clamp(30px,8.6vw,40px);font-weight:800;line-height:1.02;letter-spacing:-.035em}
+.merkelapper{display:flex;gap:6px;flex-wrap:wrap;margin-top:13px}
+.lapp{font-family:var(--display);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 10px;border-radius:7px;background:var(--kort-alt);color:var(--blekk-myk);border:1px solid var(--kant)}
+.lapp.build{background:var(--aksent-myk);color:var(--aksent-dyp);border-color:transparent}
+.lapp.peak,.lapp.sharp{background:var(--blekk);color:var(--papir);border-color:transparent}
+.lapp.deload{background:var(--kort-alt);color:var(--dempet)}
+.lapp.test{background:var(--klar-myk);color:var(--klar);border-color:transparent}
 
-.okt-tittel{font-size:30px;font-weight:700;letter-spacing:.2px;line-height:1.08}
-.merker{display:flex;gap:6px;flex-wrap:wrap;margin:11px 0 6px}
-.merke{font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase;
-  padding:4px 10px;border-radius:99px;border:1px solid var(--linje2);color:var(--dempet);background:rgba(214,226,204,.03)}
-.merke.build{color:var(--messing);border-color:rgba(194,162,73,.38)}
-.merke.peak,.merke.sharp{color:var(--varsel);border-color:rgba(200,114,75,.40)}
-.merke.deload{color:#7FA6C0;border-color:rgba(127,166,192,.38)}
-.merke.test{color:var(--klar);border-color:rgba(127,176,105,.45)}
+.ring-boks{position:relative;width:78px;height:78px;flex:0 0 78px}
+.ring{width:78px;height:78px;transform:rotate(-90deg);display:block}
+.ring circle{fill:none;stroke-width:7;stroke-linecap:round}
+.ring .spor{stroke:var(--kant)}
+.ring .fyll{stroke:var(--aksent);transition:stroke-dashoffset .55s cubic-bezier(.4,0,.2,1),stroke .3s}
+.dagskort.ferdig .ring .fyll{stroke:var(--klar)}
+.ring-tall{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);
+  font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
 
 /* ---------- Øvelser ---------- */
-.ovelser{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column}
-.ovelse{display:flex;align-items:flex-start;gap:13px;padding:13px 0;border-top:1px solid var(--linje)}
-.ovelse:first-child{border-top:none;padding-top:4px}
-.hake{width:28px;height:28px;flex:0 0 28px;margin-top:1px;border-radius:8px;cursor:pointer;
-  background:rgba(214,226,204,.04);border:1.5px solid var(--linje2);
-  color:var(--ground);font-size:15px;font-weight:800;line-height:1;padding:0;
-  transition:background .16s ease,border-color .16s ease,transform .1s ease}
-.hake:hover{border-color:var(--messing)}
-.hake:active{transform:scale(.9)}
-.gjort .hake{background:linear-gradient(180deg,var(--messing-lys),var(--messing));border-color:var(--messing)}
+.ovelser{list-style:none;margin:22px -10px 0;padding:0}
+.ovelse{display:flex;align-items:center;gap:15px;padding:13px 10px;border-radius:var(--r-midt);
+  cursor:pointer;transition:background .15s;text-align:left;width:100%}
+.ovelse:hover{background:var(--kort-alt)}
+.ovelse:active{transform:scale(.995)}
+.ovelser li + li .ovelse{box-shadow:0 -1px 0 var(--kant)}
+.boks{width:30px;height:30px;flex:0 0 30px;border-radius:50%;border:2px solid var(--kant-sterk);
+  display:grid;place-items:center;transition:background .2s,border-color .2s,transform .15s}
+.boks svg{width:15px;height:15px;stroke:var(--kort);stroke-width:3.4;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .28s ease .05s}
+.ovelse.gjort .boks{background:var(--klar);border-color:var(--klar)}
+.ovelse.gjort .boks svg{stroke-dashoffset:0}
+.ovelse:active .boks{transform:scale(.86)}
 .ov-tekst{flex:1;min-width:0}
-.ov-navn{font-weight:600;font-size:15.5px;line-height:1.3}
-.ov-mal{font-size:13.5px;color:var(--dempet);margin-top:2px;font-variant-numeric:tabular-nums}
-.ov-xp{font-family:var(--display);font-size:13px;color:var(--dempet);font-variant-numeric:tabular-nums;
-  font-weight:600;margin-top:2px;flex:0 0 auto}
-.gjort .ov-navn{color:var(--dempet);text-decoration:line-through;text-decoration-color:rgba(214,226,204,.28)}
-.gjort .ov-mal{color:rgba(141,152,135,.7)}
+.ov-navn{font-weight:700;font-size:15.5px;line-height:1.25;letter-spacing:-.01em}
+.ov-mal{font-size:13.5px;color:var(--dempet);margin-top:3px;font-variant-numeric:tabular-nums;line-height:1.35}
+.ov-xp{font-family:var(--display);font-size:12.5px;font-weight:700;color:var(--dempet);
+  font-variant-numeric:tabular-nums;flex:0 0 auto}
+.ovelse.gjort .ov-navn{color:var(--dempet);text-decoration:line-through;
+  text-decoration-color:var(--kant-sterk);text-decoration-thickness:2px}
+.ovelse.gjort .ov-mal{color:var(--kant-sterk)}
+.ovelse.gjort .ov-xp{color:var(--klar)}
 
-/* ---------- Mål ---------- */
-.mal + .mal{margin-top:16px}
-.mal-topp{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:14.5px;margin-bottom:7px}
-.mal-navn{font-weight:600}
-.mal-tall{font-variant-numeric:tabular-nums;color:var(--dempet);font-size:13.5px}
-.mal-tall b{color:var(--tekst)}
-.mal-spor{height:7px;background:rgba(214,226,204,.09);border-radius:99px;overflow:hidden}
-.mal-fyll{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--messing),var(--messing-lys));transition:width .5s ease}
-.mal-fyll.gronn{background:linear-gradient(90deg,#4E8A4F,var(--klar))}
-.anslag{font-size:12.5px;color:var(--dempet);margin:15px 0 0;padding-top:13px;border-top:1px solid var(--linje);
-  font-variant-numeric:tabular-nums}
+.dk-bunn{margin:12px -24px 0;padding:16px 24px 20px;border-top:1px solid var(--kant)}
+.cta{width:100%;padding:16px;border-radius:var(--r-midt);background:var(--blekk);color:var(--papir);
+  font-family:var(--display);font-size:15px;font-weight:700;letter-spacing:.02em;
+  transition:transform .1s,opacity .15s}
+.cta:active{transform:scale(.985)}
+.cta.ferdig{background:var(--klar-myk);color:var(--klar)}
+.cta.test{background:var(--aksent);color:#fff}
 
-/* ---------- Heatmap ---------- */
-.heatmap{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}
-.rute{aspect-ratio:1;border-radius:5px;background:rgba(214,226,204,.055);border:none;padding:0;cursor:pointer}
-.rute.n1{background:rgba(194,162,73,.30)}
-.rute.n2{background:rgba(194,162,73,.58)}
-.rute.n3{background:var(--messing)}
-.rute.valgt{box-shadow:0 0 0 1.5px var(--tekst)}
-.legende{display:flex;align-items:center;gap:5px;margin-top:12px;font-size:11.5px;color:var(--dempet)}
-.legende .rute{width:11px;aspect-ratio:1;cursor:default}
+/* ---------- Nøkkeltall ---------- */
+.fliser{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.flis{background:var(--kort);border-radius:var(--r-midt);padding:16px 14px 14px;box-shadow:var(--skygge)}
+.flis .tall{font-family:var(--display);font-size:29px;font-weight:800;letter-spacing:-.045em;
+  font-variant-numeric:tabular-nums;line-height:1}
+.flis .tall em{font-style:normal;font-size:15px;font-weight:700;color:var(--dempet);letter-spacing:-.02em}
+.flis .etikett{margin-top:7px;display:block;font-size:10px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.flis.xp .tall{color:var(--aksent)}
 
-/* ---------- Knapper & dialog ---------- */
-.knapp{width:100%;padding:13px;border-radius:12px;border:none;cursor:pointer;margin-top:16px;
-  background:linear-gradient(180deg,var(--messing-lys),var(--messing));color:#241E08;
-  font-family:var(--display);font-size:16px;font-weight:700;letter-spacing:.7px;text-transform:uppercase}
-.knapp:active{filter:brightness(.94)}
-dialog{border:1px solid var(--linje2);border-radius:18px;background:var(--flate);color:var(--tekst);
-  padding:22px;max-width:340px;width:calc(100% - 32px)}
-dialog::backdrop{background:rgba(8,10,7,.72)}
-dialog h2{margin-bottom:6px;font-size:22px;text-transform:none;letter-spacing:0;color:var(--tekst)}
-dialog p{font-size:13.5px;color:var(--dempet);margin:0 0 16px}
-dialog label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:1.2px;
-  font-family:var(--display);color:var(--dempet);margin-bottom:5px}
-dialog input{width:100%;padding:11px 12px;border-radius:10px;background:var(--ground);
-  border:1px solid var(--linje2);color:var(--tekst);font:inherit;font-variant-numeric:tabular-nums;margin-bottom:14px}
-.dlg-knapper{display:flex;gap:9px}
-.dlg-knapper button{flex:1;padding:11px;border-radius:10px;cursor:pointer;font-family:var(--display);
-  font-size:15px;font-weight:600;letter-spacing:.5px}
-.avbryt{background:rgba(214,226,204,.05);border:1px solid var(--linje2)}
-.lagre{background:var(--messing);border:none;color:#241E08}
+/* ---------- Kort ---------- */
+.kort{background:var(--kort);border-radius:var(--r-stor);padding:24px;box-shadow:var(--skygge);margin-bottom:14px}
+.kort > .etikett{display:block;margin-bottom:18px}
 
-footer{text-align:center;font-size:12px;color:var(--dempet);padding:20px 0 6px;line-height:1.7}
+.mal + .mal{margin-top:22px;padding-top:22px;border-top:1px solid var(--kant)}
+.mal-topp{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:11px}
+.mal-navn{font-family:var(--display);font-size:16px;font-weight:700;letter-spacing:-.02em}
+.mal-under{font-size:12.5px;color:var(--dempet);margin-top:2px}
+.mal-tall{font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-.04em;
+  font-variant-numeric:tabular-nums;line-height:1;flex:0 0 auto}
+.mal-tall em{font-style:normal;font-size:13px;color:var(--dempet);font-weight:700}
+.mal-spor{height:9px;background:var(--kort-alt);border-radius:99px;overflow:hidden;
+  box-shadow:0 0 0 1px var(--kant) inset}
+.mal-fyll{height:100%;width:0;border-radius:99px;background:var(--aksent);
+  transition:width .6s cubic-bezier(.4,0,.2,1)}
+.mal-fyll.gronn{background:var(--klar)}
+.anslag{font-size:13px;color:var(--dempet);margin:20px 0 0;padding-top:18px;
+  border-top:1px solid var(--kant);font-variant-numeric:tabular-nums;line-height:1.55}
+
+/* ---------- Historikk ---------- */
+.rutenett{display:grid;grid-template-columns:repeat(14,1fr);gap:4px}
+.rute{aspect-ratio:1;border-radius:4px;background:var(--kort-alt);
+  box-shadow:0 0 0 1px var(--kant) inset;transition:transform .12s}
+.rute:hover{transform:scale(1.25)}
+.rute.n1{background:var(--aksent);opacity:.35;box-shadow:none}
+.rute.n2{background:var(--aksent);opacity:.65;box-shadow:none}
+.rute.n3{background:var(--klar);opacity:1;box-shadow:none}
+.rute.valgt{box-shadow:0 0 0 2px var(--blekk)}
+.legende{display:flex;align-items:center;gap:6px;margin-top:14px;font-size:11.5px;color:var(--dempet)}
+.legende .rute{width:11px;aspect-ratio:1}
+.legende .rute:hover{transform:none}
+
+/* ---------- Dialog ---------- */
+dialog{border:none;border-radius:var(--r-stor);background:var(--kort);color:var(--blekk);
+  padding:28px 24px 24px;max-width:360px;width:calc(100% - 36px);box-shadow:var(--skygge-løft)}
+dialog::backdrop{background:rgba(16,19,17,.5);backdrop-filter:blur(3px)}
+dialog h2{font-size:25px;font-weight:800;letter-spacing:-.03em}
+dialog p{font-size:13.5px;color:var(--dempet);margin:7px 0 22px;line-height:1.5}
+dialog label{display:block;margin-bottom:7px}
+dialog input{width:100%;padding:14px 15px;border-radius:var(--r-liten);background:var(--kort-alt);
+  border:1.5px solid var(--kant);color:var(--blekk);font-family:var(--display);font-size:19px;
+  font-weight:700;font-variant-numeric:tabular-nums;margin-bottom:18px}
+dialog input:focus{border-color:var(--aksent);outline:none}
+.dlg-knapper{display:flex;gap:10px}
+.dlg-knapper button{flex:1;padding:14px;border-radius:var(--r-liten);font-family:var(--display);
+  font-size:14.5px;font-weight:700}
+.avbryt{background:var(--kort-alt);color:var(--blekk-myk)}
+.lagre{background:var(--blekk);color:var(--papir)}
+
+footer{text-align:center;font-size:12.5px;color:var(--dempet);padding:22px 8px 4px;line-height:1.75}
 
 /* ---------- Nivå opp ---------- */
 .feiring{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:50;
-  background:rgba(8,10,7,.78);opacity:0;transition:opacity .3s}
+  background:var(--papir);opacity:0;transition:opacity .35s}
 .feiring.vis{opacity:1}
-.feir-inn{text-align:center;transform:scale(.86);transition:transform .45s cubic-bezier(.2,1.4,.4,1)}
-.feiring.vis .feir-inn{transform:scale(1)}
-.stjerne{width:88px;height:88px;margin:0 auto;filter:drop-shadow(0 0 20px rgba(194,162,73,.55))}
-.feir-niv{font-family:var(--display);font-size:38px;font-weight:700;margin-top:12px;line-height:1}
-.feir-grad{font-family:var(--display);font-size:19px;color:var(--messing-lys);margin-top:2px}
-.feir-inn small{display:block;margin-top:10px;font-size:11px;letter-spacing:2.6px;text-transform:uppercase;color:var(--dempet)}
-.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom, 0px));transform:translate(-50%,14px);
-  background:var(--flate2);border:1px solid var(--linje2);padding:11px 18px;border-radius:99px;
-  font-size:14px;font-weight:600;opacity:0;transition:all .28s;pointer-events:none;z-index:40}
+.feir-inn{text-align:center;padding:0 24px;transform:translateY(14px) scale(.94);
+  transition:transform .5s cubic-bezier(.2,1.3,.4,1)}
+.feiring.vis .feir-inn{transform:none}
+.feir-topp{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--aksent)}
+.feir-niv{font-family:var(--display);font-size:104px;font-weight:800;letter-spacing:-.06em;
+  line-height:.92;margin-top:10px;font-variant-numeric:tabular-nums}
+.feir-grad{font-family:var(--display);font-size:25px;font-weight:700;letter-spacing:-.02em;margin-top:6px}
+.feir-sub{font-size:13.5px;color:var(--dempet);margin-top:12px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom, 0px));
+  transform:translate(-50%,16px);background:var(--blekk);color:var(--papir);
+  padding:13px 22px;border-radius:99px;font-size:14px;font-weight:600;letter-spacing:-.01em;
+  opacity:0;transition:all .3s cubic-bezier(.2,1.2,.4,1);pointer-events:none;z-index:40;
+  box-shadow:var(--skygge-løft)}
 .toast.vis{opacity:1;transform:translate(-50%,0)}
+.sky-prikk{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--kant-sterk);
+  margin-right:6px;vertical-align:1px}
+.sky-prikk.på{background:var(--klar)}
+.sky-prikk.av{background:var(--aksent)}
 </style>
 
 <div class="wrap">
 
-<header class="status">
-  <div id="ring" class="ring"><div class="ring-inn"><span id="nivaa">1</span></div></div>
-  <div class="status-tekst">
-    <div id="grad" class="grad">Rekrutt</div>
-    <div class="xp-spor"><div id="xp-fyll" class="xp-fyll"></div></div>
-    <div class="status-meta">
-      <span id="xp-tall">0 / 200 XP</span>
-      <span>Streak <b id="streak">0</b></span>
-      <span id="sky" class="sky">kobler til…</span>
-    </div>
+<header class="topp">
+  <div class="merke">KAMP<span>KLAR</span></div>
+  <div class="gradmerke">
+    <div class="niv" id="nivaa">1</div>
+    <div class="navn" id="grad">Rekrutt</div>
   </div>
 </header>
 
+<nav class="uke" aria-label="Velg dag">
+  <button class="uke-pil" id="forrige" aria-label="Forrige uke">‹</button>
+  <div class="uke-dager" id="uke-dager"></div>
+  <button class="uke-pil" id="neste" aria-label="Neste uke">›</button>
+</nav>
+
 <main>
-  <section id="kort" class="kort dagens">
-    <div class="dag-topp">
-      <div>
-        <div id="dag-etikett" class="dag-etikett">Mandag</div>
-        <div id="dag-dato" class="dag-dato">21. september</div>
+  <section class="dagskort" id="dagskort">
+    <div class="dk-topp">
+      <div class="dk-venstre">
+        <div class="etikett dk-dato" id="dk-dato">Mandag 21. september</div>
+        <h1 class="okt-tittel" id="okt-tittel">Trekk &amp; kjerne</h1>
+        <div class="merkelapper" id="merkelapper"></div>
       </div>
-      <div class="nav">
-        <button id="forrige" aria-label="Forrige dag">‹</button>
-        <button id="idag" hidden>I dag</button>
-        <button id="neste" aria-label="Neste dag">›</button>
+      <div class="ring-boks">
+        <svg class="ring" viewBox="0 0 78 78" aria-hidden="true">
+          <circle class="spor" cx="39" cy="39" r="33"></circle>
+          <circle class="fyll" id="ring-fyll" cx="39" cy="39" r="33"
+                  stroke-dasharray="207.3" stroke-dashoffset="207.3"></circle>
+        </svg>
+        <div class="ring-tall" id="ring-tall">0/6</div>
       </div>
     </div>
-    <h1 id="okt-tittel" class="okt-tittel">Trekk &amp; kjerne</h1>
-    <div id="merker" class="merker"></div>
-    <ul id="ovelser" class="ovelser"></ul>
-    <button id="test-knapp" class="knapp" hidden>Før inn testresultat</button>
+
+    <ul class="ovelser" id="ovelser"></ul>
+
+    <div class="dk-bunn">
+      <button class="cta" id="cta">Fullfør hele økta</button>
+    </div>
+  </section>
+
+  <div class="fliser">
+    <div class="flis">
+      <div class="tall" id="flis-streak">0</div>
+      <span class="etikett">Streak</span>
+    </div>
+    <div class="flis">
+      <div class="tall" id="flis-nivaa">0<em>/200</em></div>
+      <span class="etikett" id="flis-nivaa-etikett">Til nivå 2</span>
+    </div>
+    <div class="flis xp">
+      <div class="tall" id="flis-xp">0</div>
+      <span class="etikett">XP totalt</span>
+    </div>
+  </div>
+
+  <section class="kort">
+    <span class="etikett">Mot målet</span>
+    <div class="mal">
+      <div class="mal-topp">
+        <div>
+          <div class="mal-navn">Pull-ups</div>
+          <div class="mal-under">Hengende, til 12 reps</div>
+        </div>
+        <div class="mal-tall" id="pu-na">5<em> reps</em></div>
+      </div>
+      <div class="mal-spor"><div class="mal-fyll" id="pu-fyll"></div></div>
+    </div>
+    <div class="mal">
+      <div class="mal-topp">
+        <div>
+          <div class="mal-navn">3000 meter</div>
+          <div class="mal-under">Ned mot 12:00</div>
+        </div>
+        <div class="mal-tall" id="lop-na">13:50</div>
+      </div>
+      <div class="mal-spor"><div class="mal-fyll gronn" id="lop-fyll"></div></div>
+    </div>
+    <p class="anslag" id="anslag"></p>
   </section>
 
   <section class="kort">
-    <h2>Mot målet</h2>
-    <div class="mal">
-      <div class="mal-topp">
-        <span class="mal-navn">Pull-ups, hengende</span>
-        <span class="mal-tall"><b id="pu-na">5</b> av <b id="pu-mal">12</b> reps</span>
-      </div>
-      <div class="mal-spor"><div id="pu-fyll" class="mal-fyll"></div></div>
+    <span class="etikett">Siste 8 uker</span>
+    <div class="rutenett" id="rutenett"></div>
+    <div class="legende">
+      <span class="sky-prikk" id="sky-prikk"></span>
+      <span id="sky-tekst">Kobler til…</span>
     </div>
-    <div class="mal">
-      <div class="mal-topp">
-        <span class="mal-navn">3000 m</span>
-        <span class="mal-tall"><b id="lop-na">13:50</b> mot <b id="lop-mal">12:00</b></span>
-      </div>
-      <div class="mal-spor"><div id="lop-fyll" class="mal-fyll gronn"></div></div>
-    </div>
-    <p id="anslag" class="anslag"></p>
-  </section>
-
-  <section class="kort">
-    <h2>Siste 8 uker</h2>
-    <div id="heatmap" class="heatmap"></div>
-    <div class="legende"><span>Ingenting</span><i class="rute n0"></i><i class="rute n1"></i><i class="rute n2"></i><i class="rute n3"></i><span>Hel økt</span></div>
   </section>
 
   <footer>
     182 cm · 80 kg · 21 år<br>
-    Medisinballstøt og stille lengde står i 9 av 9 — de vedlikeholdes.<br>
-    Trekk og løp er det som løfter kombinasjonskarakteren.
+    Medisinballstøt og stille lengde står allerede i 9 av 9.<br>
+    Det er trekk og løp som løfter kombinasjonskarakteren.
   </footer>
 </main>
 </div>
@@ -221,9 +333,9 @@ footer{text-align:center;font-size:12px;color:var(--dempet);padding:20px 0 6px;l
   <h2>Testresultat</h2>
   <p>Før inn det du faktisk klarte. Programmet regner om tempo og volum etterpå.</p>
   <form method="dialog" id="test-form">
-    <label for="felt-pu">Maks pull-ups</label>
-    <input id="felt-pu" type="number" inputmode="numeric" min="0" max="60" required>
-    <label for="felt-lop">3000 m (mm:ss)</label>
+    <label class="etikett" for="felt-pu">Maks pull-ups</label>
+    <input id="felt-pu" type="number" inputmode="numeric" min="1" max="60" required>
+    <label class="etikett" for="felt-lop">3000 meter (mm:ss)</label>
     <input id="felt-lop" type="text" inputmode="numeric" pattern="[0-9]{1,2}:[0-5][0-9]" placeholder="13:20" required>
     <div class="dlg-knapper">
       <button type="button" class="avbryt" id="test-avbryt">Avbryt</button>
@@ -232,18 +344,15 @@ footer{text-align:center;font-size:12px;color:var(--dempet);padding:20px 0 6px;l
   </form>
 </dialog>
 
-<div id="feiring" class="feiring" aria-hidden="true">
+<div class="feiring" id="feiring" aria-hidden="true">
   <div class="feir-inn">
-    <svg class="stjerne" viewBox="0 0 100 100" aria-hidden="true">
-      <polygon points="50,4 61,36 95,36 68,57 78,90 50,70 22,90 32,57 5,36 39,36"
-        fill="#C2A249" stroke="#E3CC8A" stroke-width="2" stroke-linejoin="round"/>
-    </svg>
-    <div id="feir-niv" class="feir-niv"></div>
-    <div id="feir-grad" class="feir-grad"></div>
-    <small>Nivå opp</small>
+    <div class="feir-topp">Nivå opp</div>
+    <div class="feir-niv" id="feir-niv">2</div>
+    <div class="feir-grad" id="feir-grad">Menig</div>
+    <div class="feir-sub" id="feir-sub"></div>
   </div>
 </div>
-<div id="toast" class="toast" role="status"></div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
 "use strict";
@@ -322,11 +431,11 @@ function program(d) {
   let tittel, ovelser;
 
   const pullStyrke = () => fm.pullups < 4
-    ? ov("Pull-ups — negativer", `${Math.max(3, Math.round(5*k))} sett × 4 nedsenk à 5 sek`, 25)
-    : ov("Pull-ups — styrkesett", `${Math.max(3, Math.round(5*k))} sett × ${Math.max(2, Math.round(fm.pullups*.6))} reps · 2 min pause`, 25);
+    ? ov("Pull-ups, negativer", `${Math.max(3, Math.round(5*k))} sett × 4 nedsenk à 5 sek`, 25)
+    : ov("Pull-ups, styrkesett", `${Math.max(3, Math.round(5*k))} sett × ${Math.max(2, Math.round(fm.pullups*.6))} reps · 2 min pause`, 25);
   const pullStige = () => {
     const topp = Math.max(2, Math.round(fm.pullups * .6));
-    return ov("Pull-ups — stige", `${Math.max(2, Math.round(3*k))} runder: ${Array.from({length:topp},(_,i)=>i+1).join("-")} reps · 60 sek mellom`, 25);
+    return ov("Pull-ups, stige", `${Math.max(2, Math.round(3*k))} runder: ${Array.from({length:topp},(_,i)=>i+1).join("–")} reps · 60 sek mellom`, 25);
   };
   const intervall = () => ov("Intervall 800 m",
     `${Math.max(4, Math.round(6*k))} × 800 m på ${mmss(Math.round((pace-12)*.8))} · 2 min jogg`, 30);
@@ -351,7 +460,7 @@ function program(d) {
       ov("Markløft, rumensk", "3 × 6 reps", 25),
       ov("Benkpress eller dips", `${Math.round(4*k)} × 8 reps`, 20),
       ov("Boksehopp", "4 × 5 · maks eksplosivt", 20),
-      ov("Medisinballstøt", "3 × 5 kast — hold 9 av 9", 15)]; break;
+      ov("Medisinballstøt", "3 × 5 kast · hold 9 av 9", 15)]; break;
     case 3: tittel = "Rolig & mobilitet"; ovelser = [
       rolig(k), ov("Mobilitet","15 min hofte, hamstring, bryst",10),
       ov("Dødheng","3 × maks tid i stanga",15)]; break;
@@ -363,7 +472,7 @@ function program(d) {
     case 5: tittel = "Terskel"; ovelser = deload
       ? [ov("Oppvarming","10 min rolig",10), terskel(.5), ov("Nedjogg","8 min",10)]
       : [ov("Oppvarming","12 min rolig",10), terskel(k), ov("Nedjogg","8 min",10),
-         ov("Stille lengde","5 hopp — vedlikehold 9 av 9",15)]; break;
+         ov("Stille lengde","5 hopp · vedlikehold 9 av 9",15)]; break;
     default: tittel = "Restitusjon"; ovelser = [
       ov("Gåtur","40–60 min rolig",15), ov("Tøy og rull","15 min",10),
       ov("Søvn","Legg deg før 23:00",10)];
@@ -414,53 +523,96 @@ function skrivDag(d) {
 
 /* ============ Tegning ============ */
 const $ = s => document.querySelector(s);
-const UKEDAGER = ["Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag","Søndag"];
+const BOKSTAV = ["M","T","O","T","F","L","S"];
+const OMKRETS = 2 * Math.PI * 33;
+
+function mandagFor(d) {
+  const x = dato(d);
+  return new Date(x - ((x.getDay() + 6) % 7) * DAG);
+}
+function nivaaFor(dagIso) {
+  const d = state.dager[dagIso];
+  if (!d) return 0;
+  const n = normaliser(d);
+  return n.fullfort ? 3 : (n.gjort.length > 2 ? 2 : (n.gjort.length ? 1 : 0));
+}
+
+function tegnUke() {
+  const boks = $("#uke-dager");
+  boks.replaceChildren();
+  const man = mandagFor(vist);
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(+man + i * DAG), dIso = iso(d), niv = nivaaFor(dIso);
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "uke-dag" + (dIso === vist ? " valgt" : "") + (dIso === iDag ? " idag" : "")
+      + (niv === 3 ? " hel" : niv > 0 ? " noe" : "");
+    b.setAttribute("aria-label", d.toLocaleDateString("nb-NO", { weekday:"long", day:"numeric", month:"long" }));
+    if (dIso === vist) b.setAttribute("aria-current", "date");
+
+    const bok = document.createElement("div");
+    bok.className = "bok"; bok.textContent = BOKSTAV[i];
+    const num = document.createElement("div");
+    num.className = "num"; num.textContent = d.getDate();
+    const prikk = document.createElement("div");
+    prikk.className = "prikk";
+
+    b.append(bok, num, prikk);
+    b.addEventListener("click", () => { vist = dIso; tegn(); });
+    boks.appendChild(b);
+  }
+}
 
 function tegn() {
   const pr = program(vist);
   const dag = normaliser(state.dager[vist]);
-  const xp = totalXp(), info = nivaaInfo(xp), pct = info.iNivaa / info.trenger * 100;
+  const xp = totalXp(), info = nivaaInfo(xp);
 
   $("#nivaa").textContent = info.nivaa;
   $("#grad").textContent = info.grad;
-  $("#xp-tall").textContent = `${info.iNivaa} / ${info.trenger} XP`;
-  $("#xp-fyll").style.width = pct + "%";
-  $("#ring").style.background = `conic-gradient(var(--messing) ${pct*3.6}deg, rgba(214,226,204,.09) 0deg)`;
-  $("#streak").textContent = streak(iDag);
+  $("#flis-streak").textContent = streak(iDag);
+  $("#flis-nivaa").innerHTML = "";
+  $("#flis-nivaa").append(document.createTextNode(String(info.trenger - info.iNivaa)));
+  const em = document.createElement("em"); em.textContent = " XP";
+  $("#flis-nivaa").appendChild(em);
+  $("#flis-nivaa-etikett").textContent = "Til nivå " + (info.nivaa + 1);
+  $("#flis-xp").textContent = xp.toLocaleString("nb-NO");
 
   const d = dato(vist);
-  $("#dag-etikett").textContent = UKEDAGER[(d.getDay()+6)%7];
-  $("#dag-dato").textContent = d.toLocaleDateString("nb-NO", { day:"numeric", month:"long" });
+  $("#dk-dato").textContent = d.toLocaleDateString("nb-NO",
+    { weekday:"long", day:"numeric", month:"long" });
   $("#okt-tittel").textContent = pr.tittel;
-  $("#kort").classList.toggle("ferdig", dag.fullfort);
-  $("#idag").hidden = vist === iDag;
+  $("#dagskort").classList.toggle("ferdig", dag.fullfort);
 
-  const merker = $("#merker");
-  merker.replaceChildren();
-  const merke = (tekst, klasse) => {
+  const andel = dag.gjort.length / pr.ovelser.length;
+  $("#ring-fyll").style.strokeDashoffset = OMKRETS * (1 - andel);
+  $("#ring-tall").textContent = `${dag.gjort.length}/${pr.ovelser.length}`;
+
+  const lapper = $("#merkelapper");
+  lapper.replaceChildren();
+  const lapp = (tekst, klasse) => {
     const s = document.createElement("span");
-    s.className = "merke" + (klasse ? " " + klasse : "");
+    s.className = "lapp" + (klasse ? " " + klasse : "");
     s.textContent = tekst;
-    merker.appendChild(s);
+    lapper.appendChild(s);
   };
-  merke("Uke " + pr.uke);
-  merke(pr.fase.navn, pr.fase.kode);
-  if (pr.test) merke("Test", "test");
+  lapp("Uke " + pr.uke);
+  lapp(pr.fase.navn, pr.fase.kode);
+  if (pr.test) lapp("Test", "test");
 
   const liste = $("#ovelser");
   liste.replaceChildren();
   pr.ovelser.forEach((o, i) => {
     const gjort = dag.gjort.includes(i);
     const li = document.createElement("li");
-    li.className = "ovelse" + (gjort ? " gjort" : "");
+    const rad = document.createElement("button");
+    rad.type = "button";
+    rad.className = "ovelse" + (gjort ? " gjort" : "");
+    rad.setAttribute("aria-pressed", String(gjort));
 
-    const knapp = document.createElement("button");
-    knapp.className = "hake";
-    knapp.type = "button";
-    knapp.textContent = gjort ? "✓" : "";
-    knapp.setAttribute("aria-pressed", String(gjort));
-    knapp.setAttribute("aria-label", (gjort ? "Angre " : "Marker ") + o.navn);
-    knapp.addEventListener("click", () => veksle(i));
+    const boks = document.createElement("div");
+    boks.className = "boks";
+    boks.innerHTML = '<svg viewBox="0 0 20 20" aria-hidden="true"><polyline points="4,10.5 8.4,14.5 16,6"/></svg>';
 
     const tekst = document.createElement("div");
     tekst.className = "ov-tekst";
@@ -473,57 +625,58 @@ function tegn() {
     const xpEl = document.createElement("div");
     xpEl.className = "ov-xp"; xpEl.textContent = "+" + o.xp;
 
-    li.append(knapp, tekst, xpEl);
+    rad.append(boks, tekst, xpEl);
+    rad.addEventListener("click", () => veksle(i));
+    li.appendChild(rad);
     liste.appendChild(li);
   });
 
-  $("#test-knapp").hidden = !pr.test;
+  const cta = $("#cta");
+  cta.className = "cta" + (dag.fullfort ? " ferdig" : pr.test ? " test" : "");
+  cta.textContent = pr.test ? "Før inn testresultat"
+    : dag.fullfort ? "Økt fullført" : "Fullfør hele økta";
+  cta.disabled = dag.fullfort && !pr.test;
 
   const t = sisteTest();
-  $("#pu-na").textContent = t.pullups;
-  $("#pu-mal").textContent = ATLET.mal.pullups;
+  $("#pu-na").innerHTML = "";
+  $("#pu-na").append(document.createTextNode(String(t.pullups)));
+  const emPu = document.createElement("em"); emPu.textContent = " reps";
+  $("#pu-na").appendChild(emPu);
+  $("#lop-na").textContent = mmss(t.run3000);
   $("#pu-fyll").style.width = Math.min(100, Math.max(0,
     (t.pullups - ATLET.baseline.pullups) / (ATLET.mal.pullups - ATLET.baseline.pullups) * 100)) + "%";
-  $("#lop-na").textContent = mmss(t.run3000);
-  $("#lop-mal").textContent = mmss(ATLET.mal.run3000);
   $("#lop-fyll").style.width = Math.min(100, Math.max(0,
     (ATLET.baseline.run3000 - t.run3000) / (ATLET.baseline.run3000 - ATLET.mal.run3000) * 100)) + "%";
   $("#anslag").textContent =
     `Anslag i dag: ${pr.form.pullups} pull-ups og 3000 m på ${mmss(pr.form.run3000)}. ` +
-    `Sist målt ${dato(t.dato).toLocaleDateString("nb-NO",{day:"numeric",month:"short",year:"numeric"})}.`;
+    `Sist målt ${dato(t.dato).toLocaleDateString("nb-NO",{day:"numeric",month:"long",year:"numeric"})}.`;
 
-  tegnHeatmap();
+  tegnUke();
+  tegnRutenett();
 }
 
-function tegnHeatmap() {
-  const box = $("#heatmap");
+function tegnRutenett() {
+  const box = $("#rutenett");
   box.replaceChildren();
   const slutt = dato(iDag);
   for (let i = 55; i >= 0; i--) {
     const dagIso = iso(new Date(slutt - i * DAG));
-    const dg = state.dager[dagIso];
-    let niv = 0;
-    if (dg) { const n = normaliser(dg); niv = n.fullfort ? 3 : (n.gjort.length > 2 ? 2 : (n.gjort.length ? 1 : 0)); }
     const b = document.createElement("button");
     b.type = "button";
-    b.className = "rute n" + niv + (dagIso === vist ? " valgt" : "");
-    b.title = dagIso;
-    b.setAttribute("aria-label", dagIso);
+    b.className = "rute n" + nivaaFor(dagIso) + (dagIso === vist ? " valgt" : "");
+    b.title = dato(dagIso).toLocaleDateString("nb-NO", { day:"numeric", month:"long" });
+    b.setAttribute("aria-label", b.title);
     b.addEventListener("click", () => { vist = dagIso; tegn(); });
     box.appendChild(b);
   }
 }
 
 /* ============ Handlinger ============ */
-function veksle(i) {
+function settDag(nyGjort) {
   const pr = program(vist);
-  const dag = normaliser(state.dager[vist]);
-  const idx = dag.gjort.indexOf(i);
-  if (idx >= 0) dag.gjort.splice(idx, 1); else dag.gjort.push(i);
-
   const før = nivaaInfo(totalXp()).nivaa;
-  dag.xp = dag.gjort.reduce((s, k) => s + (pr.ovelser[k] ? pr.ovelser[k].xp : 0), 0);
-  dag.fullfort = dag.gjort.length === pr.ovelser.length;
+  const dag = { gjort: nyGjort, fullfort: nyGjort.length === pr.ovelser.length, xp: 0 };
+  dag.xp = nyGjort.reduce((s, k) => s + (pr.ovelser[k] ? pr.ovelser[k].xp : 0), 0);
 
   state.dager[vist] = dag;
   if (dag.fullfort) dag.xp += 50 + Math.min(streak(vist), 10) * 5;
@@ -535,12 +688,27 @@ function veksle(i) {
   else if (dag.fullfort) melding("Økt fullført");
 }
 
+function veksle(i) {
+  const gjort = normaliser(state.dager[vist]).gjort.slice();
+  const idx = gjort.indexOf(i);
+  if (idx >= 0) gjort.splice(idx, 1); else gjort.push(i);
+  settDag(gjort);
+}
+
+function apneTest() {
+  const t = sisteTest();
+  $("#felt-pu").value = t.pullups;
+  $("#felt-lop").value = mmss(t.run3000);
+  $("#test-dialog").showModal();
+}
+
 function feir(n) {
   const info = nivaaInfo(totalXp());
-  $("#feir-niv").textContent = "Nivå " + n;
+  $("#feir-niv").textContent = n;
   $("#feir-grad").textContent = info.grad;
+  $("#feir-sub").textContent = `${info.trenger - info.iNivaa} XP til nivå ${n + 1}`;
   $("#feiring").classList.add("vis");
-  setTimeout(() => $("#feiring").classList.remove("vis"), 2600);
+  setTimeout(() => $("#feiring").classList.remove("vis"), 2800);
 }
 let toastId;
 function melding(t) {
@@ -548,29 +716,28 @@ function melding(t) {
   el.textContent = t;
   el.classList.add("vis");
   clearTimeout(toastId);
-  toastId = setTimeout(() => el.classList.remove("vis"), 1900);
+  toastId = setTimeout(() => el.classList.remove("vis"), 2000);
 }
 
 /* ============ Skyen ============ */
 function settSky(tekst, klasse) {
-  const el = $("#sky");
-  el.textContent = tekst;
-  el.className = "sky" + (klasse ? " " + klasse : "");
+  $("#sky-tekst").textContent = tekst;
+  $("#sky-prikk").className = "sky-prikk" + (klasse ? " " + klasse : "");
 }
 
 async function koble() {
   let store = null;
   try { store = await claude.use("db"); } catch (e) { store = null; }
-  if (!store) { settSky("kun her", "av"); return; }
+  if (!store) { settSky("Lagret bare på denne enheten", "av"); return; }
   db = store;
-  settSky("lagrer i skyen", "på");
+  settSky("Synkronisert på tvers av enheter", "på");
 
   const grense = iso(new Date(Date.now() - 120 * DAG));
   db.collection("dager").where("dato", ">=", grense).onSnapshot(snap => {
     for (const doc of snap.docs) state.dager[doc.id] = normaliser(doc.data());
     skrivLokalt();
     tegn();
-  }, e => { if (e.code !== "unavailable") settSky("kun her", "av"); });
+  }, e => { if (e.code !== "unavailable") settSky("Lagret bare på denne enheten", "av"); });
 
   db.collection("tester").onSnapshot(snap => {
     state.tester = snap.docs.map(doc => {
@@ -579,37 +746,35 @@ async function koble() {
     }).filter(t => t.pullups > 0 && t.run3000 > 0);
     skrivLokalt();
     tegn();
-  }, e => { if (e.code !== "unavailable") settSky("kun her", "av"); });
+  }, e => { if (e.code !== "unavailable") settSky("Lagret bare på denne enheten", "av"); });
 }
 
 /* ============ Oppstart ============ */
 lesLokalt();
 tegn();
 
-$("#forrige").addEventListener("click", () => { vist = iso(new Date(dato(vist) - DAG)); tegn(); });
-$("#neste").addEventListener("click", () => { vist = iso(new Date(+dato(vist) + DAG)); tegn(); });
-$("#idag").addEventListener("click", () => { vist = iDag; tegn(); });
+$("#forrige").addEventListener("click", () => { vist = iso(new Date(dato(vist) - 7 * DAG)); tegn(); });
+$("#neste").addEventListener("click", () => { vist = iso(new Date(+dato(vist) + 7 * DAG)); tegn(); });
+
+$("#cta").addEventListener("click", () => {
+  const pr = program(vist);
+  if (pr.test) { apneTest(); return; }
+  settDag(pr.ovelser.map((_, i) => i));
+});
 
 const dlg = $("#test-dialog");
-$("#test-knapp").addEventListener("click", () => {
-  const t = sisteTest();
-  $("#felt-pu").value = t.pullups;
-  $("#felt-lop").value = mmss(t.run3000);
-  dlg.showModal();
-});
 $("#test-avbryt").addEventListener("click", () => dlg.close());
 $("#test-form").addEventListener("submit", () => {
   const pu = Number($("#felt-pu").value);
   const [m, s] = $("#felt-lop").value.split(":").map(Number);
   const sek = (m || 0) * 60 + (s || 0);
   if (!pu || !sek) return;
-  const ny = { dato: vist, pullups: pu, run3000: sek };
-  state.tester = state.tester.filter(t => t.dato !== vist).concat(ny);
+  state.tester = state.tester.filter(t => t.dato !== vist).concat({ dato: vist, pullups: pu, run3000: sek });
   skrivLokalt();
   if (db) db.doc("tester/" + vist).set({ pullups: pu, run3000: sek, dato: vist })
     .catch(() => melding("Fikk ikke lagret testen til skyen"));
   tegn();
-  melding("Test lagret — programmet er justert");
+  melding("Test lagret · programmet er justert");
 });
 
 koble();
