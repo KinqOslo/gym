@@ -21,7 +21,17 @@ function lastState() {
   for (const [d, v] of Object.entries(ARKIV)) {
     if (!state.dager[d]) state.dager[d] = v;
   }
+  // Arkiv-oppføringer kan mangle felt — sørg for at alle dager har samme form
+  for (const d of Object.keys(state.dager)) state.dager[d] = normaliser(state.dager[d]);
   regnXp();
+}
+function normaliser(d) {
+  return {
+    gjort: Array.isArray(d && d.gjort) ? d.gjort : [],
+    fullfort: !!(d && d.fullfort),
+    xp: Number(d && d.xp) || 0,
+    notat: (d && d.notat) || ""
+  };
 }
 function lagre() {
   try { localStorage.setItem(NOKKEL, JSON.stringify(state)); } catch (e) {}
@@ -62,7 +72,7 @@ let visning = iDag;
 
 function tegn() {
   const pr = dagsprogram(visning);
-  const dag = state.dager[visning] || { gjort: [], fullfort: false, xp: 0 };
+  const dag = normaliser(state.dager[visning]);
   const info = nivaaInfo(state.xp);
   const st = streak(iDag);
 
@@ -131,7 +141,7 @@ function tegn() {
 
 function veksle(i) {
   const pr = dagsprogram(visning);
-  const dag = state.dager[visning] || { gjort: [], fullfort: false, xp: 0 };
+  const dag = normaliser(state.dager[visning]);
   const idx = dag.gjort.indexOf(i);
   if (idx >= 0) dag.gjort.splice(idx, 1); else dag.gjort.push(i);
 
@@ -174,7 +184,10 @@ function tegnHeatmap() {
     const dag = state.dager[iso];
     const rute = document.createElement("div");
     let niv = 0;
-    if (dag) niv = dag.fullfort ? 3 : (dag.gjort.length > 2 ? 2 : (dag.gjort.length ? 1 : 0));
+    if (dag) {
+      const n = normaliser(dag);
+      niv = n.fullfort ? 3 : (n.gjort.length > 2 ? 2 : (n.gjort.length ? 1 : 0));
+    }
     rute.className = "rute n" + niv + (iso === visning ? " valgt" : "");
     rute.title = iso;
     rute.onclick = () => { visning = iso; tegn(); };
@@ -213,6 +226,8 @@ function importer() {
   if (!t) return;
   try {
     state = Object.assign(state, JSON.parse(t));
+    for (const d of Object.keys(state.dager)) state.dager[d] = normaliser(state.dager[d]);
+    if (!Array.isArray(state.tester)) state.tester = [];
     regnXp(); lagre(); tegn();
     blink("Dagbok importert");
   } catch (e) { blink("Ugyldig kode"); }
