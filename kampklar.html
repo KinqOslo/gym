@@ -326,6 +326,7 @@ footer{text-align:center;font-size:12.5px;color:var(--dempet);padding:22px 8px 4
     Medisinballstøt og stille lengde står allerede i 9 av 9.<br>
     Det er trekk og løp som løfter kombinasjonskarakteren.
   </footer>
+  <div id="utjevner" aria-hidden="true"></div>
 </main>
 </div>
 
@@ -523,6 +524,28 @@ function skrivDag(d) {
 
 /* ============ Tegning ============ */
 const $ = s => document.querySelector(s);
+
+/* Opptegning skal aldri flytte siden under fingeren. */
+function bevarScroll(fn) {
+  const y = window.scrollY;
+  fn();
+  if (window.scrollY !== y) window.scrollTo(0, y);
+}
+
+/* Dagene i en uke har ulikt antall øvelser, så dagskortet endrer høyde.
+   Uten dette krymper dokumentet når du står nederst, og nettleseren
+   dytter deg oppover. Vi legger differansen som usynlig plass nederst,
+   slik at sida er like høy uansett hvilken dag som er valgt. */
+function utjevnHoyde(pr) {
+  const man = mandagFor(vist);
+  let flest = 0;
+  for (let i = 0; i < 7; i++) {
+    flest = Math.max(flest, program(iso(new Date(+man + i * DAG))).ovelser.length);
+  }
+  const rad = $("#ovelser").querySelector(".ovelse");
+  const radHoyde = rad ? rad.offsetHeight : 66;
+  $("#utjevner").style.height = Math.max(0, (flest - pr.ovelser.length) * radHoyde) + "px";
+}
 const BOKSTAV = ["M","T","O","T","F","L","S"];
 const OMKRETS = 2 * Math.PI * 33;
 
@@ -558,7 +581,7 @@ function tegnUke() {
     prikk.className = "prikk";
 
     b.append(bok, num, prikk);
-    b.addEventListener("click", () => { vist = dIso; tegn(); });
+    b.addEventListener("click", () => bevarScroll(() => { vist = dIso; tegn(); }));
     boks.appendChild(b);
   }
 }
@@ -653,6 +676,7 @@ function tegn() {
 
   tegnUke();
   tegnRutenett();
+  utjevnHoyde(pr);
 }
 
 function tegnRutenett() {
@@ -666,7 +690,7 @@ function tegnRutenett() {
     b.className = "rute n" + nivaaFor(dagIso) + (dagIso === vist ? " valgt" : "");
     b.title = dato(dagIso).toLocaleDateString("nb-NO", { day:"numeric", month:"long" });
     b.setAttribute("aria-label", b.title);
-    b.addEventListener("click", () => { vist = dagIso; tegn(); });
+    b.addEventListener("click", () => bevarScroll(() => { vist = dagIso; tegn(); }));
     box.appendChild(b);
   }
 }
@@ -683,7 +707,7 @@ function settDag(nyGjort) {
 
   skrivDag(vist);
   const etter = nivaaInfo(totalXp()).nivaa;
-  tegn();
+  bevarScroll(tegn);
   if (etter > før) feir(etter);
   else if (dag.fullfort) melding("Økt fullført");
 }
@@ -736,7 +760,7 @@ async function koble() {
   db.collection("dager").where("dato", ">=", grense).onSnapshot(snap => {
     for (const doc of snap.docs) state.dager[doc.id] = normaliser(doc.data());
     skrivLokalt();
-    tegn();
+    bevarScroll(tegn);
   }, e => { if (e.code !== "unavailable") settSky("Lagret bare på denne enheten", "av"); });
 
   db.collection("tester").onSnapshot(snap => {
@@ -745,7 +769,7 @@ async function koble() {
       return { dato: doc.id, pullups: Number(v.pullups) || 0, run3000: Number(v.run3000) || 0 };
     }).filter(t => t.pullups > 0 && t.run3000 > 0);
     skrivLokalt();
-    tegn();
+    bevarScroll(tegn);
   }, e => { if (e.code !== "unavailable") settSky("Lagret bare på denne enheten", "av"); });
 }
 
@@ -753,8 +777,8 @@ async function koble() {
 lesLokalt();
 tegn();
 
-$("#forrige").addEventListener("click", () => { vist = iso(new Date(dato(vist) - 7 * DAG)); tegn(); });
-$("#neste").addEventListener("click", () => { vist = iso(new Date(+dato(vist) + 7 * DAG)); tegn(); });
+$("#forrige").addEventListener("click", () => bevarScroll(() => { vist = iso(new Date(dato(vist) - 7 * DAG)); tegn(); }));
+$("#neste").addEventListener("click", () => bevarScroll(() => { vist = iso(new Date(+dato(vist) + 7 * DAG)); tegn(); }));
 
 $("#cta").addEventListener("click", () => {
   const pr = program(vist);
@@ -773,7 +797,7 @@ $("#test-form").addEventListener("submit", () => {
   skrivLokalt();
   if (db) db.doc("tester/" + vist).set({ pullups: pu, run3000: sek, dato: vist })
     .catch(() => melding("Fikk ikke lagret testen til skyen"));
-  tegn();
+  bevarScroll(tegn);
   melding("Test lagret · programmet er justert");
 });
 
