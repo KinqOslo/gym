@@ -1,6 +1,13 @@
 # Kampklar 🎖️
 
-Personlig treningsspill. Åpne `index.html` i nettleseren — ingen installasjon.
+Personlig treningsspill.
+
+**App (anbefalt):** `kampklar.html` — én fil, publisert som artifact på claude.ai.
+Lagrer i en delt database slik at treningen synkroniseres mellom iPhone og Mac,
+og slik at Claude kan lese hva som faktisk er gjennomført og justere programmet.
+
+**Lokal versjon:** `index.html` + `app.js` + `program.js` + `data.js` — samme program,
+men lagrer bare i nettleseren den åpnes i.
 
 ## Hva det gjør
 - Viser **dagens økt**, generert ut fra hvor langt du er i programmet og hvilken form du er i.
@@ -25,11 +32,14 @@ utholdenhet 5/9 og pull-ups 5/9. Det er derfor **trekk og løping** som får mes
 Faser: Grunnmur (uke 1–4) → Oppbygging (5–12) → Press (13–20) → Skarp (21+). Hver 4. uke deload.
 
 ## Daglig rutine
-Claude oppdaterer `data.js` kl. 14:00 og sender påminnelse kl. 16:00 med dagens økter og nivåstatus.
-Trykk **Eksporter dagbok** og lim inn koden i chatten — da ser Claude hva du faktisk har gjort,
-og skrur opp belastningen deretter.
+Claude leser databasen kl. 14:00, justerer programmet etter hva som faktisk er gjennomført,
+og sender push-varsel kl. 16:00 med dagens økter og nivåstatus.
+
+Databasen har to samlinger: `dager/<ÅÅÅÅ-MM-DD>` (avhukede øvelser, XP, fullført)
+og `tester/<ÅÅÅÅ-MM-DD>` (pull-ups og 3000 m fra testdagene).
 
 ## Filer
+- `kampklar.html` — appen som én fil (skylagring, brukes på telefon og Mac)
 - `index.html` — UI
 - `style.css` — utseende
 - `data.js` — profil, mål, arkiv (Claude oppdaterer denne)
