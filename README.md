@@ -38,9 +38,14 @@ Tre løpeøkter i uka er gulvet — de byttes aldri bort mot mer armarbeid.
 
 ## Illustrasjoner
 Hver øvelse har en animert figur og to til fire formtips, som åpnes med avspillingsknappen
-i raden. Figurene er inline SVG med `<animate>` — to positurer som nettleseren tweener mellom.
-Ingenting lastes utenfra, så de virker offline. Ved `prefers-reduced-motion` vises
-sluttposituren stillestående.
+i raden. Figurene er inline SVG med to positurer, og bevegelsen mellom dem kjøres av
+[anime.js](https://animejs.com) 3.2.2 fra cdnjs.
+
+Hver øvelse har sin egen bevegelseskurve: `easeOutExpo` på medisinballkastet, `easeInOutQuad`
+på knebøy, `easeInOutSine` på dødheng og tøying, `linear` på løpesteget. Enkelte ledd har
+etterslep, så beina henger litt etter kroppen i stedet for at alt beveger seg i takt.
+
+Uten nett, eller ved `prefers-reduced-motion`, vises sluttposituren stillestående.
 
 Faser: Grunnmur (uke 1–4) → Oppbygging (5–12) → Press (13–20) → Skarp (21+). Hver 4. uke deload.
 
