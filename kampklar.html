@@ -114,17 +114,37 @@ button{font-family:inherit;color:inherit;border:none;background:none;padding:0;c
 
 /* ---------- Øvelser ---------- */
 .ovelser{list-style:none;margin:22px -10px 0;padding:0}
-.ovelse{display:flex;align-items:center;gap:10px;padding:0 4px;border-radius:var(--r-midt);
+.ovelse{display:flex;align-items:center;gap:8px;padding:0 4px;border-radius:var(--r-midt);
   width:100%;height:74px}
-.merk{display:flex;align-items:center;gap:15px;flex:1;min-width:0;height:100%;
-  padding:0 6px;border-radius:var(--r-midt);text-align:left;transition:background .15s}
-.merk:hover{background:var(--kort-alt)}
-.merk:active{transform:scale(.995)}
-.vis{width:34px;height:34px;flex:0 0 34px;border-radius:50%;display:grid;place-items:center;
-  background:var(--kort-alt);color:var(--dempet);transition:background .15s,color .15s}
-.vis:hover{background:var(--aksent-myk);color:var(--aksent-dyp)}
-.vis:active{transform:scale(.9)}
-.vis svg{width:15px;height:15px;fill:currentColor}
+.hake-knapp{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center}
+.apne{flex:1;min-width:0;height:100%;display:flex;align-items:center;padding:0 6px;
+  border-radius:var(--r-midt);text-align:left;transition:background .15s}
+.apne:hover{background:var(--kort-alt)}
+.apne:active{transform:scale(.995)}
+.ov-gjort{color:var(--aksent-dyp);font-weight:600}
+.ovelse.gjort .ov-gjort{color:var(--klar)}
+.merke-ekstra{text-decoration:none;font-family:var(--display);font-size:9.5px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dempet);background:var(--kort-alt);
+  border-radius:5px;padding:2px 6px;margin-left:7px;vertical-align:2px}
+.legg-til{width:100%;padding:13px;margin-top:6px;border-radius:var(--r-midt);
+  border:1.5px dashed var(--kant-sterk);color:var(--dempet);
+  font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:.02em;
+  transition:border-color .15s,color .15s}
+.legg-til:hover{border-color:var(--aksent);color:var(--aksent-dyp)}
+
+/* ---------- Logging ---------- */
+.type-valg{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.type-valg button{padding:10px;border-radius:var(--r-liten);background:var(--kort-alt);
+  color:var(--dempet);font-family:var(--display);font-size:13.5px;font-weight:700;
+  border:1.5px solid transparent;transition:all .15s}
+.type-valg button[aria-pressed="true"]{background:var(--blekk);color:var(--papir)}
+.logg-rad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.logg-rad.to{grid-template-columns:1fr 1fr}
+.felt{display:block}
+.felt .etikett{display:block;margin-bottom:6px;font-size:10px}
+.felt input{width:100%;margin-bottom:0}
+#ov-navn-felt{font-family:var(--display);font-size:22px;font-weight:800;letter-spacing:-.02em;
+  padding:11px 13px;margin-bottom:14px}
 .ovelser li + li .ovelse{box-shadow:0 -1px 0 var(--kant)}
 .boks{width:30px;height:30px;flex:0 0 30px;border-radius:50%;border:2px solid var(--kant-sterk);
   display:grid;place-items:center;transition:background .2s,border-color .2s,transform .15s}
@@ -133,7 +153,7 @@ button{font-family:inherit;color:inherit;border:none;background:none;padding:0;c
   stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .28s ease .05s}
 .ovelse.gjort .boks{background:var(--klar);border-color:var(--klar)}
 .ovelse.gjort .boks svg{stroke-dashoffset:0}
-.merk:active .boks{transform:scale(.86)}
+.hake-knapp:active .boks{transform:scale(.86)}
 .ov-tekst{flex:1;min-width:0}
 .ov-navn{font-weight:700;font-size:15.5px;line-height:1.25;letter-spacing:-.01em}
 .ov-mal{font-size:13.5px;color:var(--dempet);margin-top:3px;font-variant-numeric:tabular-nums;
@@ -143,6 +163,8 @@ button{font-family:inherit;color:inherit;border:none;background:none;padding:0;c
 .ovelse.gjort .ov-navn{color:var(--dempet);text-decoration:line-through;
   text-decoration-color:var(--kant-sterk);text-decoration-thickness:2px}
 .ovelse.gjort .ov-mal{color:var(--kant-sterk)}
+.ovelse .ov-mal.ov-gjort{color:var(--aksent-dyp)}
+.ovelse.gjort .ov-mal.ov-gjort{color:var(--klar)}
 .ovelse.gjort .ov-xp{color:var(--klar)}
 
 .dk-bunn{margin:12px -24px 0;padding:16px 24px 20px;border-top:1px solid var(--kant)}
@@ -220,6 +242,8 @@ dialog input:focus{border-color:var(--aksent);outline:none}
 .figur .prop{fill:none;stroke:var(--kant-sterk);stroke-width:3.5;stroke-linecap:round}
 .figur .kropp .utstyr{stroke:var(--kant-sterk);stroke-width:3;stroke-dasharray:5 4}
 #ov-dialog h2{margin-bottom:4px}
+#ov-dialog .logg-boks{margin:18px 0 20px;padding:18px 0 0;border-top:1px solid var(--kant)}
+#ov-dialog .logg-boks > .etikett{display:block;margin-bottom:12px}
 #ov-dialog .ov-mal-d{font-family:var(--display);font-size:15px;font-weight:700;color:var(--aksent-dyp);
   margin:0 0 16px;font-variant-numeric:tabular-nums}
 #ov-tips{margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
@@ -289,6 +313,7 @@ footer{text-align:center;font-size:12.5px;color:var(--dempet);padding:22px 8px 4
     </div>
 
     <ul class="ovelser" id="ovelser"></ul>
+    <button class="legg-til" id="legg-til">+ Legg til øvelse</button>
 
     <div class="dk-bunn">
       <button class="cta" id="cta">Fullfør hele økta</button>
@@ -356,9 +381,38 @@ footer{text-align:center;font-size:12.5px;color:var(--dempet);padding:22px 8px 4
 <dialog id="ov-dialog">
   <div class="fig-ramme" id="fig-ramme"></div>
   <h2 id="ov-navn"></h2>
+  <input id="ov-navn-felt" list="ovelsesliste" placeholder="Hva gjorde du?" autocomplete="off" hidden>
+  <datalist id="ovelsesliste"></datalist>
   <p class="ov-mal-d" id="ov-mal-d"></p>
+
+  <div class="logg-boks">
+    <span class="etikett">Hva du faktisk gjorde</span>
+    <div class="type-valg">
+      <button type="button" id="type-styrke" aria-pressed="true">Styrke</button>
+      <button type="button" id="type-lop" aria-pressed="false">Løp</button>
+    </div>
+    <div class="logg-rad" id="felt-styrke">
+      <label class="felt"><span class="etikett">Sett</span>
+        <input id="f-sett" type="number" inputmode="numeric" min="0" max="99"></label>
+      <label class="felt"><span class="etikett">Reps</span>
+        <input id="f-reps" type="number" inputmode="numeric" min="0" max="999"></label>
+      <label class="felt"><span class="etikett">Kg</span>
+        <input id="f-kg" type="number" inputmode="decimal" min="0" max="500" step="0.5"></label>
+    </div>
+    <div class="logg-rad to" id="felt-lop" hidden>
+      <label class="felt"><span class="etikett">Kilometer</span>
+        <input id="f-km" type="number" inputmode="decimal" min="0" max="99" step="0.1"></label>
+      <label class="felt"><span class="etikett">Tid (mm:ss)</span>
+        <input id="f-tid" type="text" inputmode="numeric" placeholder="8:00"></label>
+    </div>
+  </div>
+
   <ul id="ov-tips"></ul>
-  <div class="dlg-knapper"><button type="button" class="lagre" id="ov-lukk">Lukk</button></div>
+  <div class="dlg-knapper">
+    <button type="button" class="avbryt" id="ov-slett" hidden>Slett</button>
+    <button type="button" class="avbryt" id="ov-lukk">Lukk</button>
+    <button type="button" class="lagre" id="ov-lagre">Lagre</button>
+  </div>
 </dialog>
 
 <dialog id="test-dialog">
@@ -412,9 +466,34 @@ const skriveko = new Map();
 
 const normaliser = d => ({
   gjort: Array.isArray(d && d.gjort) ? d.gjort.filter(n => Number.isInteger(n)) : [],
+  // Faktiske tall per planlagt øvelse, nøklet på navn så de overlever
+  // at rekkefølgen i programmet endres
+  logg: (d && typeof d.logg === "object" && d.logg) ? d.logg : {},
+  // Øvelser som ikke sto i planen
+  ekstra: Array.isArray(d && d.ekstra) ? d.ekstra : [],
   fullfort: !!(d && d.fullfort),
   xp: Number(d && d.xp) || 0
 });
+
+/* Sett × reps × kg, eller kilometer og tid. Alt annet er utenfor det
+   denne appen skal holde styr på. */
+const XP_EKSTRA = 15;
+
+function typeFor(navn) {
+  const i = OVELSESINFO[navn];
+  return i && i.fig === "lop" ? "lop" : "styrke";
+}
+
+function loggTekst(l) {
+  if (!l) return "";
+  if (l.type === "lop") {
+    const km = l.km ? String(l.km).replace(".", ",") + " km" : "";
+    const tid = l.tid ? mmss(l.tid) : "";
+    return km && tid ? `${km} på ${tid}` : (km || tid);
+  }
+  if (!l.sett || !l.reps) return l.kg ? l.kg + " kg" : "";
+  return `${l.sett} × ${l.reps}` + (l.kg ? ` × ${String(l.kg).replace(".", ",")} kg` : "");
+}
 
 function lesLokalt() {
   try {
@@ -685,6 +764,7 @@ const OVELSESINFO = {
   "Pull-ups, negativer": { fig:"pullup", tips:["Hopp eller tråkk opp til haka er over stanga.","Senk deg på fem sekunder, så sakte du klarer.","Det er nedturen som bygger styrken her."] },
   "Pull-ups, stige":   { fig:"pullup", tips:["Start på én rep, øk med én per sett.","Avbryt runden før du kommer til failure.","Mange gode reps slår få harde."] },
   "Maks pull-ups":     { fig:"pullup", tips:["Ett sett, hele veien til du ikke klarer mer.","Haka må over stanga for at repen teller.","Ingen sprell med beina — det teller ikke."] },
+  "Nedtrekk":          { fig:"pullup", tips:["Dra stanga ned mot øvre del av brystet, ikke bak nakken.","Albuene ned langs siden, ikke ut til sidene.","Bygger samme trekk som pull-ups — bruk den til å komme dit."] },
   "Stangroing":        { fig:"roing", tips:["Rett rygg, overkroppen rundt 45 grader fram.","Dra stanga mot navlen, ikke mot brystet.","Klem skulderbladene sammen på toppen."] },
   "Bicepscurl med stang": { fig:"curl", tips:["Albuene låst inntil kroppen hele veien.","Ikke sving med ryggen for å få opp vekta.","Senk på to sekunder — halve jobben ligger der."] },
   "Hammercurl":        { fig:"curl", tips:["Nøytralt grep, tomlene opp hele veien.","Treffer brachialis og gir tykkere arm fra siden.","Rolig tilbake, ingen fart i bunnen."] },
@@ -964,47 +1044,80 @@ function tegnInnhold() {
 
   const liste = $("#ovelser");
   liste.replaceChildren();
-  pr.ovelser.forEach((o, i) => {
-    const gjort = dag.gjort.includes(i);
+  /* Sirkelen huker av raskt. Trykk på navnet åpner arket med figur,
+     formtips og feltene for hva du faktisk gjorde. */
+  const lagRad = ({ gjort, navnTekst, underTekst, erLogg, xp, ekstra, paaHake, paaApne }) => {
     const li = document.createElement("li");
     const rad = document.createElement("div");
     rad.className = "ovelse" + (gjort ? " gjort" : "");
 
-    const merk = document.createElement("button");
-    merk.type = "button";
-    merk.className = "merk";
-    merk.setAttribute("aria-pressed", String(gjort));
-    merk.addEventListener("click", () => veksle(i));
-
+    const hake = document.createElement("button");
+    hake.type = "button";
+    hake.className = "hake-knapp";
+    hake.setAttribute("aria-pressed", String(gjort));
+    hake.setAttribute("aria-label", (gjort ? "Angre " : "Marker ") + navnTekst);
     const boks = document.createElement("div");
     boks.className = "boks";
     boks.innerHTML = '<svg viewBox="0 0 20 20" aria-hidden="true"><polyline points="4,10.5 8.4,14.5 16,6"/></svg>';
+    hake.appendChild(boks);
+    if (paaHake) hake.addEventListener("click", paaHake);
+    else hake.disabled = true;
 
+    const apne = document.createElement("button");
+    apne.type = "button";
+    apne.className = "apne";
+    apne.setAttribute("aria-label", "Åpne " + navnTekst);
     const tekst = document.createElement("div");
     tekst.className = "ov-tekst";
     const navn = document.createElement("div");
-    navn.className = "ov-navn"; navn.textContent = o.navn;
+    navn.className = "ov-navn";
+    navn.textContent = navnTekst;
+    if (ekstra) {
+      const m = document.createElement("span");
+      m.className = "merke-ekstra";
+      m.textContent = "Ekstra";
+      navn.appendChild(m);
+    }
     const mal = document.createElement("div");
-    mal.className = "ov-mal"; mal.textContent = o.mal;
+    mal.className = "ov-mal" + (erLogg ? " ov-gjort" : "");
+    mal.textContent = underTekst;
     tekst.append(navn, mal);
+    apne.appendChild(tekst);
+    apne.addEventListener("click", paaApne);
 
     const xpEl = document.createElement("div");
-    xpEl.className = "ov-xp"; xpEl.textContent = "+" + o.xp;
+    xpEl.className = "ov-xp";
+    xpEl.textContent = "+" + xp;
 
-    merk.append(boks, tekst);
-    rad.append(merk, xpEl);
-
-    if (OVELSESINFO[o.navn]) {
-      const vis = document.createElement("button");
-      vis.type = "button";
-      vis.className = "vis";
-      vis.setAttribute("aria-label", "Vis hvordan " + o.navn + " gjøres");
-      vis.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="8,5 19,12 8,19"/></svg>';
-      vis.addEventListener("click", () => visOvelse(o));
-      rad.appendChild(vis);
-    }
+    rad.append(hake, apne, xpEl);
     li.appendChild(rad);
     liste.appendChild(li);
+  };
+
+  pr.ovelser.forEach((o, i) => {
+    const l = dag.logg[o.navn];
+    const tekst = loggTekst(l);
+    lagRad({
+      gjort: dag.gjort.includes(i),
+      navnTekst: o.navn,
+      underTekst: tekst || o.mal,
+      erLogg: !!tekst,
+      xp: o.xp,
+      paaHake: () => veksle(i),
+      paaApne: () => apneOvelse({ kilde: "plan", navn: o.navn, mal: o.mal, indeks: i })
+    });
+  });
+
+  dag.ekstra.forEach((e, i) => {
+    lagRad({
+      gjort: true,
+      navnTekst: e.navn,
+      underTekst: loggTekst(e) || "Ingen tall ført inn",
+      erLogg: true,
+      xp: XP_EKSTRA,
+      ekstra: true,
+      paaApne: () => apneOvelse({ kilde: "ekstra", navn: e.navn, indeks: i })
+    });
   });
 
   const cta = $("#cta");
@@ -1063,20 +1176,31 @@ function tegnRutenett() {
 }
 
 /* ============ Handlinger ============ */
-function settDag(nyGjort) {
+function lagreDag(dag, melding_) {
   const pr = program(vist);
   const før = nivaaInfo(totalXp()).nivaa;
-  const dag = { gjort: nyGjort, fullfort: nyGjort.length === pr.ovelser.length, xp: 0 };
-  dag.xp = nyGjort.reduce((s, k) => s + (pr.ovelser[k] ? pr.ovelser[k].xp : 0), 0);
+
+  dag.fullfort = dag.gjort.length === pr.ovelser.length;
+  dag.xp = dag.gjort.reduce((s, k) => s + (pr.ovelser[k] ? pr.ovelser[k].xp : 0), 0)
+         + dag.ekstra.length * XP_EKSTRA;
 
   state.dager[vist] = dag;
   if (dag.fullfort) dag.xp += 50 + Math.min(streak(vist), 10) * 5;
 
+  // Ekstraøvelser endrer antall rader, så sidehøyden må måles på nytt
+  maalNokkel = "";
   skrivDag(vist);
   const etter = nivaaInfo(totalXp()).nivaa;
   bevarScroll(tegn);
   if (etter > før) feir(etter);
+  else if (melding_) melding(melding_);
   else if (dag.fullfort) melding("Økt fullført");
+}
+
+function settDag(nyGjort) {
+  const dag = normaliser(state.dager[vist]);
+  dag.gjort = nyGjort;
+  lagreDag(dag);
 }
 
 function veksle(i) {
@@ -1093,20 +1217,109 @@ function apneTest() {
   $("#test-dialog").showModal();
 }
 
-function visOvelse(o) {
-  const info = OVELSESINFO[o.navn];
-  if (!info) return;
-  visFigur($("#fig-ramme"), info.fig);
-  $("#ov-navn").textContent = o.navn;
-  $("#ov-mal-d").textContent = o.mal;
+/* ============ Øvelsesarket ============
+   Samme ark viser figuren, formtipsene og feltene for hva du faktisk
+   gjorde — enten øvelsen sto i planen eller du la den til selv. */
+let aktivOvelse = null;
+
+const tilSek = t => {
+  const d = String(t || "").split(":").map(Number);
+  if (d.length === 2) return (d[0] || 0) * 60 + (d[1] || 0);
+  return Number(t) ? Math.round(Number(t) * 60) : 0;
+};
+
+function settType(type) {
+  const lop = type === "lop";
+  $("#type-styrke").setAttribute("aria-pressed", String(!lop));
+  $("#type-lop").setAttribute("aria-pressed", String(lop));
+  $("#felt-styrke").hidden = lop;
+  $("#felt-lop").hidden = !lop;
+}
+
+function visTips(navn) {
+  const info = OVELSESINFO[navn];
   const ul = $("#ov-tips");
   ul.replaceChildren();
+  visFigur($("#fig-ramme"), info ? info.fig : null);
+  $("#fig-ramme").hidden = !info;
+  if (!info) return;
   for (const t of info.tips) {
     const li = document.createElement("li");
     li.textContent = t;
     ul.appendChild(li);
   }
+}
+
+function apneOvelse(ref) {
+  const dag = normaliser(state.dager[vist]);
+  aktivOvelse = ref;
+  const ny = ref.kilde === "ny";
+  const lagret = ref.kilde === "plan" ? dag.logg[ref.navn]
+               : ref.kilde === "ekstra" ? dag.ekstra[ref.indeks]
+               : null;
+  const navn = ny ? "" : (lagret && lagret.navn) || ref.navn;
+
+  $("#ov-navn").hidden = ny;
+  $("#ov-navn").textContent = navn;
+  $("#ov-navn-felt").hidden = !ny;
+  $("#ov-navn-felt").value = "";
+  $("#ov-mal-d").hidden = !ref.mal;
+  $("#ov-mal-d").textContent = ref.mal || "";
+  $("#ov-slett").hidden = ref.kilde !== "ekstra";
+  visTips(navn);
+
+  const type = (lagret && lagret.type) || (navn ? typeFor(navn) : "styrke");
+  settType(type);
+  $("#f-sett").value = lagret && lagret.sett ? lagret.sett : "";
+  $("#f-reps").value = lagret && lagret.reps ? lagret.reps : "";
+  $("#f-kg").value   = lagret && lagret.kg   ? lagret.kg   : "";
+  $("#f-km").value   = lagret && lagret.km   ? lagret.km   : "";
+  $("#f-tid").value  = lagret && lagret.tid  ? mmss(lagret.tid) : "";
+
   $("#ov-dialog").showModal();
+}
+
+function lesFelter() {
+  const lop = $("#type-lop").getAttribute("aria-pressed") === "true";
+  if (lop) {
+    return { type: "lop",
+      km: Number(String($("#f-km").value).replace(",", ".")) || 0,
+      tid: tilSek($("#f-tid").value) };
+  }
+  return { type: "styrke",
+    sett: Number($("#f-sett").value) || 0,
+    reps: Number($("#f-reps").value) || 0,
+    kg: Number(String($("#f-kg").value).replace(",", ".")) || 0 };
+}
+
+function lagreOvelse() {
+  if (!aktivOvelse) return;
+  const dag = normaliser(state.dager[vist]);
+  const tall = lesFelter();
+
+  if (aktivOvelse.kilde === "ny") {
+    const navn = $("#ov-navn-felt").value.trim();
+    if (!navn) { melding("Skriv inn hva du gjorde"); return; }
+    dag.ekstra = dag.ekstra.concat(Object.assign({ navn }, tall));
+  } else if (aktivOvelse.kilde === "ekstra") {
+    dag.ekstra = dag.ekstra.map((e, i) =>
+      i === aktivOvelse.indeks ? Object.assign({ navn: e.navn }, tall) : e);
+  } else {
+    dag.logg = Object.assign({}, dag.logg, { [aktivOvelse.navn]: tall });
+    // Fører du inn tall, har du gjort øvelsen
+    if (!dag.gjort.includes(aktivOvelse.indeks)) dag.gjort = dag.gjort.concat(aktivOvelse.indeks);
+  }
+
+  $("#ov-dialog").close();
+  lagreDag(dag, "Ført inn");
+}
+
+function slettEkstra() {
+  if (!aktivOvelse || aktivOvelse.kilde !== "ekstra") return;
+  const dag = normaliser(state.dager[vist]);
+  dag.ekstra = dag.ekstra.filter((_, i) => i !== aktivOvelse.indeks);
+  $("#ov-dialog").close();
+  lagreDag(dag, "Slettet");
 }
 
 function feir(n) {
@@ -1171,6 +1384,22 @@ $("#cta").addEventListener("click", () => {
 
 $("#ov-lukk").addEventListener("click", () => $("#ov-dialog").close());
 $("#ov-dialog").addEventListener("close", stoppFigurer);
+$("#ov-lagre").addEventListener("click", lagreOvelse);
+$("#ov-slett").addEventListener("click", slettEkstra);
+$("#type-styrke").addEventListener("click", () => settType("styrke"));
+$("#type-lop").addEventListener("click", () => settType("lop"));
+$("#legg-til").addEventListener("click", () => apneOvelse({ kilde: "ny" }));
+
+// Kjente øvelser foreslås, så de får figur og formtips med på kjøpet
+$("#ov-navn-felt").addEventListener("input", e => {
+  const n = e.target.value.trim();
+  if (OVELSESINFO[n]) { visTips(n); settType(typeFor(n)); }
+});
+$("#ovelsesliste").replaceChildren(...Object.keys(OVELSESINFO).map(n => {
+  const o = document.createElement("option");
+  o.value = n;
+  return o;
+}));
 
 const dlg = $("#test-dialog");
 $("#test-avbryt").addEventListener("click", () => dlg.close());

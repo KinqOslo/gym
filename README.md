@@ -49,6 +49,19 @@ Uten nett, eller ved `prefers-reduced-motion`, vises sluttposituren stilleståen
 
 Faser: Grunnmur (uke 1–4) → Oppbygging (5–12) → Press (13–20) → Skarp (21+). Hver 4. uke deload.
 
+## Loggføring
+Sirkelen huker av raskt. Trykk på navnet, så åpnes arket der du fører inn hva du
+**faktisk** gjorde: sett × reps × kg for styrke, eller kilometer og tid for løp.
+Fører du inn tall, blir øvelsen huket av automatisk, og raden viser det du gjorde
+i stedet for det som sto i planen.
+
+«Legg til øvelse» tar de dagene du gjorde noe annet enn det som sto der. Kjente
+øvelsesnavn foreslås mens du skriver, og får da figur og formtips med på kjøpet.
+Ekstraøvelser gir 15 XP hver.
+
+I databasen: `logg` er nøklet på øvelsesnavn, så tallene overlever at rekkefølgen
+i programmet endres. `ekstra` er en liste med øvelser utenom planen.
+
 ## Daglig rutine
 Claude leser databasen kl. 14:00, justerer programmet etter hva som faktisk er gjennomført,
 og sender push-varsel kl. 16:00 med dagens økter og nivåstatus.
