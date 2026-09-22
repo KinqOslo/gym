@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<title>Kampklar</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎖️</text></svg>">
+</head>
+<body>
+
+<header class="topp">
+  <div class="ring-boks">
+    <div id="ring" class="ring"><div class="ring-inn"><span id="nivaa">1</span></div></div>
+  </div>
+  <div class="topp-tekst">
+    <div id="grad" class="grad">Rekrutt</div>
+    <div class="xp-bar"><div id="xp-fyll" class="xp-fyll"></div></div>
+    <div class="topp-meta">
+      <span id="xp-tall">0 / 200 XP</span>
+      <span class="sep">·</span>
+      <span class="flamme">🔥 <b id="streak">0</b></span>
+      <span class="sep">·</span>
+      <span><b id="total-xp">0</b> XP totalt</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section id="kort" class="kort">
+    <div class="kort-topp">
+      <div>
+        <div id="dag-navn" class="dag-navn">Mandag</div>
+        <div id="dag-dato" class="dag-dato">21. september</div>
+      </div>
+      <div class="nav">
+        <button id="nav-forrige" aria-label="Forrige dag">‹</button>
+        <button id="nav-i-dag">I dag</button>
+        <button id="nav-neste" aria-label="Neste dag">›</button>
+      </div>
+    </div>
+
+    <h1 id="okt-tittel">Trekk &amp; kjerne</h1>
+    <div id="okt-meta" class="meta"></div>
+
+    <ul id="ovelser" class="ovelser"></ul>
+
+    <button id="test-knapp" class="stor-knapp">Registrer testresultat</button>
+  </section>
+
+  <section class="kort">
+    <h2>Mot målet</h2>
+    <div class="mal">
+      <div class="mal-topp"><span>Pull-ups</span><span><b id="pu-na">5</b> → <b id="pu-mal">12</b></span></div>
+      <div class="mal-bar"><div id="pu-fyll" class="mal-fyll"></div></div>
+    </div>
+    <div class="mal">
+      <div class="mal-topp"><span>3000 m</span><span><b id="lop-na">13:50</b> → <b id="lop-mal">12:00</b></span></div>
+      <div class="mal-bar"><div id="lop-fyll" class="mal-fyll gronn"></div></div>
+    </div>
+    <p id="estimat" class="estimat"></p>
+  </section>
+
+  <section class="kort">
+    <h2>Siste 8 uker</h2>
+    <div id="heatmap" class="heatmap"></div>
+    <div class="legende"><span>Mindre</span><i class="rute n0"></i><i class="rute n1"></i><i class="rute n2"></i><i class="rute n3"></i><span>Mer</span></div>
+  </section>
+
+  <section class="kort kompakt">
+    <h2>Dagbok</h2>
+    <p class="hjelp">Eksporter og lim inn koden i chatten. Da ser Claude hva du har gjort og justerer programmet.</p>
+    <div class="knapper">
+      <button id="eksport" class="stor-knapp">Eksporter dagbok</button>
+      <button id="import" class="flat-knapp">Importer</button>
+    </div>
+    <textarea id="eksport-felt" readonly></textarea>
+  </section>
+
+  <footer>182 cm · 80 kg · 21 år — bygget for å løfte utholdenhet 5 → 9</footer>
+</main>
+
+<div id="feiring" class="feiring"><div class="feir-kort"><div class="medalje">🎖️</div><div id="feir-tekst"></div><small>Nivå opp</small></div></div>
+<div id="toast" class="toast"></div>
+
+<script src="data.js"></script>
+<script src="program.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

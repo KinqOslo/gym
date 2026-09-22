@@ -1,0 +1,1422 @@
+<title>Kampklar</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --papir:#F1F2F0; --kort:#FFFFFF; --kort-alt:#F7F8F6;
+  --blekk:#101311; --blekk-myk:#3E443C; --dempet:#767D73;
+  --kant:#E3E5E0; --kant-sterk:#D2D5CE;
+  --aksent:#E8442B; --aksent-myk:#FDE7E2; --aksent-dyp:#C23319;
+  --klar:#1F7A4D; --klar-myk:#E2F1E8;
+  --skygge:0 1px 2px rgba(16,19,17,.05), 0 8px 24px -12px rgba(16,19,17,.14);
+  --skygge-løft:0 2px 4px rgba(16,19,17,.06), 0 18px 40px -18px rgba(16,19,17,.22);
+  --display:"Archivo",'Helvetica Neue',Arial,sans-serif;
+  --brod:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --r-stor:26px; --r-midt:18px; --r-liten:12px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --papir:#0C0E0C; --kort:#161915; --kort-alt:#1D211B;
+    --blekk:#F0F2ED; --blekk-myk:#C3C9BE; --dempet:#8A9285;
+    --kant:#272B25; --kant-sterk:#343A31;
+    --aksent:#FF5B3F; --aksent-myk:#3A1911; --aksent-dyp:#FF7458;
+    --klar:#5FC48B; --klar-myk:#152A1F;
+    --skygge:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    --skygge-løft:0 2px 4px rgba(0,0,0,.45), 0 18px 40px -18px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --papir:#0C0E0C; --kort:#161915; --kort-alt:#1D211B;
+  --blekk:#F0F2ED; --blekk-myk:#C3C9BE; --dempet:#8A9285;
+  --kant:#272B25; --kant-sterk:#343A31;
+  --aksent:#FF5B3F; --aksent-myk:#3A1911; --aksent-dyp:#FF7458;
+  --klar:#5FC48B; --klar-myk:#152A1F;
+  --skygge:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  --skygge-løft:0 2px 4px rgba(0,0,0,.45), 0 18px 40px -18px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--papir); color:var(--blekk);
+  font-family:var(--brod); font-size:16px; line-height:1.5; margin:0;
+  padding-block:0 56px; padding-left:18px; padding-right:18px;
+  -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent;
+}
+.wrap{max-width:540px;margin:0 auto}
+h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;letter-spacing:-.02em}
+button{font-family:inherit;color:inherit;border:none;background:none;padding:0;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--aksent);outline-offset:3px;border-radius:8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.etikett{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dempet)}
+
+/* ---------- Toppbar ---------- */
+.topp{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:22px 2px 16px}
+.merke{font-family:var(--display);font-size:19px;font-weight:800;letter-spacing:-.03em}
+.merke span{color:var(--aksent)}
+.gradmerke{display:flex;align-items:center;gap:9px;background:var(--kort);
+  border:1px solid var(--kant);border-radius:99px;padding:6px 14px 6px 7px;box-shadow:var(--skygge)}
+.gradmerke .niv{width:26px;height:26px;border-radius:50%;background:var(--blekk);color:var(--papir);
+  display:grid;place-items:center;font-family:var(--display);font-size:13px;font-weight:800;
+  font-variant-numeric:tabular-nums;line-height:1}
+.gradmerke .navn{font-family:var(--display);font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+
+/* ---------- Ukestripe ---------- */
+.uke{display:flex;align-items:center;gap:6px;margin-bottom:20px}
+.uke-pil{width:32px;height:52px;flex:0 0 32px;display:grid;place-items:center;
+  color:var(--dempet);font-size:19px;border-radius:10px;transition:background .15s}
+.uke-pil:hover{background:var(--kort);color:var(--blekk)}
+.uke-dager{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;flex:1;min-width:0}
+.uke-dag{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0 9px;
+  border-radius:14px;transition:background .16s,transform .1s}
+.uke-dag:active{transform:scale(.94)}
+.uke-dag .bok{font-family:var(--display);font-size:10.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--dempet)}
+.uke-dag .num{font-family:var(--display);font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.uke-dag .prikk{width:5px;height:5px;border-radius:50%;background:var(--kant-sterk)}
+.uke-dag.noe .prikk{background:var(--aksent)}
+.uke-dag.hel .prikk{background:var(--klar)}
+.uke-dag.idag .num{color:var(--aksent)}
+.uke-dag.valgt{background:var(--blekk)}
+.uke-dag.valgt .bok,.uke-dag.valgt .num{color:var(--papir)}
+.uke-dag.valgt .prikk{background:var(--papir);opacity:.5}
+.uke-dag.valgt.noe .prikk{background:var(--aksent);opacity:1}
+.uke-dag.valgt.hel .prikk{background:var(--klar);opacity:1}
+
+/* ---------- Dagskort ---------- */
+.dagskort{background:var(--kort);border-radius:var(--r-stor);padding:26px 24px 8px;
+  box-shadow:var(--skygge-løft);margin-bottom:14px;transition:box-shadow .3s}
+.dagskort.ferdig{box-shadow:var(--skygge-løft),0 0 0 2px var(--klar) inset}
+.dk-topp{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+.dk-venstre{flex:1;min-width:0}
+.dk-dato{margin-bottom:9px}
+.okt-tittel{font-size:clamp(30px,8.6vw,40px);font-weight:800;line-height:1.02;letter-spacing:-.035em}
+.merkelapper{display:flex;gap:6px;flex-wrap:wrap;margin-top:13px}
+.lapp{font-family:var(--display);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 10px;border-radius:7px;background:var(--kort-alt);color:var(--blekk-myk);border:1px solid var(--kant)}
+.lapp.build{background:var(--aksent-myk);color:var(--aksent-dyp);border-color:transparent}
+.lapp.peak,.lapp.sharp{background:var(--blekk);color:var(--papir);border-color:transparent}
+.lapp.deload{background:var(--kort-alt);color:var(--dempet)}
+.lapp.test{background:var(--klar-myk);color:var(--klar);border-color:transparent}
+
+.ring-boks{position:relative;width:78px;height:78px;flex:0 0 78px}
+.ring{width:78px;height:78px;transform:rotate(-90deg);display:block}
+.ring circle{fill:none;stroke-width:7;stroke-linecap:round}
+.ring .spor{stroke:var(--kant)}
+.ring .fyll{stroke:var(--aksent);transition:stroke-dashoffset .55s cubic-bezier(.4,0,.2,1),stroke .3s}
+.dagskort.ferdig .ring .fyll{stroke:var(--klar)}
+.ring-tall{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);
+  font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+
+/* ---------- Øvelser ---------- */
+.ovelser{list-style:none;margin:22px -10px 0;padding:0}
+.ovelse{display:flex;align-items:center;gap:8px;padding:0 4px;border-radius:var(--r-midt);
+  width:100%;height:74px}
+.hake-knapp{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center}
+.apne{flex:1;min-width:0;height:100%;display:flex;align-items:center;padding:0 6px;
+  border-radius:var(--r-midt);text-align:left;transition:background .15s}
+.apne:hover{background:var(--kort-alt)}
+.apne:active{transform:scale(.995)}
+.ov-gjort{color:var(--aksent-dyp);font-weight:600}
+.ovelse.gjort .ov-gjort{color:var(--klar)}
+.merke-ekstra{text-decoration:none;font-family:var(--display);font-size:9.5px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dempet);background:var(--kort-alt);
+  border-radius:5px;padding:2px 6px;margin-left:7px;vertical-align:2px}
+.legg-til{width:100%;padding:13px;margin-top:6px;border-radius:var(--r-midt);
+  border:1.5px dashed var(--kant-sterk);color:var(--dempet);
+  font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:.02em;
+  transition:border-color .15s,color .15s}
+.legg-til:hover{border-color:var(--aksent);color:var(--aksent-dyp)}
+
+/* ---------- Logging ---------- */
+.type-valg{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.type-valg button{padding:10px;border-radius:var(--r-liten);background:var(--kort-alt);
+  color:var(--dempet);font-family:var(--display);font-size:13.5px;font-weight:700;
+  border:1.5px solid transparent;transition:all .15s}
+.type-valg button[aria-pressed="true"]{background:var(--blekk);color:var(--papir)}
+.logg-rad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.logg-rad.to{grid-template-columns:1fr 1fr}
+.felt{display:block}
+.felt .etikett{display:block;margin-bottom:6px;font-size:10px}
+.felt input{width:100%;margin-bottom:0}
+#ov-navn-felt{font-family:var(--display);font-size:22px;font-weight:800;letter-spacing:-.02em;
+  padding:11px 13px;margin-bottom:14px}
+.ovelser li + li .ovelse{box-shadow:0 -1px 0 var(--kant)}
+.boks{width:30px;height:30px;flex:0 0 30px;border-radius:50%;border:2px solid var(--kant-sterk);
+  display:grid;place-items:center;transition:background .2s,border-color .2s,transform .15s}
+.boks svg{width:15px;height:15px;stroke:var(--kort);stroke-width:3.4;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .28s ease .05s}
+.ovelse.gjort .boks{background:var(--klar);border-color:var(--klar)}
+.ovelse.gjort .boks svg{stroke-dashoffset:0}
+.hake-knapp:active .boks{transform:scale(.86)}
+.ov-tekst{flex:1;min-width:0}
+.ov-navn{font-weight:700;font-size:15.5px;line-height:1.25;letter-spacing:-.01em}
+.ov-mal{font-size:13.5px;color:var(--dempet);margin-top:3px;font-variant-numeric:tabular-nums;
+  line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ov-xp{font-family:var(--display);font-size:12.5px;font-weight:700;color:var(--dempet);
+  font-variant-numeric:tabular-nums;flex:0 0 auto}
+.ovelse.gjort .ov-navn{color:var(--dempet);text-decoration:line-through;
+  text-decoration-color:var(--kant-sterk);text-decoration-thickness:2px}
+.ovelse.gjort .ov-mal{color:var(--kant-sterk)}
+.ovelse .ov-mal.ov-gjort{color:var(--aksent-dyp)}
+.ovelse.gjort .ov-mal.ov-gjort{color:var(--klar)}
+.ovelse.gjort .ov-xp{color:var(--klar)}
+
+.dk-bunn{margin:12px -24px 0;padding:16px 24px 20px;border-top:1px solid var(--kant)}
+.cta{width:100%;padding:16px;border-radius:var(--r-midt);background:var(--blekk);color:var(--papir);
+  font-family:var(--display);font-size:15px;font-weight:700;letter-spacing:.02em;
+  transition:transform .1s,opacity .15s}
+.cta:active{transform:scale(.985)}
+.cta.ferdig{background:var(--klar-myk);color:var(--klar)}
+.cta.test{background:var(--aksent);color:#fff}
+
+/* ---------- Nøkkeltall ---------- */
+.fliser{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.flis{background:var(--kort);border-radius:var(--r-midt);padding:16px 14px 14px;box-shadow:var(--skygge)}
+.flis .tall{font-family:var(--display);font-size:29px;font-weight:800;letter-spacing:-.045em;
+  font-variant-numeric:tabular-nums;line-height:1}
+.flis .tall em{font-style:normal;font-size:15px;font-weight:700;color:var(--dempet);letter-spacing:-.02em}
+.flis .etikett{margin-top:7px;display:block;font-size:10px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.flis.xp .tall{color:var(--aksent)}
+
+/* ---------- Kort ---------- */
+.kort{background:var(--kort);border-radius:var(--r-stor);padding:24px;box-shadow:var(--skygge);margin-bottom:14px}
+.kort > .etikett{display:block;margin-bottom:18px}
+
+.mal + .mal{margin-top:22px;padding-top:22px;border-top:1px solid var(--kant)}
+.mal-topp{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:11px}
+.mal-navn{font-family:var(--display);font-size:16px;font-weight:700;letter-spacing:-.02em}
+.mal-under{font-size:12.5px;color:var(--dempet);margin-top:2px}
+.mal-tall{font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-.04em;
+  font-variant-numeric:tabular-nums;line-height:1;flex:0 0 auto}
+.mal-tall em{font-style:normal;font-size:13px;color:var(--dempet);font-weight:700}
+.mal-spor{height:9px;background:var(--kort-alt);border-radius:99px;overflow:hidden;
+  box-shadow:0 0 0 1px var(--kant) inset}
+.mal-fyll{height:100%;width:0;border-radius:99px;background:var(--aksent);
+  transition:width .6s cubic-bezier(.4,0,.2,1)}
+.mal-fyll.gronn{background:var(--klar)}
+.anslag{font-size:13px;color:var(--dempet);margin:20px 0 0;padding-top:18px;
+  border-top:1px solid var(--kant);font-variant-numeric:tabular-nums;line-height:1.55}
+
+/* ---------- Historikk ---------- */
+.rutenett{display:grid;grid-template-columns:repeat(14,1fr);gap:4px}
+.rute{aspect-ratio:1;border-radius:4px;background:var(--kort-alt);
+  box-shadow:0 0 0 1px var(--kant) inset;transition:transform .12s}
+.rute:hover{transform:scale(1.25)}
+.rute.n1{background:var(--aksent);opacity:.35;box-shadow:none}
+.rute.n2{background:var(--aksent);opacity:.65;box-shadow:none}
+.rute.n3{background:var(--klar);opacity:1;box-shadow:none}
+.rute.valgt{box-shadow:0 0 0 2px var(--blekk)}
+.legende{display:flex;align-items:center;gap:6px;margin-top:14px;font-size:11.5px;color:var(--dempet)}
+.legende .rute{width:11px;aspect-ratio:1}
+.legende .rute:hover{transform:none}
+
+/* ---------- Dialog ---------- */
+dialog{border:none;border-radius:var(--r-stor);background:var(--kort);color:var(--blekk);
+  padding:28px 24px 24px;max-width:360px;width:calc(100% - 36px);box-shadow:var(--skygge-løft)}
+dialog::backdrop{background:rgba(16,19,17,.5);backdrop-filter:blur(3px)}
+dialog h2{font-size:25px;font-weight:800;letter-spacing:-.03em}
+dialog p{font-size:13.5px;color:var(--dempet);margin:7px 0 22px;line-height:1.5}
+dialog label{display:block;margin-bottom:7px}
+dialog input{width:100%;padding:14px 15px;border-radius:var(--r-liten);background:var(--kort-alt);
+  border:1.5px solid var(--kant);color:var(--blekk);font-family:var(--display);font-size:19px;
+  font-weight:700;font-variant-numeric:tabular-nums;margin-bottom:18px}
+dialog input:focus{border-color:var(--aksent);outline:none}
+.dlg-knapper{display:flex;gap:10px}
+.dlg-knapper button{flex:1;padding:14px;border-radius:var(--r-liten);font-family:var(--display);
+  font-size:14.5px;font-weight:700}
+.avbryt{background:var(--kort-alt);color:var(--blekk-myk)}
+.lagre{background:var(--blekk);color:var(--papir)}
+
+/* ---------- Øvelsesfigur ---------- */
+.fig-ramme{background:var(--kort-alt);border-radius:var(--r-midt);padding:6px;margin-bottom:18px}
+.figur{width:100%;max-width:230px;aspect-ratio:1;display:block;margin:0 auto}
+.figur .kropp{fill:none;stroke:var(--blekk);stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+.figur .hode{fill:var(--blekk)}
+.figur .prop{fill:none;stroke:var(--kant-sterk);stroke-width:3.5;stroke-linecap:round}
+.figur .kropp .utstyr{stroke:var(--kant-sterk);stroke-width:3;stroke-dasharray:5 4}
+#ov-dialog h2{margin-bottom:4px}
+#ov-dialog .logg-boks{margin:18px 0 20px;padding:18px 0 0;border-top:1px solid var(--kant)}
+#ov-dialog .logg-boks > .etikett{display:block;margin-bottom:12px}
+#ov-dialog .ov-mal-d{font-family:var(--display);font-size:15px;font-weight:700;color:var(--aksent-dyp);
+  margin:0 0 16px;font-variant-numeric:tabular-nums}
+#ov-tips{margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+#ov-tips li{font-size:14.5px;line-height:1.45;color:var(--blekk-myk);padding-left:18px;position:relative}
+#ov-tips li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;
+  border-radius:50%;background:var(--aksent)}
+
+footer{text-align:center;font-size:12.5px;color:var(--dempet);padding:22px 8px 4px;line-height:1.75}
+
+/* ---------- Nivå opp ---------- */
+.feiring{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:50;
+  background:var(--papir);opacity:0;transition:opacity .35s}
+.feiring.vis{opacity:1}
+.feir-inn{text-align:center;padding:0 24px;transform:translateY(14px) scale(.94);
+  transition:transform .5s cubic-bezier(.2,1.3,.4,1)}
+.feiring.vis .feir-inn{transform:none}
+.feir-topp{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--aksent)}
+.feir-niv{font-family:var(--display);font-size:104px;font-weight:800;letter-spacing:-.06em;
+  line-height:.92;margin-top:10px;font-variant-numeric:tabular-nums}
+.feir-grad{font-family:var(--display);font-size:25px;font-weight:700;letter-spacing:-.02em;margin-top:6px}
+.feir-sub{font-size:13.5px;color:var(--dempet);margin-top:12px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom, 0px));
+  transform:translate(-50%,16px);background:var(--blekk);color:var(--papir);
+  padding:13px 22px;border-radius:99px;font-size:14px;font-weight:600;letter-spacing:-.01em;
+  opacity:0;transition:all .3s cubic-bezier(.2,1.2,.4,1);pointer-events:none;z-index:40;
+  box-shadow:var(--skygge-løft)}
+.toast.vis{opacity:1;transform:translate(-50%,0)}
+.sky-prikk{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--kant-sterk);
+  margin-right:6px;vertical-align:1px}
+.sky-prikk.på{background:var(--klar)}
+.sky-prikk.av{background:var(--aksent)}
+</style>
+
+<div class="wrap">
+
+<header class="topp">
+  <div class="merke">KAMP<span>KLAR</span></div>
+  <div class="gradmerke">
+    <div class="niv" id="nivaa">1</div>
+    <div class="navn" id="grad">Rekrutt</div>
+  </div>
+</header>
+
+<nav class="uke" aria-label="Velg dag">
+  <button class="uke-pil" id="forrige" aria-label="Forrige uke">‹</button>
+  <div class="uke-dager" id="uke-dager"></div>
+  <button class="uke-pil" id="neste" aria-label="Neste uke">›</button>
+</nav>
+
+<main>
+  <section class="dagskort" id="dagskort">
+    <div class="dk-topp">
+      <div class="dk-venstre">
+        <div class="etikett dk-dato" id="dk-dato">Mandag 21. september</div>
+        <h1 class="okt-tittel" id="okt-tittel">Trekk &amp; kjerne</h1>
+        <div class="merkelapper" id="merkelapper"></div>
+      </div>
+      <div class="ring-boks">
+        <svg class="ring" viewBox="0 0 78 78" aria-hidden="true">
+          <circle class="spor" cx="39" cy="39" r="33"></circle>
+          <circle class="fyll" id="ring-fyll" cx="39" cy="39" r="33"
+                  stroke-dasharray="207.3" stroke-dashoffset="207.3"></circle>
+        </svg>
+        <div class="ring-tall" id="ring-tall">0/6</div>
+      </div>
+    </div>
+
+    <ul class="ovelser" id="ovelser"></ul>
+    <button class="legg-til" id="legg-til">+ Legg til øvelse</button>
+
+    <div class="dk-bunn">
+      <button class="cta" id="cta">Fullfør hele økta</button>
+    </div>
+  </section>
+
+  <div class="fliser">
+    <div class="flis">
+      <div class="tall" id="flis-streak">0</div>
+      <span class="etikett">Streak</span>
+    </div>
+    <div class="flis">
+      <div class="tall" id="flis-nivaa">0<em>/200</em></div>
+      <span class="etikett" id="flis-nivaa-etikett">Til nivå 2</span>
+    </div>
+    <div class="flis xp">
+      <div class="tall" id="flis-xp">0</div>
+      <span class="etikett">XP totalt</span>
+    </div>
+  </div>
+
+  <section class="kort">
+    <span class="etikett">Mot målet</span>
+    <div class="mal">
+      <div class="mal-topp">
+        <div>
+          <div class="mal-navn">Pull-ups</div>
+          <div class="mal-under">Hengende, til 12 reps</div>
+        </div>
+        <div class="mal-tall" id="pu-na">5<em> reps</em></div>
+      </div>
+      <div class="mal-spor"><div class="mal-fyll" id="pu-fyll"></div></div>
+    </div>
+    <div class="mal">
+      <div class="mal-topp">
+        <div>
+          <div class="mal-navn">3000 meter</div>
+          <div class="mal-under">Ned mot 12:00</div>
+        </div>
+        <div class="mal-tall" id="lop-na">13:50</div>
+      </div>
+      <div class="mal-spor"><div class="mal-fyll gronn" id="lop-fyll"></div></div>
+    </div>
+    <p class="anslag" id="anslag"></p>
+  </section>
+
+  <section class="kort">
+    <span class="etikett">Siste 8 uker</span>
+    <div class="rutenett" id="rutenett"></div>
+    <div class="legende">
+      <span class="sky-prikk" id="sky-prikk"></span>
+      <span id="sky-tekst">Kobler til…</span>
+    </div>
+  </section>
+
+  <footer>
+    182 cm · 80 kg · 21 år<br>
+    Utholdenhet, overkropp og armer. Trekk og press tre ganger i uka,<br>
+    løping fire — og det eksplosive holdes ved like på lørdager.
+  </footer>
+  <div id="utjevner" aria-hidden="true"></div>
+</main>
+</div>
+
+<dialog id="ov-dialog">
+  <div class="fig-ramme" id="fig-ramme"></div>
+  <h2 id="ov-navn"></h2>
+  <input id="ov-navn-felt" list="ovelsesliste" placeholder="Hva gjorde du?" autocomplete="off" hidden>
+  <datalist id="ovelsesliste"></datalist>
+  <p class="ov-mal-d" id="ov-mal-d"></p>
+
+  <div class="logg-boks">
+    <span class="etikett">Hva du faktisk gjorde</span>
+    <div class="type-valg">
+      <button type="button" id="type-styrke" aria-pressed="true">Styrke</button>
+      <button type="button" id="type-lop" aria-pressed="false">Løp</button>
+    </div>
+    <div class="logg-rad" id="felt-styrke">
+      <label class="felt"><span class="etikett">Sett</span>
+        <input id="f-sett" type="number" inputmode="numeric" min="0" max="99"></label>
+      <label class="felt"><span class="etikett">Reps</span>
+        <input id="f-reps" type="number" inputmode="numeric" min="0" max="999"></label>
+      <label class="felt"><span class="etikett">Kg</span>
+        <input id="f-kg" type="number" inputmode="decimal" min="0" max="500" step="0.5"></label>
+    </div>
+    <div class="logg-rad to" id="felt-lop" hidden>
+      <label class="felt"><span class="etikett">Kilometer</span>
+        <input id="f-km" type="number" inputmode="decimal" min="0" max="99" step="0.1"></label>
+      <label class="felt"><span class="etikett">Tid (mm:ss)</span>
+        <input id="f-tid" type="text" inputmode="numeric" placeholder="8:00"></label>
+    </div>
+  </div>
+
+  <ul id="ov-tips"></ul>
+  <div class="dlg-knapper">
+    <button type="button" class="avbryt" id="ov-slett" hidden>Slett</button>
+    <button type="button" class="avbryt" id="ov-lukk">Lukk</button>
+    <button type="button" class="lagre" id="ov-lagre">Lagre</button>
+  </div>
+</dialog>
+
+<dialog id="test-dialog">
+  <h2>Testresultat</h2>
+  <p>Før inn det du faktisk klarte. Programmet regner om tempo og volum etterpå.</p>
+  <form method="dialog" id="test-form">
+    <label class="etikett" for="felt-pu">Maks pull-ups</label>
+    <input id="felt-pu" type="number" inputmode="numeric" min="1" max="60" required>
+    <label class="etikett" for="felt-lop">3000 meter (mm:ss)</label>
+    <input id="felt-lop" type="text" inputmode="numeric" pattern="[0-9]{1,2}:[0-5][0-9]" placeholder="13:20" required>
+    <div class="dlg-knapper">
+      <button type="button" class="avbryt" id="test-avbryt">Avbryt</button>
+      <button type="submit" class="lagre">Lagre</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="feiring" id="feiring" aria-hidden="true">
+  <div class="feir-inn">
+    <div class="feir-topp">Nivå opp</div>
+    <div class="feir-niv" id="feir-niv">2</div>
+    <div class="feir-grad" id="feir-grad">Menig</div>
+    <div class="feir-sub" id="feir-sub"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script>
+"use strict";
+
+/* ============ Profil ============ */
+const ATLET = {
+  start: "2026-09-21",
+  baseline: { pullups: 5, run3000: 830 },
+  mal: { pullups: 12, run3000: 720 }
+};
+const FORSTE_TEST = { dato: "2026-06-11", pullups: 5, run3000: 830 };
+
+/* ============ Dato ============ */
+const DAG = 86400000;
+const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const dato = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+const dagerMellom = (a,b) => Math.round((dato(b) - dato(a)) / DAG);
+const mmss = sek => `${Math.floor(sek/60)}:${String(Math.round(sek%60)).padStart(2,"0")}`;
+
+/* ============ Tilstand ============ */
+let state = { dager: {}, tester: [] };
+let db = null, iDag = iso(new Date()), vist = iDag;
+const skriveko = new Map();
+
+const normaliser = d => ({
+  gjort: Array.isArray(d && d.gjort) ? d.gjort.filter(n => Number.isInteger(n)) : [],
+  // Faktiske tall per planlagt øvelse, nøklet på navn så de overlever
+  // at rekkefølgen i programmet endres
+  logg: (d && typeof d.logg === "object" && d.logg) ? d.logg : {},
+  // Øvelser som ikke sto i planen
+  ekstra: Array.isArray(d && d.ekstra) ? d.ekstra : [],
+  fullfort: !!(d && d.fullfort),
+  xp: Number(d && d.xp) || 0
+});
+
+/* Sett × reps × kg, eller kilometer og tid. Alt annet er utenfor det
+   denne appen skal holde styr på. */
+const XP_EKSTRA = 15;
+
+function typeFor(navn) {
+  const i = OVELSESINFO[navn];
+  return i && i.fig === "lop" ? "lop" : "styrke";
+}
+
+function loggTekst(l) {
+  if (!l) return "";
+  if (l.type === "lop") {
+    const km = l.km ? String(l.km).replace(".", ",") + " km" : "";
+    const tid = l.tid ? mmss(l.tid) : "";
+    return km && tid ? `${km} på ${tid}` : (km || tid);
+  }
+  if (!l.sett || !l.reps) return l.kg ? l.kg + " kg" : "";
+  return `${l.sett} × ${l.reps}` + (l.kg ? ` × ${String(l.kg).replace(".", ",")} kg` : "");
+}
+
+function lesLokalt() {
+  try {
+    const rå = localStorage.getItem("kampklar");
+    if (rå) {
+      const p = JSON.parse(rå);
+      state.dager = {};
+      for (const [k,v] of Object.entries(p.dager || {})) state.dager[k] = normaliser(v);
+      state.tester = Array.isArray(p.tester) ? p.tester : [];
+    }
+  } catch (e) { /* tom start er helt greit */ }
+}
+function skrivLokalt() {
+  try { localStorage.setItem("kampklar", JSON.stringify(state)); } catch (e) {}
+}
+
+/* ============ Program ============ */
+const ukeNr = d => Math.max(0, Math.floor(dagerMellom(ATLET.start, d) / 7));
+const erDeload = u => u > 0 && u % 4 === 3;
+function fase(u) {
+  if (erDeload(u)) return { navn:"Deload", kode:"deload", faktor:.6 };
+  if (u < 4)  return { navn:"Grunnmur",   kode:"base",  faktor:1.00 };
+  if (u < 12) return { navn:"Oppbygging", kode:"build", faktor:1.15 };
+  if (u < 20) return { navn:"Press",      kode:"peak",  faktor:1.30 };
+  return        { navn:"Skarp",           kode:"sharp", faktor:1.20 };
+}
+function sisteTest() {
+  const alle = [FORSTE_TEST, ...state.tester].slice().sort((a,b) => a.dato < b.dato ? -1 : 1);
+  return alle[alle.length - 1];
+}
+function form(d) {
+  const t = sisteTest();
+  const anker = t.dato > ATLET.start ? t.dato : ATLET.start;
+  const p = Math.min(1, Math.max(0, dagerMellom(anker, d) / 7) / 24);
+  return {
+    pullups: Math.max(t.pullups, Math.round(t.pullups + (ATLET.mal.pullups - t.pullups) * p)),
+    run3000: Math.min(t.run3000, Math.round(t.run3000 + (ATLET.mal.run3000 - t.run3000) * p))
+  };
+}
+const ov = (navn, mal, xp) => ({ navn, mal, xp });
+
+function program(d) {
+  const uke = ukeNr(d), f = fase(uke), k = f.faktor;
+  const fm = form(d), pace = fm.run3000 / 3;
+  const ukedag = (dato(d).getDay() + 6) % 7;
+  const deload = erDeload(uke);
+  let tittel, ovelser;
+
+  const pullStyrke = () => fm.pullups < 4
+    ? ov("Pull-ups, negativer", `${Math.max(3, Math.round(5*k))} sett × 4 nedsenk à 5 sek`, 25)
+    : ov("Pull-ups, styrkesett", `${Math.max(3, Math.round(5*k))} sett × ${Math.max(2, Math.round(fm.pullups*.6))} reps · 2 min pause`, 25);
+  const pullStige = () => {
+    const topp = Math.max(2, Math.round(fm.pullups * .6));
+    return ov("Pull-ups, stige", `${Math.max(2, Math.round(3*k))} runder: ${Array.from({length:topp},(_,i)=>i+1).join("–")} reps · 60 sek mellom`, 25);
+  };
+  const intervall = () => ov("Intervall 800 m",
+    `${Math.max(4, Math.round(6*k))} × 800 m på ${mmss(Math.round((pace-12)*.8))} · 2 min jogg`, 30);
+  const terskel = fk => ov("Terskeløp", `${Math.max(12, Math.round(22*fk))} min sammenhengende på ${mmss(pace+30)} /km`, 30);
+  const rolig = fk => ov("Rolig langtur", `${Math.max(25, Math.round(50*fk))} min på ${mmss(pace+70)} /km · prat-tempo`, 20);
+
+  switch (ukedag) {
+    case 0: tittel = "Trekk & biceps"; ovelser = [
+      ov("Oppvarming", "8 min rolig jogg + skulderbånd", 10),
+      pullStyrke(),
+      ov("Stangroing", `${Math.round(4*k)} × 8 reps · tungt`, 20),
+      ov("Bicepscurl med stang", `${Math.round(4*k)} × 8 reps · øk vekta når 8 går lett`, 20),
+      ov("Hammercurl", "3 × 12 reps", 15),
+      ov("Hengende benløft", "3 × 10 reps", 15)]; break;
+    case 1: tittel = "Fartsøkt"; ovelser = deload
+      ? [ov("Oppvarming","10 min rolig",10), rolig(.7), ov("Mobilitet","10 min hofte og ankel",10)]
+      : [ov("Oppvarming","12 min rolig + 4 stigningsløp",10), intervall(),
+         ov("Nedjogg","8 min",10), ov("Sideplanke","3 × 45 sek per side",15)]; break;
+    case 2: tittel = "Press & triceps"; ovelser = [
+      ov("Oppvarming", "5 min hopptau + mobilitet", 10),
+      ov("Knebøy", `${Math.round(4*k)} × 6 reps · tungt`, 25),
+      ov("Dips", `${Math.round(4*k)} × 8 reps · heng på vekt når 12 går`, 25),
+      ov("Skulderpress", "3 × 8 reps", 20),
+      ov("Franskpress", `${Math.round(3*k)} × 10 reps · albuene i ro`, 20),
+      ov("Tricepspress i kabel", "3 × 12 reps · rolig tilbake", 15)]; break;
+    case 3: tittel = "Rolig & mobilitet"; ovelser = [
+      rolig(k), ov("Mobilitet","15 min hofte, hamstring, bryst",10),
+      ov("Dødheng","3 × maks tid i stanga",15),
+      ov("Armer, lett","2 × 15 curl + 2 × 15 tricepspress · blodgjennomstrømning",10)]; break;
+    case 4: tittel = "Armer & overkropp"; ovelser = [
+      ov("Oppvarming","8 min rolig + skulderbånd",10), pullStige(),
+      ov("Dips","3 × 10 reps",20),
+      ov("Supersett: curl + tricepspress",
+         `${Math.max(2, Math.round(3*k))} runder × 12 + 12 · ingen pause mellom øvelsene`, 20),
+      ov("Face pulls med strikk","3 × 15 reps",15),
+      ov("Kjerne","3 × 15 russisk vri + 3 × 20 sek hollow",15)]; break;
+    case 5: tittel = "Terskel"; ovelser = deload
+      ? [ov("Oppvarming","10 min rolig",10), terskel(.5), ov("Nedjogg","8 min",10)]
+      : [ov("Oppvarming","12 min rolig",10), terskel(k), ov("Nedjogg","8 min",10),
+         ov("Eksplosivt","3 × 5 medisinballstøt + 5 stille lengde · vedlikehold 9 av 9",15)]; break;
+    default: tittel = "Restitusjon"; ovelser = [
+      ov("Gåtur","40–60 min rolig",15), ov("Tøy og rull","15 min",10),
+      ov("Søvn","Legg deg før 23:00",10)];
+  }
+
+  const test = deload && ukedag === 6;
+  if (test) {
+    tittel = "Testdag";
+    ovelser = [
+      ov("Oppvarming","15 min rolig + stigningsløp",10),
+      ov("Maks pull-ups","Ett sett til failure",40),
+      ov("3000 m på tid","Full innsats",40)];
+  }
+  return { uke: uke + 1, fase: f, tittel, test, form: fm, ovelser };
+}
+
+/* ============ Øvelsesfigurer ============
+   Hver figur er to positurer som animeres fram og tilbake. Alle
+   punktlister i et par må ha like mange punkter, ellers kan ikke
+   nettleseren regne ut bevegelsen mellom dem. */
+const GULV = '<line x1="10" y1="104" x2="110" y2="104"/>';
+
+const FIGURER = {
+  lop: { fart: 1.6, lett: 'linear', prop: GULV,
+    sirkler: [{ a:[64,22,8], b:[64,22,8] }],
+    linjer: [
+      { a:"63,30 57,60",        b:"63,30 57,60" },
+      { a:"61,38 50,44 52,56",  b:"61,38 72,42 78,32" },
+      { a:"61,38 72,42 78,32",  b:"61,38 50,44 52,56" },
+      { a:"57,60 48,78 44,94",  b:"57,60 64,80 62,104" },
+      { a:"57,60 66,82 72,104", b:"57,60 48,74 42,84" }]},
+
+  pullup: { fart: 2.8, lett: 'easeInOutQuad', prop: '<line x1="18" y1="15" x2="102" y2="15"/>',
+    sirkler: [{ a:[60,38,8], b:[60,24,8] }],
+    linjer: [
+      { a:"60,46 60,78",        b:"60,32 60,64" },
+      { a:"52,48 50,30 48,15",  b:"52,34 40,26 48,15" },
+      { a:"68,48 70,30 72,15",  b:"68,34 80,26 72,15" },
+      { a:"60,78 54,94 57,108", b:"60,64 52,78 57,92", e: 0.12 },
+      { a:"60,78 66,94 63,108", b:"60,64 68,78 63,92", e: 0.12 }]},
+
+  dodheng: { fart: 3.6, lett: 'easeInOutSine', prop: '<line x1="18" y1="15" x2="102" y2="15"/>',
+    sirkler: [{ a:[60,38,8], b:[61,39,8] }],
+    linjer: [
+      { a:"60,46 60,78",        b:"61,47 62,79" },
+      { a:"52,48 50,30 48,15",  b:"53,49 50,30 48,15" },
+      { a:"68,48 70,30 72,15",  b:"69,49 70,30 72,15" },
+      { a:"60,78 54,94 57,108", b:"62,79 57,95 61,109" },
+      { a:"60,78 66,94 63,108", b:"62,79 68,95 66,109" }]},
+
+  roing: { fart: 2.4, lett: 'easeOutQuad', prop: GULV,
+    sirkler: [{ a:[34,46,8], b:[34,46,8] }],
+    linjer: [
+      { a:"42,50 76,60",        b:"42,50 76,60" },
+      { a:"48,53 52,74 52,92",  b:"48,53 62,70 52,66" },
+      { a:"40,92 66,92",        b:"40,66 66,66" },
+      { a:"76,60 80,82 78,104", b:"76,60 80,82 78,104" },
+      { a:"76,60 70,82 68,104", b:"76,60 70,82 68,104" }]},
+
+  curl: { fart: 2.4, lett: 'easeInOutQuad', prop: GULV,
+    sirkler: [{ a:[60,24,8], b:[60,24,8] }],
+    linjer: [
+      { a:"60,32 60,66",        b:"60,32 60,66" },
+      { a:"53,38 50,58 52,78",  b:"53,38 50,58 58,52" },
+      { a:"67,38 70,58 68,78",  b:"67,38 70,58 62,52" },
+      { a:"42,78 78,78",        b:"46,52 74,52" },
+      { a:"60,66 55,86 55,104", b:"60,66 55,86 55,104" },
+      { a:"60,66 65,86 65,104", b:"60,66 65,86 65,104" }]},
+
+  benloft: { fart: 2.8, lett: 'easeInOutQuad', prop: '<line x1="18" y1="15" x2="102" y2="15"/>',
+    sirkler: [{ a:[60,36,8], b:[60,36,8] }],
+    linjer: [
+      { a:"60,44 60,76",        b:"60,44 60,76" },
+      { a:"52,46 50,30 48,15",  b:"52,46 50,30 48,15" },
+      { a:"68,46 70,30 72,15",  b:"68,46 70,30 72,15" },
+      { a:"60,76 57,94 57,110", b:"60,76 78,74 96,72" },
+      { a:"60,76 63,94 63,110", b:"60,76 78,80 96,78" }]},
+
+  sideplanke: { fart: 3.4, lett: 'easeInOutSine', prop: GULV,
+    sirkler: [{ a:[92,48,8], b:[92,44,8] }],
+    linjer: [
+      { a:"86,54 46,86",        b:"86,50 46,80" },
+      { a:"46,86 26,102",       b:"46,80 26,102" },
+      { a:"86,54 84,86 64,102", b:"86,50 84,84 64,102" },
+      { a:"86,54 88,36 90,20",  b:"86,50 88,32 90,16" }]},
+
+  knebøy: { fart: 2.8, lett: 'easeInOutQuad', prop: GULV,
+    sirkler: [{ a:[60,22,8], b:[60,40,8] }],
+    linjer: [
+      { a:"60,30 60,62",        b:"60,48 64,76" },
+      { a:"44,32 76,32",        b:"46,50 78,50" },
+      { a:"54,34 48,36 46,32",  b:"58,52 50,54 48,50" },
+      { a:"66,34 72,36 74,32",  b:"70,52 76,54 78,50" },
+      { a:"60,62 54,84 52,104", b:"64,76 44,88 52,104" },
+      { a:"60,62 68,84 70,104", b:"64,76 80,88 70,104" }]},
+
+  dips: { fart: 2.6, lett: 'easeInOutQuad',
+    prop: '<line x1="30" y1="66" x2="46" y2="66"/><line x1="74" y1="66" x2="90" y2="66"/>',
+    sirkler: [{ a:[60,18,8], b:[60,36,8] }],
+    linjer: [
+      { a:"60,26 60,60",       b:"60,44 60,78" },
+      { a:"52,38 46,52 40,66", b:"52,54 44,63 40,66" },
+      { a:"68,38 74,52 80,66", b:"68,54 76,63 80,66" },
+      { a:"60,60 53,78 59,90", b:"60,78 53,96 59,108", e: 0.1 },
+      { a:"60,60 67,78 73,90", b:"60,78 67,96 73,108", e: 0.1 }]},
+
+  skulderpress: { fart: 2.6, lett: 'easeOutQuad', prop: GULV,
+    sirkler: [{ a:[60,24,8], b:[60,24,8] }],
+    linjer: [
+      { a:"52,36 44,52 50,42",  b:"52,36 46,22 50,12" },
+      { a:"68,36 76,52 70,42",  b:"68,36 74,22 70,12" },
+      { a:"44,42 76,42",        b:"44,12 76,12" },
+      { a:"60,32 60,68",        b:"60,32 60,68" },
+      { a:"60,68 55,86 55,104", b:"60,68 55,86 55,104" },
+      { a:"60,68 65,86 65,104", b:"60,68 65,86 65,104" }]},
+
+  franskpress: { fart: 2.6, lett: 'easeInOutQuad',
+    prop: GULV + '<line x1="20" y1="86" x2="98" y2="86"/>',
+    sirkler: [{ a:[32,76,8], b:[32,76,8] }],
+    linjer: [
+      { a:"40,78 74,80",       b:"40,78 74,80" },
+      { a:"46,76 50,54 52,38", b:"46,76 50,54 34,48" },
+      { a:"44,38 60,38",       b:"26,48 42,48" },
+      { a:"74,80 84,92 84,102", b:"74,80 84,92 84,102" }]},
+
+  tricepspress: { fart: 2.2, lett: 'easeOutQuad', prop: GULV + '<line x1="64" y1="8" x2="64" y2="18"/>',
+    sirkler: [{ a:[42,26,8], b:[42,26,8] }],
+    linjer: [
+      { a:"64,18 64,50",        b:"64,18 64,72", k:"utstyr" },
+      { a:"42,34 42,68",        b:"42,34 42,68" },
+      { a:"44,38 48,54 58,50",  b:"44,38 50,56 58,72" },
+      { a:"53,50 66,50",        b:"53,72 66,72" },
+      { a:"42,68 37,86 37,104", b:"42,68 37,86 37,104" },
+      { a:"42,68 47,86 47,104", b:"42,68 47,86 47,104" }]},
+
+  facepull: { fart: 2.4, lett: 'easeOutQuad', prop: GULV + '<line x1="104" y1="28" x2="104" y2="46"/>',
+    sirkler: [{ a:[40,26,8], b:[40,26,8] }],
+    linjer: [
+      { a:"42,36 42,70",       b:"42,36 42,70" },
+      { a:"38,40 60,38 80,37", b:"38,40 66,22 51,30" },
+      { a:"80,37 104,37",      b:"51,30 104,37", k:"utstyr" },
+      { a:"42,70 37,87 37,104", b:"42,70 37,87 37,104" },
+      { a:"42,70 47,87 47,104", b:"42,70 47,87 47,104" }]},
+
+  kjerne: { fart: 3.0, lett: 'easeInOutSine', prop: GULV,
+    sirkler: [{ a:[34,86,7], b:[34,79,7] }],
+    linjer: [
+      { a:"42,92 76,92",        b:"42,85 76,87" },
+      { a:"42,92 36,76 26,66",  b:"42,85 36,68 26,56", e: 0.08 },
+      { a:"76,92 90,88 104,84", b:"76,87 90,78 104,68", e: 0.08 }]},
+
+  mobilitet: { fart: 3.4, lett: 'easeInOutSine', prop: GULV,
+    sirkler: [{ a:[50,32,8], b:[50,30,8] }],
+    linjer: [
+      { a:"50,40 58,68",        b:"50,38 58,66" },
+      { a:"46,44 36,28 32,14",  b:"46,42 34,26 30,12", e: 0.1 },
+      { a:"58,68 38,82 34,104", b:"58,66 36,82 32,104" },
+      { a:"58,68 82,88 96,102", b:"58,66 84,88 98,102" }]},
+
+  eksplosivt: { fart: 2.2, lett: 'easeOutExpo', prop: GULV,
+    sirkler: [{ a:[48,42,8], b:[64,24,8] }, { a:[28,70,6], b:[52,6,6], e: 0.16 }],
+    linjer: [
+      { a:"48,50 54,76",        b:"62,32 60,58" },
+      { a:"46,54 38,66 31,70",  b:"60,36 54,20 52,10", e: 0.06 },
+      { a:"50,56 42,68 33,73",  b:"64,36 57,20 54,10", e: 0.06 },
+      { a:"54,76 46,90 44,104", b:"60,58 54,80 52,100" },
+      { a:"54,76 62,90 64,104", b:"60,58 68,80 70,100" }]}
+};
+
+/* Øvelsesnavn → figur og formtips. */
+const OVELSESINFO = {
+  "Oppvarming":        { fig:"lop", tips:["Rolig nok til at du kan snakke i hele setninger.","Skulderbånd: 2 × 15 utoverrotasjon før du tar i.","Målet er varme muskler, ikke trøtte muskler."] },
+  "Pull-ups, styrkesett": { fig:"pullup", tips:["Start fra rett heng, skuldrene nede fra stanga.","Dra albuene ned mot ribbeina, ikke bare opp.","Haka over stanga, så rolig ned på tre sekunder.","Stopp settet før du må sprelle deg opp."] },
+  "Pull-ups, negativer": { fig:"pullup", tips:["Hopp eller tråkk opp til haka er over stanga.","Senk deg på fem sekunder, så sakte du klarer.","Det er nedturen som bygger styrken her."] },
+  "Pull-ups, stige":   { fig:"pullup", tips:["Start på én rep, øk med én per sett.","Avbryt runden før du kommer til failure.","Mange gode reps slår få harde."] },
+  "Maks pull-ups":     { fig:"pullup", tips:["Ett sett, hele veien til du ikke klarer mer.","Haka må over stanga for at repen teller.","Ingen sprell med beina — det teller ikke."] },
+  "Nedtrekk":          { fig:"pullup", tips:["Dra stanga ned mot øvre del av brystet, ikke bak nakken.","Albuene ned langs siden, ikke ut til sidene.","Bygger samme trekk som pull-ups — bruk den til å komme dit."] },
+  "Stangroing":        { fig:"roing", tips:["Rett rygg, overkroppen rundt 45 grader fram.","Dra stanga mot navlen, ikke mot brystet.","Klem skulderbladene sammen på toppen."] },
+  "Bicepscurl med stang": { fig:"curl", tips:["Albuene låst inntil kroppen hele veien.","Ikke sving med ryggen for å få opp vekta.","Senk på to sekunder — halve jobben ligger der."] },
+  "Hammercurl":        { fig:"curl", tips:["Nøytralt grep, tomlene opp hele veien.","Treffer brachialis og gir tykkere arm fra siden.","Rolig tilbake, ingen fart i bunnen."] },
+  "Armer, lett":       { fig:"curl", tips:["Lett vekt, høye reps — dette skal ikke slite deg ut.","Formålet er blodgjennomstrømning mellom de tunge dagene.","Stopp et godt stykke fra failure."] },
+  "Supersett: curl + tricepspress": { fig:"curl", tips:["Curl først, rett over på tricepspress uten pause.","Hvil 90 sekunder mellom rundene.","Bi og tri i samme runde gir god pump på kort tid."] },
+  "Hengende benløft":  { fig:"benloft", tips:["Heng rett, start uten sving.","Løft til beina er vannrette, eller så høyt du klarer kontrollert.","Senk rolig — ikke la deg falle tilbake."] },
+  "Intervall 800 m":   { fig:"lop", tips:["Jevn fart gjennom hele dragene, ikke rykk fra start.","Siste drag skal være like raskt som det første.","Klarer du ikke tida, ta heller ett drag mindre."] },
+  "Terskeløp":         { fig:"lop", tips:["Komfortabelt hardt — du skal kunne si noen ord, ikke en setning.","Sammenhengende, ingen pauser.","Dette er økta som flytter 3000-metertida mest."] },
+  "Rolig langtur":     { fig:"lop", tips:["Prat-tempo hele veien. Går det for fort, mister økta hensikten.","Rolig løping bygger kapasiteten de harde øktene hviler på.","Nese- eller munnpust — bare det kjennes lett."] },
+  "Nedjogg":           { fig:"lop", tips:["Rolig, uansett hvordan økta gikk.","Får pulsen ned og gjør morgendagen lettere."] },
+  "Gåtur":             { fig:"lop", tips:["Rolig tempo, ingen pulsjag.","Aktiv hvile — bedre enn å ligge stille hele dagen."] },
+  "3000 m på tid":     { fig:"lop", tips:["Del opp: jevn fart de to første kilometerne, tøm deg på siste.","Start for hardt, og du taper mer enn du vant.","Noter tida i appen med én gang."] },
+  "Sideplanke":        { fig:"sideplanke", tips:["Kroppen i rett linje fra hode til hæl.","Løft hofta aktivt, ikke la den synke.","Albuen rett under skulderen."] },
+  "Knebøy":            { fig:"knebøy", tips:["Føttene i skulderbredde, tærne litt ut.","Ned til lårene er vannrette, eller lavere.","Knærne følger tærne — ikke la dem falle innover.","Rett rygg, brystet opp hele veien."] },
+  "Dips":              { fig:"dips", tips:["Ned til overarmen er vannrett.","Litt framoverlent treffer brystet, rett opp og ned treffer triceps.","Klarer du tolv, heng på vekt i stedet for å ta flere reps."] },
+  "Skulderpress":      { fig:"skulderpress", tips:["Press rett opp, ikke fram.","Stram magen så du ikke svaier i ryggen.","Låst albue på toppen, rolig ned."] },
+  "Franskpress":       { fig:"franskpress", tips:["Albuene i ro og pekende samme vei hele settet.","Bare underarmen beveger seg.","Kjenner du det i albueleddet, gå ned i vekt."] },
+  "Tricepspress i kabel": { fig:"tricepspress", tips:["Albuene inntil kroppen, kun underarmen jobber.","Strekk helt ut i bunnen og hold et øyeblikk.","Rolig tilbake — ikke la vekta dra armen opp."] },
+  "Face pulls med strikk": { fig:"facepull", tips:["Dra mot pannen med høye albuer.","Skulderbladene sammen, ikke løft skuldrene.","Motvekt mot alt pressingen gjør med skuldrene."] },
+  "Kjerne":            { fig:"kjerne", tips:["Korsryggen presset ned i underlaget hele tiden.","Slipper ryggen opp, har du gått for langt ut.","Rolige, kontrollerte bevegelser."] },
+  "Mobilitet":         { fig:"mobilitet", tips:["Hold hver posisjon i 30–45 sekunder.","Pust rolig, ikke press inn i smerte.","Hofta er det som først blir stiv av mye løping."] },
+  "Tøy og rull":       { fig:"mobilitet", tips:["Rull lårene, leggene og setet i et par minutter hver.","Hold tøyningene lenge nok til at pusten roer seg."] },
+  "Dødheng":           { fig:"dodheng", tips:["Heng rett med avslappede skuldre.","Bygger grep og gir skuldrene strekk.","Ta tida — det er et tall å slå neste gang."] },
+  "Eksplosivt":        { fig:"eksplosivt", tips:["Full innsats på hvert kast og hvert hopp.","Hvil godt mellom forsøkene — dette er ikke kondisjon.","Du står i 9 av 9 på begge; her holder du bare formen ved like."] }
+};
+
+/* Bevegelsen kjøres av anime.js. Positurene er de samme to ytterpunktene
+   som før, men anime.js gir dem akselerasjon og oppbremsing i stedet for
+   den jevne, mekaniske farten SMIL ga — og hver øvelse får en kurve som
+   passer bevegelsen: eksplosivt for kast og hopp, rolig for tøying.
+
+   Biblioteket lastes fra CDN. Er du uten nett, eller har du bedt om
+   mindre bevegelse, vises sluttposituren stillestående i stedet. */
+const ROLIG = typeof window !== "undefined" && window.matchMedia
+  && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let figurAnimasjoner = [];
+
+function stoppFigurer() {
+  for (const a of figurAnimasjoner) a.pause();
+  figurAnimasjoner = [];
+}
+
+const talListe = t => t.trim().split(/[\s,]+/).map(Number);
+
+// Noen ledd skal henge litt etter, ellers beveger hele kroppen seg i takt
+const framdrift = (t, etterslep) =>
+  etterslep ? Math.min(1, Math.max(0, (t - etterslep) / (1 - etterslep))) : t;
+
+function byggSvg(f, side) {
+  let ut = '<svg viewBox="0 0 120 120" class="figur" role="img" aria-hidden="true">';
+  if (f.prop) ut += `<g class="prop">${f.prop}</g>`;
+  ut += '<g class="kropp">';
+  for (const l of f.linjer) {
+    ut += `<polyline${l.k ? ` class="${l.k}"` : ""} points="${l[side]}"/>`;
+  }
+  ut += '</g><g class="hode">';
+  for (const sk of f.sirkler) {
+    const p = sk[side];
+    ut += `<circle cx="${p[0]}" cy="${p[1]}" r="${p[2]}"/>`;
+  }
+  return ut + "</g></svg>";
+}
+
+function visFigur(vert, nokkel) {
+  stoppFigurer();
+  const f = FIGURER[nokkel];
+  if (!f) { vert.replaceChildren(); return; }
+
+  const stille = ROLIG || typeof anime === "undefined";
+  vert.innerHTML = byggSvg(f, stille ? "b" : "a");
+  if (stille) return;
+
+  const linjer = Array.from(vert.querySelectorAll("polyline"));
+  const sirkler = Array.from(vert.querySelectorAll("circle"));
+  const lData = f.linjer.map(l => ({ a: talListe(l.a), b: talListe(l.b), e: l.e || 0 }));
+  const sData = f.sirkler.map(sk => ({ a: sk.a, b: sk.b, e: sk.e || 0 }));
+
+  const steg = { t: 0 };
+  const tegnSteg = () => {
+    lData.forEach((d, i) => {
+      const t = framdrift(steg.t, d.e);
+      linjer[i].setAttribute("points",
+        d.a.map((v, k) => (v + (d.b[k] - v) * t).toFixed(2)).join(" "));
+    });
+    sData.forEach((d, i) => {
+      const t = framdrift(steg.t, d.e);
+      sirkler[i].setAttribute("cx", (d.a[0] + (d.b[0] - d.a[0]) * t).toFixed(2));
+      sirkler[i].setAttribute("cy", (d.a[1] + (d.b[1] - d.a[1]) * t).toFixed(2));
+    });
+  };
+
+  figurAnimasjoner.push(anime({
+    targets: steg,
+    t: 1,
+    duration: (f.fart || 2.6) * 1000,
+    easing: f.lett || "easeInOutQuad",
+    direction: "alternate",
+    loop: true,
+    update: tegnSteg
+  }));
+}
+
+/* ============ Nivå ============ */
+const GRADER = [[1,"Rekrutt"],[3,"Menig"],[5,"Visekorporal"],[8,"Korporal"],[11,"Sersjant"],
+  [15,"Oversersjant"],[20,"Stabssersjant"],[26,"Fenrik"],[33,"Løytnant"],[41,"Kaptein"],[50,"Major"]];
+const kravFor = n => 200 + (n - 1) * 100;
+function nivaaInfo(xp) {
+  let n = 1, rest = xp;
+  while (rest >= kravFor(n)) { rest -= kravFor(n); n++; }
+  let grad = GRADER[0][1];
+  for (const [l, g] of GRADER) if (n >= l) grad = g;
+  return { nivaa: n, iNivaa: rest, trenger: kravFor(n), grad };
+}
+const totalXp = () => Object.values(state.dager).reduce((s, d) => s + (d.xp || 0), 0);
+function streak(fra) {
+  let n = 0, d = dato(fra);
+  if (!(state.dager[iso(d)] || {}).fullfort) d = new Date(d - DAG);
+  while ((state.dager[iso(d)] || {}).fullfort) { n++; d = new Date(d - DAG); }
+  return n;
+}
+
+/* ============ Skriving ============ */
+function skrivDag(d) {
+  skrivLokalt();
+  if (!db) return;
+  const forrige = skriveko.get(d) || Promise.resolve();
+  const neste = forrige
+    .catch(() => {})
+    .then(() => db.doc("dager/" + d).set({ ...state.dager[d], dato: d, oppdatert: new Date().toISOString() }))
+    .catch(e => { if (e && e.code !== "unavailable") melding("Fikk ikke lagret til skyen"); });
+  skriveko.set(d, neste);
+  return neste;
+}
+
+/* ============ Tegning ============ */
+const $ = s => document.querySelector(s);
+
+/* Opptegning skal aldri flytte siden under fingeren. */
+function bevarScroll(fn) {
+  const y = window.scrollY;
+  fn();
+  if (window.scrollY !== y) window.scrollTo(0, y);
+}
+
+/* Dagene i en uke har ulikt antall øvelser, så dagskortet endrer høyde.
+   Uten dette krymper dokumentet når du står nederst, og nettleseren
+   dytter deg oppover. Vi legger differansen som usynlig plass nederst,
+   slik at sida er like høy uansett hvilken dag som er valgt. */
+/* Dagene i uka gir ulik sidehøyde: øktene har tre til seks øvelser, og
+   lange økttitler brekker til to linjer på smale skjermer. Uten dette
+   krymper dokumentet når du bytter dag, og visningen flytter seg — også
+   når det er en ramme utenfor sida som scroller, der vi ikke rår over
+   scrollposisjonen i det hele tatt.
+
+   Derfor måles den faktiske høyden for alle sju dagene i uka, og
+   differansen legges som usynlig plass nederst. Målingen skjer i samme
+   bilde som opptegningen, så ingenting av den vises. */
+let maalHoyde = 0, maalNokkel = "";
+
+function sideHoyde() { return document.documentElement.scrollHeight; }
+
+function utjevnHoyde() {
+  const utjevner = $("#utjevner");
+  const nokkel = iso(mandagFor(vist)) + "@" + window.innerWidth;
+
+  if (nokkel !== maalNokkel) {
+    const husk = vist;
+    utjevner.style.height = "0px";
+    maalHoyde = 0;
+    const man = mandagFor(vist);
+    for (let i = 0; i < 7; i++) {
+      vist = iso(new Date(+man + i * DAG));
+      tegnInnhold();
+      maalHoyde = Math.max(maalHoyde, sideHoyde());
+    }
+    vist = husk;
+    tegnInnhold();
+    maalNokkel = nokkel;
+  } else {
+    utjevner.style.height = "0px";
+  }
+
+  utjevner.style.height = Math.max(0, maalHoyde - sideHoyde()) + "px";
+}
+const BOKSTAV = ["M","T","O","T","F","L","S"];
+const OMKRETS = 2 * Math.PI * 33;
+
+function mandagFor(d) {
+  const x = dato(d);
+  return new Date(x - ((x.getDay() + 6) % 7) * DAG);
+}
+function nivaaFor(dagIso) {
+  const d = state.dager[dagIso];
+  if (!d) return 0;
+  const n = normaliser(d);
+  return n.fullfort ? 3 : (n.gjort.length > 2 ? 2 : (n.gjort.length ? 1 : 0));
+}
+
+/* Ukestripa og rutenettet bygges én gang og oppdateres deretter på
+   plass. Å bytte ut innholdet ved hver opptegning river bort knappen
+   som akkurat ble trykket, og gir unødig omregning av layouten. */
+let ukeCeller = [], ukeMandag = null;
+
+function byggUke(manIso) {
+  const boks = $("#uke-dager");
+  boks.replaceChildren();
+  ukeCeller = [];
+  const man = dato(manIso);
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(+man + i * DAG), dIso = iso(d);
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label", d.toLocaleDateString("nb-NO", { weekday:"long", day:"numeric", month:"long" }));
+    const bok = document.createElement("div");
+    bok.className = "bok"; bok.textContent = BOKSTAV[i];
+    const num = document.createElement("div");
+    num.className = "num"; num.textContent = d.getDate();
+    const prikk = document.createElement("div");
+    prikk.className = "prikk";
+    b.append(bok, num, prikk);
+    b.addEventListener("click", () => bevarScroll(() => { vist = dIso; tegn(); }));
+    boks.appendChild(b);
+    ukeCeller.push({ el: b, dIso });
+  }
+  ukeMandag = manIso;
+}
+
+function tegnUke() {
+  const manIso = iso(mandagFor(vist));
+  if (manIso !== ukeMandag) byggUke(manIso);
+  for (const c of ukeCeller) {
+    const niv = nivaaFor(c.dIso);
+    c.el.className = "uke-dag" + (c.dIso === vist ? " valgt" : "") + (c.dIso === iDag ? " idag" : "")
+      + (niv === 3 ? " hel" : niv > 0 ? " noe" : "");
+    if (c.dIso === vist) c.el.setAttribute("aria-current", "date");
+    else c.el.removeAttribute("aria-current");
+  }
+}
+
+function tegnInnhold() {
+  const pr = program(vist);
+  const dag = normaliser(state.dager[vist]);
+  const xp = totalXp(), info = nivaaInfo(xp);
+
+  $("#nivaa").textContent = info.nivaa;
+  $("#grad").textContent = info.grad;
+  $("#flis-streak").textContent = streak(iDag);
+  $("#flis-nivaa").innerHTML = "";
+  $("#flis-nivaa").append(document.createTextNode(String(info.trenger - info.iNivaa)));
+  const em = document.createElement("em"); em.textContent = " XP";
+  $("#flis-nivaa").appendChild(em);
+  $("#flis-nivaa-etikett").textContent = "Til nivå " + (info.nivaa + 1);
+  $("#flis-xp").textContent = xp.toLocaleString("nb-NO");
+
+  const d = dato(vist);
+  $("#dk-dato").textContent = d.toLocaleDateString("nb-NO",
+    { weekday:"long", day:"numeric", month:"long" });
+  $("#okt-tittel").textContent = pr.tittel;
+  $("#dagskort").classList.toggle("ferdig", dag.fullfort);
+
+  const andel = dag.gjort.length / pr.ovelser.length;
+  $("#ring-fyll").style.strokeDashoffset = OMKRETS * (1 - andel);
+  $("#ring-tall").textContent = `${dag.gjort.length}/${pr.ovelser.length}`;
+
+  const lapper = $("#merkelapper");
+  lapper.replaceChildren();
+  const lapp = (tekst, klasse) => {
+    const s = document.createElement("span");
+    s.className = "lapp" + (klasse ? " " + klasse : "");
+    s.textContent = tekst;
+    lapper.appendChild(s);
+  };
+  lapp("Uke " + pr.uke);
+  lapp(pr.fase.navn, pr.fase.kode);
+  if (pr.test) lapp("Test", "test");
+
+  const liste = $("#ovelser");
+  liste.replaceChildren();
+  /* Sirkelen huker av raskt. Trykk på navnet åpner arket med figur,
+     formtips og feltene for hva du faktisk gjorde. */
+  const lagRad = ({ gjort, navnTekst, underTekst, erLogg, xp, ekstra, paaHake, paaApne }) => {
+    const li = document.createElement("li");
+    const rad = document.createElement("div");
+    rad.className = "ovelse" + (gjort ? " gjort" : "");
+
+    const hake = document.createElement("button");
+    hake.type = "button";
+    hake.className = "hake-knapp";
+    hake.setAttribute("aria-pressed", String(gjort));
+    hake.setAttribute("aria-label", (gjort ? "Angre " : "Marker ") + navnTekst);
+    const boks = document.createElement("div");
+    boks.className = "boks";
+    boks.innerHTML = '<svg viewBox="0 0 20 20" aria-hidden="true"><polyline points="4,10.5 8.4,14.5 16,6"/></svg>';
+    hake.appendChild(boks);
+    if (paaHake) hake.addEventListener("click", paaHake);
+    else hake.disabled = true;
+
+    const apne = document.createElement("button");
+    apne.type = "button";
+    apne.className = "apne";
+    apne.setAttribute("aria-label", "Åpne " + navnTekst);
+    const tekst = document.createElement("div");
+    tekst.className = "ov-tekst";
+    const navn = document.createElement("div");
+    navn.className = "ov-navn";
+    navn.textContent = navnTekst;
+    if (ekstra) {
+      const m = document.createElement("span");
+      m.className = "merke-ekstra";
+      m.textContent = "Ekstra";
+      navn.appendChild(m);
+    }
+    const mal = document.createElement("div");
+    mal.className = "ov-mal" + (erLogg ? " ov-gjort" : "");
+    mal.textContent = underTekst;
+    tekst.append(navn, mal);
+    apne.appendChild(tekst);
+    apne.addEventListener("click", paaApne);
+
+    const xpEl = document.createElement("div");
+    xpEl.className = "ov-xp";
+    xpEl.textContent = "+" + xp;
+
+    rad.append(hake, apne, xpEl);
+    li.appendChild(rad);
+    liste.appendChild(li);
+  };
+
+  pr.ovelser.forEach((o, i) => {
+    const l = dag.logg[o.navn];
+    const tekst = loggTekst(l);
+    lagRad({
+      gjort: dag.gjort.includes(i),
+      navnTekst: o.navn,
+      underTekst: tekst || o.mal,
+      erLogg: !!tekst,
+      xp: o.xp,
+      paaHake: () => veksle(i),
+      paaApne: () => apneOvelse({ kilde: "plan", navn: o.navn, mal: o.mal, indeks: i })
+    });
+  });
+
+  dag.ekstra.forEach((e, i) => {
+    lagRad({
+      gjort: true,
+      navnTekst: e.navn,
+      underTekst: loggTekst(e) || "Ingen tall ført inn",
+      erLogg: true,
+      xp: XP_EKSTRA,
+      ekstra: true,
+      paaApne: () => apneOvelse({ kilde: "ekstra", navn: e.navn, indeks: i })
+    });
+  });
+
+  const cta = $("#cta");
+  cta.className = "cta" + (dag.fullfort ? " ferdig" : pr.test ? " test" : "");
+  cta.textContent = pr.test ? "Før inn testresultat"
+    : dag.fullfort ? "Økt fullført" : "Fullfør hele økta";
+  cta.disabled = dag.fullfort && !pr.test;
+
+  const t = sisteTest();
+  $("#pu-na").innerHTML = "";
+  $("#pu-na").append(document.createTextNode(String(t.pullups)));
+  const emPu = document.createElement("em"); emPu.textContent = " reps";
+  $("#pu-na").appendChild(emPu);
+  $("#lop-na").textContent = mmss(t.run3000);
+  $("#pu-fyll").style.width = Math.min(100, Math.max(0,
+    (t.pullups - ATLET.baseline.pullups) / (ATLET.mal.pullups - ATLET.baseline.pullups) * 100)) + "%";
+  $("#lop-fyll").style.width = Math.min(100, Math.max(0,
+    (ATLET.baseline.run3000 - t.run3000) / (ATLET.baseline.run3000 - ATLET.mal.run3000) * 100)) + "%";
+  $("#anslag").textContent =
+    `Anslag i dag: ${pr.form.pullups} pull-ups og 3000 m på ${mmss(pr.form.run3000)}. ` +
+    `Sist målt ${dato(t.dato).toLocaleDateString("nb-NO",{day:"numeric",month:"long",year:"numeric"})}.`;
+
+}
+
+function tegn() {
+  tegnInnhold();
+  tegnUke();
+  tegnRutenett();
+  utjevnHoyde();
+}
+
+let rutenettCeller = [];
+
+function byggRutenett() {
+  const box = $("#rutenett");
+  box.replaceChildren();
+  rutenettCeller = [];
+  const slutt = dato(iDag);
+  for (let i = 55; i >= 0; i--) {
+    const dagIso = iso(new Date(slutt - i * DAG));
+    const b = document.createElement("button");
+    b.type = "button";
+    b.title = dato(dagIso).toLocaleDateString("nb-NO", { day:"numeric", month:"long" });
+    b.setAttribute("aria-label", b.title);
+    b.addEventListener("click", () => bevarScroll(() => { vist = dagIso; tegn(); }));
+    box.appendChild(b);
+    rutenettCeller.push({ el: b, dagIso });
+  }
+}
+
+function tegnRutenett() {
+  if (!rutenettCeller.length) byggRutenett();
+  for (const c of rutenettCeller) {
+    c.el.className = "rute n" + nivaaFor(c.dagIso) + (c.dagIso === vist ? " valgt" : "");
+  }
+}
+
+/* ============ Handlinger ============ */
+function lagreDag(dag, melding_) {
+  const pr = program(vist);
+  const før = nivaaInfo(totalXp()).nivaa;
+
+  dag.fullfort = dag.gjort.length === pr.ovelser.length;
+  dag.xp = dag.gjort.reduce((s, k) => s + (pr.ovelser[k] ? pr.ovelser[k].xp : 0), 0)
+         + dag.ekstra.length * XP_EKSTRA;
+
+  state.dager[vist] = dag;
+  if (dag.fullfort) dag.xp += 50 + Math.min(streak(vist), 10) * 5;
+
+  // Ekstraøvelser endrer antall rader, så sidehøyden må måles på nytt
+  maalNokkel = "";
+  skrivDag(vist);
+  const etter = nivaaInfo(totalXp()).nivaa;
+  bevarScroll(tegn);
+  if (etter > før) feir(etter);
+  else if (melding_) melding(melding_);
+  else if (dag.fullfort) melding("Økt fullført");
+}
+
+function settDag(nyGjort) {
+  const dag = normaliser(state.dager[vist]);
+  dag.gjort = nyGjort;
+  lagreDag(dag);
+}
+
+function veksle(i) {
+  const gjort = normaliser(state.dager[vist]).gjort.slice();
+  const idx = gjort.indexOf(i);
+  if (idx >= 0) gjort.splice(idx, 1); else gjort.push(i);
+  settDag(gjort);
+}
+
+function apneTest() {
+  const t = sisteTest();
+  $("#felt-pu").value = t.pullups;
+  $("#felt-lop").value = mmss(t.run3000);
+  $("#test-dialog").showModal();
+}
+
+/* ============ Øvelsesarket ============
+   Samme ark viser figuren, formtipsene og feltene for hva du faktisk
+   gjorde — enten øvelsen sto i planen eller du la den til selv. */
+let aktivOvelse = null;
+
+const tilSek = t => {
+  const d = String(t || "").split(":").map(Number);
+  if (d.length === 2) return (d[0] || 0) * 60 + (d[1] || 0);
+  return Number(t) ? Math.round(Number(t) * 60) : 0;
+};
+
+function settType(type) {
+  const lop = type === "lop";
+  $("#type-styrke").setAttribute("aria-pressed", String(!lop));
+  $("#type-lop").setAttribute("aria-pressed", String(lop));
+  $("#felt-styrke").hidden = lop;
+  $("#felt-lop").hidden = !lop;
+}
+
+function visTips(navn) {
+  const info = OVELSESINFO[navn];
+  const ul = $("#ov-tips");
+  ul.replaceChildren();
+  visFigur($("#fig-ramme"), info ? info.fig : null);
+  $("#fig-ramme").hidden = !info;
+  if (!info) return;
+  for (const t of info.tips) {
+    const li = document.createElement("li");
+    li.textContent = t;
+    ul.appendChild(li);
+  }
+}
+
+function apneOvelse(ref) {
+  const dag = normaliser(state.dager[vist]);
+  aktivOvelse = ref;
+  const ny = ref.kilde === "ny";
+  const lagret = ref.kilde === "plan" ? dag.logg[ref.navn]
+               : ref.kilde === "ekstra" ? dag.ekstra[ref.indeks]
+               : null;
+  const navn = ny ? "" : (lagret && lagret.navn) || ref.navn;
+
+  $("#ov-navn").hidden = ny;
+  $("#ov-navn").textContent = navn;
+  $("#ov-navn-felt").hidden = !ny;
+  $("#ov-navn-felt").value = "";
+  $("#ov-mal-d").hidden = !ref.mal;
+  $("#ov-mal-d").textContent = ref.mal || "";
+  $("#ov-slett").hidden = ref.kilde !== "ekstra";
+  visTips(navn);
+
+  const type = (lagret && lagret.type) || (navn ? typeFor(navn) : "styrke");
+  settType(type);
+  $("#f-sett").value = lagret && lagret.sett ? lagret.sett : "";
+  $("#f-reps").value = lagret && lagret.reps ? lagret.reps : "";
+  $("#f-kg").value   = lagret && lagret.kg   ? lagret.kg   : "";
+  $("#f-km").value   = lagret && lagret.km   ? lagret.km   : "";
+  $("#f-tid").value  = lagret && lagret.tid  ? mmss(lagret.tid) : "";
+
+  $("#ov-dialog").showModal();
+}
+
+function lesFelter() {
+  const lop = $("#type-lop").getAttribute("aria-pressed") === "true";
+  if (lop) {
+    return { type: "lop",
+      km: Number(String($("#f-km").value).replace(",", ".")) || 0,
+      tid: tilSek($("#f-tid").value) };
+  }
+  return { type: "styrke",
+    sett: Number($("#f-sett").value) || 0,
+    reps: Number($("#f-reps").value) || 0,
+    kg: Number(String($("#f-kg").value).replace(",", ".")) || 0 };
+}
+
+function lagreOvelse() {
+  if (!aktivOvelse) return;
+  const dag = normaliser(state.dager[vist]);
+  const tall = lesFelter();
+
+  if (aktivOvelse.kilde === "ny") {
+    const navn = $("#ov-navn-felt").value.trim();
+    if (!navn) { melding("Skriv inn hva du gjorde"); return; }
+    dag.ekstra = dag.ekstra.concat(Object.assign({ navn }, tall));
+  } else if (aktivOvelse.kilde === "ekstra") {
+    dag.ekstra = dag.ekstra.map((e, i) =>
+      i === aktivOvelse.indeks ? Object.assign({ navn: e.navn }, tall) : e);
+  } else {
+    dag.logg = Object.assign({}, dag.logg, { [aktivOvelse.navn]: tall });
+    // Fører du inn tall, har du gjort øvelsen
+    if (!dag.gjort.includes(aktivOvelse.indeks)) dag.gjort = dag.gjort.concat(aktivOvelse.indeks);
+  }
+
+  $("#ov-dialog").close();
+  lagreDag(dag, "Ført inn");
+}
+
+function slettEkstra() {
+  if (!aktivOvelse || aktivOvelse.kilde !== "ekstra") return;
+  const dag = normaliser(state.dager[vist]);
+  dag.ekstra = dag.ekstra.filter((_, i) => i !== aktivOvelse.indeks);
+  $("#ov-dialog").close();
+  lagreDag(dag, "Slettet");
+}
+
+function feir(n) {
+  const info = nivaaInfo(totalXp());
+  $("#feir-niv").textContent = n;
+  $("#feir-grad").textContent = info.grad;
+  $("#feir-sub").textContent = `${info.trenger - info.iNivaa} XP til nivå ${n + 1}`;
+  $("#feiring").classList.add("vis");
+  setTimeout(() => $("#feiring").classList.remove("vis"), 2800);
+}
+let toastId;
+function melding(t) {
+  const el = $("#toast");
+  el.textContent = t;
+  el.classList.add("vis");
+  clearTimeout(toastId);
+  toastId = setTimeout(() => el.classList.remove("vis"), 2000);
+}
+
+/* ============ Skyen ============ */
+function settSky(tekst, klasse) {
+  $("#sky-tekst").textContent = tekst;
+  $("#sky-prikk").className = "sky-prikk" + (klasse ? " " + klasse : "");
+}
+
+async function koble() {
+  let store = null;
+  try { store = await claude.use("db"); } catch (e) { store = null; }
+  if (!store) { settSky("Lagret bare på denne enheten", "av"); return; }
+  db = store;
+  settSky("Synkronisert på tvers av enheter", "på");
+
+  const grense = iso(new Date(Date.now() - 120 * DAG));
+  db.collection("dager").where("dato", ">=", grense).onSnapshot(snap => {
+    for (const doc of snap.docs) state.dager[doc.id] = normaliser(doc.data());
+    skrivLokalt();
+    bevarScroll(tegn);
+  }, e => { if (e.code !== "unavailable") settSky("Lagret bare på denne enheten", "av"); });
+
+  db.collection("tester").onSnapshot(snap => {
+    state.tester = snap.docs.map(doc => {
+      const v = doc.data() || {};
+      return { dato: doc.id, pullups: Number(v.pullups) || 0, run3000: Number(v.run3000) || 0 };
+    }).filter(t => t.pullups > 0 && t.run3000 > 0);
+    skrivLokalt();
+    bevarScroll(tegn);
+  }, e => { if (e.code !== "unavailable") settSky("Lagret bare på denne enheten", "av"); });
+}
+
+/* ============ Oppstart ============ */
+lesLokalt();
+tegn();
+
+$("#forrige").addEventListener("click", () => bevarScroll(() => { vist = iso(new Date(dato(vist) - 7 * DAG)); tegn(); }));
+$("#neste").addEventListener("click", () => bevarScroll(() => { vist = iso(new Date(+dato(vist) + 7 * DAG)); tegn(); }));
+
+$("#cta").addEventListener("click", () => {
+  const pr = program(vist);
+  if (pr.test) { apneTest(); return; }
+  settDag(pr.ovelser.map((_, i) => i));
+});
+
+$("#ov-lukk").addEventListener("click", () => $("#ov-dialog").close());
+$("#ov-dialog").addEventListener("close", stoppFigurer);
+$("#ov-lagre").addEventListener("click", lagreOvelse);
+$("#ov-slett").addEventListener("click", slettEkstra);
+$("#type-styrke").addEventListener("click", () => settType("styrke"));
+$("#type-lop").addEventListener("click", () => settType("lop"));
+$("#legg-til").addEventListener("click", () => apneOvelse({ kilde: "ny" }));
+
+// Kjente øvelser foreslås, så de får figur og formtips med på kjøpet
+$("#ov-navn-felt").addEventListener("input", e => {
+  const n = e.target.value.trim();
+  if (OVELSESINFO[n]) { visTips(n); settType(typeFor(n)); }
+});
+$("#ovelsesliste").replaceChildren(...Object.keys(OVELSESINFO).map(n => {
+  const o = document.createElement("option");
+  o.value = n;
+  return o;
+}));
+
+const dlg = $("#test-dialog");
+$("#test-avbryt").addEventListener("click", () => dlg.close());
+$("#test-form").addEventListener("submit", () => {
+  const pu = Number($("#felt-pu").value);
+  const [m, s] = $("#felt-lop").value.split(":").map(Number);
+  const sek = (m || 0) * 60 + (s || 0);
+  if (!pu || !sek) return;
+  state.tester = state.tester.filter(t => t.dato !== vist).concat({ dato: vist, pullups: pu, run3000: sek });
+  skrivLokalt();
+  if (db) db.doc("tester/" + vist).set({ pullups: pu, run3000: sek, dato: vist })
+    .catch(() => melding("Fikk ikke lagret testen til skyen"));
+  bevarScroll(tegn);
+  melding("Test lagret · programmet er justert");
+});
+
+window.addEventListener("resize", () => { maalNokkel = ""; tegn(); });
+
+koble();
+</script>
